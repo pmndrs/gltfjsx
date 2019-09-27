@@ -1,6 +1,6 @@
 # npx gltfjsx
 
-An experimental tool that turns GLTF's file into [react-three-fiber](https://github.com/react-spring/react-three-fiber)-JSX components.
+An experimental tool that turns GLTF's files into [react-three-fiber](https://github.com/react-spring/react-three-fiber)-JSX components.
 
 ```bash
 npx gltfjsx input.gltf [Output.js] [options]
