@@ -12,7 +12,7 @@ Options:
   --version        Show version number                [boolean]
 ```
 
-<img src="https://i.imgur.com/U4cWrNN.gif" />
+<img src="https://i.imgur.com/DmdTMcL.gif" />
 
 You need to be set up for asset loading and the actual GLTF has to be present in your /public folder. This tools loads it, creates a hashmap of all the objects inside and writes out a JSX tree which you can now freely alter.
 
