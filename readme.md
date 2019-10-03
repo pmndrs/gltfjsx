@@ -24,13 +24,13 @@ import { useLoader } from 'react-three-fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
 export default function Model(props) {
-  const [gltf, objects] = useLoader(GLTFLoader, '/scene.glb')
+  const gltf = useLoader(GLTFLoader, '/scene.glb')
   return (
     <group {...props}>
       <scene name="Scene">
         <mesh name="Cube000" position={[0.3222085237503052, 2.3247640132904053, 10.725556373596191]}>
-          <bufferGeometry attach="geometry" {...objects[1].geometry} />
-          <meshStandardMaterial attach="material" {...objects[1].material} name="sillones" />
+          <bufferGeometry attach="geometry" {...gltf.__$[1].geometry} />
+          <meshStandardMaterial attach="material" {...gltf.__$[1].material} name="sillones" />
         </mesh>
       </scene>
     </group>
@@ -55,7 +55,7 @@ Adds a DRACOLoader, for which you need to be set up. The necessary files have to
 It will then extend the loader-section:
 
 ```jsx
-const [gltf, objects] = useLoader(GLTFLoader, '/stork.glb', loader => {
+const gltf = useLoader(GLTFLoader, '/stork.glb', loader => {
   const dracoLoader = new DRACOLoader()
   dracoLoader.setDecoderPath('/draco-gltf/')
   loader.setDRACOLoader(dracoLoader)
