@@ -32,13 +32,13 @@ function print(objects, obj, level = 0, parent) {
 
   result = `${space}<${type} `
 
-  if (obj.isMaterial) result += `attach="material" {...objects[${parentId}].material} `
-  if (obj.isGeometry || obj.isBufferGeometry) result += `attach="geometry" {...objects[${parentId}].geometry} `
+  if (obj.isMaterial) result += `attach="material" {...gltf.__$[${parentId}].material} `
+  if (obj.isGeometry || obj.isBufferGeometry) result += `attach="geometry" {...gltf.__$[${parentId}].geometry} `
   if (obj.name.length) result += `name="${obj.name}" `
   if (obj.visible === false) result += `visible={false} `
 
-  if (obj.morphTargetDictionary) result += `morphTargetDictionary={objects[${currentId}].morphTargetDictionary} `
-  if (obj.morphTargetInfluences) result += `morphTargetInfluences={objects[${currentId}].morphTargetInfluences} `
+  if (obj.morphTargetDictionary) result += `morphTargetDictionary={gltf.__$[${currentId}].morphTargetDictionary} `
+  if (obj.morphTargetInfluences) result += `morphTargetInfluences={gltf.__$[${currentId}].morphTargetInfluences} `
 
   if (obj.position instanceof THREE.Vector3 && obj.position.length())
     result += `position={[${obj.position.x}, ${obj.position.y}, ${obj.position.z},]} `
@@ -105,7 +105,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'${
   
 export default function Model(props) {
   const group = useRef()
-  const [gltf, objects] = useLoader(GLTFLoader, '/${nameExt}'${
+  const gltf = useLoader(GLTFLoader, '/${nameExt}'${
             draco
               ? `, loader => {
     const dracoLoader = new DRACOLoader()

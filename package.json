@@ -1,5 +1,5 @@
 {
-  "name": "gltf",
+  "name": "gltfjsx",
   "version": "0.0.1",
   "description": "gltf to jsx",
   "bin": {
