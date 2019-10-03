@@ -97,7 +97,7 @@ module.exports = function(file, output, { draco, animation }) {
           gltf.scene.traverse(child => objects.push(child))
 
           stream.write(`import * as THREE from 'three'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef${animation ? ', useState' : ''} } from 'react'
 import { useLoader, useFrame } from 'react-three-fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'${
             draco ? `\nimport { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'` : ``
