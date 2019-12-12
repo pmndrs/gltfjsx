@@ -82,12 +82,3 @@ If you want to play an animation you can do so at any time:
 ```jsx
 <mesh onClick={e => actions.current.storkFly_B_.play()} />
 ```
-
-# ⚠️ Notes
-
-Currently this tool seems to have problems with gltf's that have external resources (like textures). Just route them through gltf-pipeline before using gltfjsx, this will create a combined binary without externals. Use this binary as input for gltfjsx and it should be fine.
-
-```
-npx gltf-pipeline -i model.gltf -o model.glb
-npx gltfjsx model.glb Model.js
-```

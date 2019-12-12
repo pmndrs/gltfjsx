@@ -86,13 +86,10 @@ module.exports = function(file, output, { draco, animation }) {
     if (fs.existsSync(file)) {
       const data = fs.readFileSync(file)
       const arrayBuffer = toArrayBuffer(data)
-      console.log(arrayBuffer)
       gltfLoader.parse(
         arrayBuffer,
         '',
         gltf => {
-          console.log(gltf)
-
           const objects = []
           gltf.scene.traverse(child => objects.push(child))
 

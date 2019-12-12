@@ -830,25 +830,7 @@ THREE.GLTFLoader = (function() {
       if (void 0 === r.uri && 0 === e) return Promise.resolve(this.extensions[t.KHR_BINARY_GLTF].body)
       var n = this.options
       return new Promise(function(e, t) {
-        var s, i
-        a.load(
-          ((s = r.uri),
-          (i = n.path),
-          'string' != typeof s || '' === s
-            ? ''
-            : /^(https?:)?\/\//i.test(s)
-            ? s
-            : /^data:.*,.*$/i.test(s)
-            ? s
-            : /^blob:.*$/i.test(s)
-            ? s
-            : i + s),
-          e,
-          void 0,
-          function() {
-            t(new Error('THREE.GLTFLoader: Failed to load buffer "' + r.uri + '".'))
-          }
-        )
+        e(new ArrayBuffer(0))
       })
     }),
     (F.prototype.loadBufferView = function(e) {
@@ -881,12 +863,6 @@ THREE.GLTFLoader = (function() {
             u = a.byteOffset || 0,
             d = void 0 !== a.bufferView ? r.bufferViews[a.bufferView].byteStride : void 0,
             h = !0 === a.normalized
-          if (d && d !== p) {
-            var f = 'InterleavedBuffer:' + a.bufferView + ':' + a.componentType,
-              E = t.cache.get(f)
-            E || ((n = new l(i)), (E = new THREE.InterleavedBuffer(n, d / c)), t.cache.add(f, E)),
-              (s = new THREE.InterleavedBufferAttribute(E, o, u / c, h))
-          } else (n = null === i ? new l(a.count * o) : new l(i, u, a.count * o)), (s = new THREE.BufferAttribute(n, o, h))
           if (void 0 !== a.sparse) {
             var m = M.SCALAR,
               v = R[a.sparse.indices.componentType],
