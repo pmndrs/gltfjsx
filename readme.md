@@ -6,7 +6,7 @@ An experimental tool that turns GLTF's files into [react-three-fiber](https://gi
 npx gltfjsx input.gltf [Output.js] [options]
 
 Options:
-  --draco, -d      adds DRACOLoader                   [string] [default: "/draco-gltf/"]
+  --draco, -d      adds DRACOLoader                   [boolean]
   --animation, -a  extracts animation clips           [boolean]
   --help           Show help                          [boolean]
   --version        Show version number                [boolean]
