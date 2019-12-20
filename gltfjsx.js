@@ -83,7 +83,9 @@ module.exports = function(file, output, { draco, animation }) {
 
   const stream = fs.createWriteStream(output || name.charAt(0).toUpperCase() + name.slice(1) + '.js')
   stream.once('open', fd => {
-    if (fs.existsSync(file)) {
+    if (!fs.existsSync(file)) {
+      console.error(`\nERROR: The input file: "${file}" does not exist at this path.\n`);
+    } else {
       const data = fs.readFileSync(file)
       const arrayBuffer = toArrayBuffer(data)
       gltfLoader.parse(
