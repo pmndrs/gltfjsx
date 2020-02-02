@@ -14,24 +14,30 @@ Options:
 
 <img src="https://i.imgur.com/DmdTMcL.gif" />
 
-You need to be set up for asset loading and the actual GLTF has to be present in your /public folder. This tools loads it, creates a hashmap of all the objects inside and writes out a JSX tree which you can now freely alter.
+You need to be set up for asset loading and the actual GLTF has to be present in your /public folder. This tools loads it, creates look-up tables of all the objects and materials inside, and writes out a JSX graph, which you can now alter comfortably.
 
 A typical output looks like this:
 
 ```jsx
-import React from 'react'
+import React  from 'react'
 import { useLoader } from 'react-three-fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-
-export default function Model(props) {
-  const gltf = useLoader(GLTFLoader, '/scene.glb')
+  
+function Model(props) {
+  const { nodes, materials } = useLoader(GLTFLoader, '/model.gltf')
   return (
-    <group {...props}>
-      <scene name="Scene">
-        <mesh name="Cube000" position={[0.3222085237503052, 2.3247640132904053, 10.725556373596191]}>
-          <bufferGeometry attach="geometry" {...gltf.__$[1].geometry} />
-          <meshStandardMaterial attach="material" {...gltf.__$[1].material} name="sillones" />
-        </mesh>
+    <group {...props} dispose={null}>
+      <scene name="Scene" >
+        <object3D name="Camera" position={[10, 0, 50]} rotation={[Math.PI / 2, 0, 0]} >
+          <primitive object={nodes['Camera_Orientation']} />
+        </object3D>
+        <object3D name="Sun" position={[100, 50, 100]} rotation={[-Math.PI / 2, 0, 0]} >
+          <primitive object={nodes['Sun_Orientation']} />
+        </object3D>
+        <group name="Cube" >
+          <mesh material={materials['base']} geometry={nodes['Cube.003_0'].geometry} name="Cube.003_0" />
+          <mesh material={materials['inner']} geometry={nodes['Cube.003_1'].geometry} name="Cube.003_1" />
+        </group>
       </scene>
     </group>
   )

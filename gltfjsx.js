@@ -23,23 +23,25 @@ function print(objects, obj, level = 0, parent) {
   let space = new Array(level).fill(' ').join('')
   let children = ''
   let type = obj.type.charAt(0).toLowerCase() + obj.type.slice(1)
-  let currentId = objects.indexOf(obj)
-  let parentId = objects.indexOf(parent)
 
+  // Bail out on lights and cameras
+  if (obj instanceof THREE.Light || obj instanceof THREE.Camera) {
+    return `${space}<primitive object={nodes['${obj.name}']} />${!parent ? '' : '\n'}`
+  }
+
+  // Collect children
   if (obj.children) obj.children.forEach(child => (children += print(objects, child, level + 2, obj)))
-  if (obj.geometry) children += print(objects, obj.geometry, level + 2, obj)
-  if (obj.material) children += print(objects, obj.material, level + 2, obj)
 
+  // Form the object in JSX syntax
   result = `${space}<${type} `
 
-  if (obj.isMaterial) result += `attach="material" {...gltf.__$[${parentId}].material} `
-  if (obj.isGeometry || obj.isBufferGeometry) result += `attach="geometry" {...gltf.__$[${parentId}].geometry} `
+  // Write out materials
+  if (obj.material) result += `material={materials['${obj.material.name}']} `
+  if (obj.geometry) result += `geometry={nodes['${obj.name}'].geometry} `
   if (obj.name.length) result += `name="${obj.name}" `
   if (obj.visible === false) result += `visible={false} `
-
-  if (obj.morphTargetDictionary) result += `morphTargetDictionary={gltf.__$[${currentId}].morphTargetDictionary} `
-  if (obj.morphTargetInfluences) result += `morphTargetInfluences={gltf.__$[${currentId}].morphTargetInfluences} `
-
+  if (obj.morphTargetDictionary) result += `morphTargetDictionary={nodes['${obj.name}'].morphTargetDictionary} `
+  if (obj.morphTargetInfluences) result += `morphTargetInfluences={nodes['${obj.name}'].morphTargetInfluences} `
   if (obj.position instanceof THREE.Vector3 && obj.position.length())
     result += `position={[${obj.position.x}, ${obj.position.y}, ${obj.position.z},]} `
   if (obj.rotation instanceof THREE.Euler && obj.rotation.toVector3().length())
@@ -48,6 +50,7 @@ function print(objects, obj, level = 0, parent) {
     result += `scale={[${obj.scale.x}, ${obj.scale.y}, ${obj.scale.z},]} `
   result += `${children.length ? '>' : '/>'}\n`
 
+  // Close tag and return
   if (children.length) result += children + `${space}</${type}>${!parent ? '' : '\n'}`
   return result
 }
@@ -55,9 +58,7 @@ function print(objects, obj, level = 0, parent) {
 function printClips(gltf) {
   return (
     '{\n' +
-    gltf.animations.map(
-      (clip, i) => `      "${clip.name}": mixer.clipAction(gltf.animations[${i}], group.current),\n`
-    ) +
+    gltf.animations.map((clip, i) => `      "${clip.name}": mixer.clipAction(animations[${i}], group.current),\n`) +
     '    }'
   )
 }
@@ -69,7 +70,7 @@ function printAnimations(gltf) {
   useFrame((state, delta) => mixer.update(delta))
   useEffect(() => {
     actions.current = ${printClips(gltf)}
-    return () => gltf.animations.forEach(clip => mixer.uncacheClip(clip))
+    return () => animations.forEach(clip => mixer.uncacheClip(clip))
   }, [])`
     : ''
 }
@@ -84,7 +85,7 @@ module.exports = function(file, output, { draco, animation }) {
   const stream = fs.createWriteStream(output || name.charAt(0).toUpperCase() + name.slice(1) + '.js')
   stream.once('open', fd => {
     if (!fs.existsSync(file)) {
-      console.error(`\nERROR: The input file: "${file}" does not exist at this path.\n`);
+      console.error(`\nERROR: The input file: "${file}" does not exist at this path.\n`)
     } else {
       const data = fs.readFileSync(file)
       const arrayBuffer = toArrayBuffer(data)
@@ -104,7 +105,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'${
   
 export default function Model(props) {
   const group = useRef()
-  const gltf = useLoader(GLTFLoader, '/${nameExt}'${
+  const { nodes, materials, animations } = useLoader(GLTFLoader, '/${nameExt}'${
             draco
               ? `, loader => {
     const dracoLoader = new DRACOLoader()
@@ -115,7 +116,7 @@ export default function Model(props) {
           })${animation ? printAnimations(gltf) : ``}
 
   return (
-    <group ref={group} {...props}>
+    <group ref={group} {...props} dispose={null}>
 ${print(objects, gltf.scene, 6)}
     </group>
   )
