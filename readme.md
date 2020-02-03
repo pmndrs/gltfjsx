@@ -1,3 +1,8 @@
+<p align="center">
+  <img width="700" src="https://i.imgur.com/vU3qYvd.gif" />
+</p>
+<br />
+
 This is an experimental tool that turns GLTF's files into re-usable [react-three-fiber](https://github.com/react-spring/react-three-fiber) JSX components that are easier to modify and customize.
 
 ```bash
@@ -11,10 +16,6 @@ Options:
   --help              Show help                           [boolean]
   --version           Show version number                 [boolean]
 ```
-
-<p align="center">
-  <img width="700" src="https://i.imgur.com/vU3qYvd.gif" />
-</p>
 
 You need to be set up for asset loading and the GLTF has to be present in your /public folder. This tools loads it, creates look-up tables of all the objects and materials inside, and writes out a JSX graph, which you can now alter comfortably.
 
