@@ -18,6 +18,7 @@ Other changes:
 
 - GLTFLoader bugfixes (fixed some of the reported crashes).
 - It references materials instead of spreading props, which was causing issues. This also means that materials are actually re-used, which wasn't the case before.
+- Exports lights and cameras, if present.
 - Optional removal of empty nodes.
 - Optional removal of names.
 - Turns Object3D collections into Groups (should be better for performance).
