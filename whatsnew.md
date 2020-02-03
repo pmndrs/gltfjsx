@@ -18,7 +18,7 @@ Other changes:
 - It references materials instead of spreading props, which was causing issues. This also means that materials are actually re-used, which wasn't the case before.
 - Optional removal of empty nodes.
 - Optional removal of names.
-- Turns Object3D's into Groups (should be better for performance).
+- Turns Object3D collections into Groups (should be better for performance).
 - Converts angles into fractions of PI.
 - Floating point precision and shorter numbers.
 - Formats the output using prettier.
