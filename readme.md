@@ -42,7 +42,7 @@ function Model(props) {
 }
 ```
 
-This component suspends, so you must wrap it into `<Suspense />` for fallbacks and, optionally, error-boundaries for error handling:
+This component is async and suspends, wrap it into `<Suspense />` for fallbacks and, optionally, error-boundaries for error handling:
 
 ```jsx
 <ErrorBoundary>
