@@ -1,6 +1,6 @@
 # 1.0 🎉
 
-![](https://i.imgur.com/iCpf1PT.jpg)
+![](https://i.imgur.com/ZB4uUaz.png)
 
 This is a major release with breaking changes.
 
