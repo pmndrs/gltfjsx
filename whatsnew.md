@@ -2,6 +2,8 @@
 
 ![](https://i.imgur.com/ZB4uUaz.png)
 
+Click this link to see how it works: https://twitter.com/0xca0a/status/1224335000755146753
+
 This is a major release with breaking changes.
 
 It uses react-three-fiber's useLoader `node` and `material` look-up tables which were introduced in => 4.0.12:
