@@ -2,7 +2,7 @@
 
 ![](https://i.imgur.com/ZB4uUaz.png)
 
-Click this link to see how it works: https://twitter.com/0xca0a/status/1224335000755146753
+Click this link to see it in action: https://twitter.com/0xca0a/status/1224335000755146753
 
 This is a major release with breaking changes.
 
