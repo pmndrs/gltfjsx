@@ -2,7 +2,7 @@
 
 This is a major release with breaking changes.
 
-It uses react-three-fiber's useLoader `node` and `material` look-up tables:
+It uses react-three-fiber's useLoader `node` and `material` look-up tables which were introduced in => 4.0.12:
 
 ```jsx
 const { nodes, materials, animations, scene } = useLoader(GLTFLoader, url)
@@ -11,8 +11,6 @@ return <mesh material={materials['base']} geometry={nodes['Cube.003_0'].geometry
 ```
 
 The previous `__$` array does not work with three's new async DRACOLoader any longer because the indicies are now subject to race conditions. Named tables are cleaner, look better and are easier to use.
-
-This means you must use gltfjsx with react-three-fiber => 4.0.12!
 
 Other changes:
 
