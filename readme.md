@@ -12,7 +12,9 @@ Options:
   --version           Show version number                 [boolean]
 ```
 
-<img src="https://i.imgur.com/DmdTMcL.gif" />
+<p align="center">
+  <img width="700" src="https://i.imgur.com/vU3qYvd.gif" />
+</p>
 
 You need to be set up for asset loading and the GLTF has to be present in your /public folder. This tools loads it, creates look-up tables of all the objects and materials inside, and writes out a JSX graph, which you can now alter comfortably.
 
