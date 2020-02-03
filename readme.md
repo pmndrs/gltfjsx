@@ -1,4 +1,4 @@
-![](https://i.imgur.com/iCpf1PT.jpg)
+![](https://i.imgur.com/QVGbZEv.png)
 
 This is an experimental tool that turns GLTF's files into re-usable [react-three-fiber](https://github.com/react-spring/react-three-fiber) JSX components that are easier to modify and customize.
 
