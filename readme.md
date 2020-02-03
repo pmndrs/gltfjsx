@@ -1,20 +1,20 @@
-# npx gltfjsx
-
-An experimental tool that turns GLTF's files into [react-three-fiber](https://github.com/react-spring/react-three-fiber)-JSX components.
+This is an experimental tool that turns GLTF's files into re-usable [react-three-fiber](https://github.com/react-spring/react-three-fiber) JSX components that are very easy to modify and customize.
 
 ```bash
 npx gltfjsx input.gltf [Output.js] [options]
 
 Options:
-  --draco, -d      adds DRACOLoader                   [boolean]
-  --animation, -a  extracts animation clips           [boolean]
-  --help           Show help                          [boolean]
-  --version        Show version number                [boolean]
+  --draco, -d         Adds DRACOLoader                    [boolean]
+  --animation, -a     Extracts animation clips            [boolean]
+  --compress, -c      Removes names and empty groups      [boolean]
+  --precision, -f     Decimal number precision            [number ] [default: 2]
+  --help              Show help                           [boolean]
+  --version           Show version number                 [boolean]
 ```
 
 <img src="https://i.imgur.com/DmdTMcL.gif" />
 
-You need to be set up for asset loading and the actual GLTF has to be present in your /public folder. This tools loads it, creates look-up tables of all the objects and materials inside, and writes out a JSX graph, which you can now alter comfortably.
+You need to be set up for asset loading and the GLTF has to be present in your /public folder. This tools loads it, creates look-up tables of all the objects and materials inside, and writes out a JSX graph, which you can now alter comfortably.
 
 A typical output looks like this:
 
