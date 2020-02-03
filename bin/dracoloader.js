@@ -113,7 +113,7 @@ const decoder = require('draco3dgltf').createDecoderModule()
           throw (console.error(u), new Error(u))
       }
       for (var b = 0; b < l; b++) s[o][b] = d.GetValue(b)
-      a.addAttribute(o, new A(s[o], c)), t.destroy(d)
+      a.setAttribute(o, new A(s[o], c)), t.destroy(d)
     },
     convertDracoGeometryTo3JS: function(t, e, r, o, i, n) {
       var a, s, u

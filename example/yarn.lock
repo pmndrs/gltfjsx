@@ -8559,10 +8559,10 @@ react-scripts@3.3.1:
   optionalDependencies:
     fsevents "2.1.2"
 
-react-three-fiber@^4.0.13:
-  version "4.0.13"
-  resolved "https://registry.yarnpkg.com/react-three-fiber/-/react-three-fiber-4.0.13.tgz#0ecbd99dece613be07082d57ea0aa40fe73593d2"
-  integrity sha512-s+BPKi1MYgleOgNu67SiovQN8imnE3kQNOdI/jiwoydUMeZewuT183I34LKHSk8UOoYfE/1usGXK0jCUcJXiHA==
+react-three-fiber@^4.0.14:
+  version "4.0.14"
+  resolved "https://registry.yarnpkg.com/react-three-fiber/-/react-three-fiber-4.0.14.tgz#f1daa98b86f8f0ab8f6ac1e0c1172895736547ea"
+  integrity sha512-drfcNAGmEq6333i9e2zs/hfDRnWlyNUhNx1PaRYWBXyZZ5WHYGJHdDg/T4VsE7YEAfDtw5y5JR0r7WV5feCc2g==
   dependencies:
     "@babel/runtime" "^7.7.7"
     "@juggle/resize-observer" "^3.0.2"

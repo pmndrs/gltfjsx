@@ -1,13 +1,13 @@
-This is an experimental tool that turns GLTF's files into re-usable [react-three-fiber](https://github.com/react-spring/react-three-fiber) JSX components that are very easy to modify and customize.
+This is an experimental tool that turns GLTF's files into re-usable [react-three-fiber](https://github.com/react-spring/react-three-fiber) JSX components that are easier to modify and customize.
 
 ```bash
-npx gltfjsx input.gltf [Output.js] [options]
+npx gltfjsx model.gltf [Model.js] [options]
 
 Options:
-  --draco, -d         Adds DRACOLoader                    [boolean]
+  --draco, -d         Adds draco-Loader                   [boolean]
   --animation, -a     Extracts animation clips            [boolean]
   --compress, -c      Removes names and empty groups      [boolean]
-  --precision, -f     Decimal number precision            [number ] [default: 2]
+  --precision, -p     Number of fractional digits         [number ] [default: 2]
   --help              Show help                           [boolean]
   --version           Show version number                 [boolean]
 ```
@@ -16,7 +16,7 @@ Options:
 
 You need to be set up for asset loading and the GLTF has to be present in your /public folder. This tools loads it, creates look-up tables of all the objects and materials inside, and writes out a JSX graph, which you can now alter comfortably.
 
-A typical output looks like this:
+A typical output will look like this:
 
 ```jsx
 import React  from 'react'
@@ -27,18 +27,16 @@ function Model(props) {
   const { nodes, materials } = useLoader(GLTFLoader, '/model.gltf')
   return (
     <group {...props} dispose={null}>
-      <scene name="Scene" >
-        <object3D name="Camera" position={[10, 0, 50]} rotation={[Math.PI / 2, 0, 0]} >
-          <primitive object={nodes['Camera_Orientation']} />
-        </object3D>
-        <object3D name="Sun" position={[100, 50, 100]} rotation={[-Math.PI / 2, 0, 0]} >
-          <primitive object={nodes['Sun_Orientation']} />
-        </object3D>
-        <group name="Cube" >
-          <mesh material={materials['base']} geometry={nodes['Cube.003_0'].geometry} name="Cube.003_0" />
-          <mesh material={materials['inner']} geometry={nodes['Cube.003_1'].geometry} name="Cube.003_1" />
-        </group>
-      </scene>
+      <group name="Camera" position={[10, 0, 50]} rotation={[Math.PI / 2, 0, 0]} >
+        <primitive object={nodes['Camera_Orientation']} />
+      </group>
+      <group name="Sun" position={[100, 50, 100]} rotation={[-Math.PI / 2, 0, 0]} >
+        <primitive object={nodes['Sun_Orientation']} />
+      </group>
+      <group name="Cube" >
+        <mesh material={materials['base']} geometry={nodes['Cube.003_0'].geometry} />
+        <mesh material={materials['inner']} geometry={nodes['Cube.003_1'].geometry} />
+      </group>
     </group>
   )
 }

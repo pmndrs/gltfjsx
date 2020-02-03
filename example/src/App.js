@@ -36,7 +36,7 @@ export default function App() {
       <Suspense fallback={<Dom center>loading ...</Dom>}>
         <Rig>
           <Model />
-          <mesh scale={[1000, 1000, 1]} rotation={[-Math.PI / 2, 0, 0]}>
+          <mesh scale={[1000, 1000, 1]} rotation={[-Math.PI / 2, 0, 0]} onPointerOver={e => e.stopPropagation()}>
             <planeBufferGeometry attach="geometry" />
             <meshBasicMaterial attach="material" transparent opacity={0.7} color="skyblue" />
           </mesh>
