@@ -1,5 +1,7 @@
 # 1.0 🎉
 
+![](https://i.imgur.com/iCpf1PT.jpg)
+
 This is a major release with breaking changes.
 
 It uses react-three-fiber's useLoader `node` and `material` look-up tables which were introduced in => 4.0.12:
