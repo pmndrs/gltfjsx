@@ -1,8 +1,3 @@
-<p align="center">
-  <img width="700" src="https://i.imgur.com/vU3qYvd.gif" />
-</p>
-<br />
-
 This is an experimental tool that turns GLTF's files into re-usable [react-three-fiber](https://github.com/react-spring/react-three-fiber) JSX components that are easier to modify and customize.
 
 ```bash
