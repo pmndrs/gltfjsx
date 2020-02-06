@@ -86,3 +86,7 @@ If you want to play an animation you can do so at any time:
 ```jsx
 <mesh onClick={e => actions.current.storkFly_B_.play()} />
 ```
+
+## 1.x release notes and breaking changes
+
+https://github.com/react-spring/gltfjsx/blob/master/whatsnew.md
