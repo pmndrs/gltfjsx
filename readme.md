@@ -1,3 +1,5 @@
+![](https://i.imgur.com/ZB4uUaz.png)
+
 This is an experimental tool that turns GLTF's files into re-usable [react-three-fiber](https://github.com/react-spring/react-three-fiber) JSX components that are easier to modify and customize.
 
 ```bash
@@ -11,8 +13,6 @@ Options:
   --help              Show help                           [boolean]
   --version           Show version number                 [boolean]
 ```
-
-<img src="https://i.imgur.com/DmdTMcL.gif" />
 
 You need to be set up for asset loading and the GLTF has to be present in your /public folder. This tools loads it, creates look-up tables of all the objects and materials inside, and writes out a JSX graph, which you can now alter comfortably.
 
@@ -42,7 +42,7 @@ function Model(props) {
 }
 ```
 
-This component suspends, so you must wrap it into `<Suspense />` for fallbacks and, optionally, error-boundaries for error handling:
+This component is async and suspends, wrap it into `<Suspense />` for fallbacks and, optionally, error-boundaries for error handling:
 
 ```jsx
 <ErrorBoundary>

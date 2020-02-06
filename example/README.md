@@ -1,5 +1,8 @@
+![](https://i.imgur.com/iCpf1PT.jpg)
+    
+    yarn
     yarn start
-
+    
 ## Attributions
 
 The GLTF used in this example was made by Matthijs De Rijk / [Mr. The Rich](https://sketchfab.com/MatthijsDeRijk)
