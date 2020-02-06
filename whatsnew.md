@@ -6,7 +6,7 @@ Click this link to see it in action: https://twitter.com/0xca0a/status/122433500
 
 This is a major release with breaking changes.
 
-It uses react-three-fiber's useLoader `node` and `material` look-up tables which were introduced in => 4.0.12:
+It uses react-three-fiber's useLoader `node` and `material` look-up tables which were introduced in => 4.0.13:
 
 ```jsx
 const { nodes, materials, animations, scene } = useLoader(GLTFLoader, url)
