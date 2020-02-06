@@ -46,7 +46,7 @@ function print(objects, obj, level = 0, parent) {
   if (type === 'object3D') type = 'group'
 
   // Bail out on lights and cameras
-  if (obj instanceof THREE.Light || obj instanceof THREE.Camera)
+  if (obj instanceof THREE.Light || obj instanceof THREE.Camera || obj instanceof THREE.Bone)
     return `${space}<primitive object={nodes['${obj.name}']} />${!parent ? '' : '\n'}`
 
   // Collect children
@@ -58,8 +58,12 @@ function print(objects, obj, level = 0, parent) {
   const oldResult = result
 
   // Write out materials
-  if (obj.material) result += `material={materials['${obj.material.name}']} `
+  if (obj.material) {
+    if (obj.material.name) result += `material={materials['${obj.material.name}']} `
+    else result += `material={nodes['${obj.name}'].material} `
+  }
   if (obj.geometry) result += `geometry={nodes['${obj.name}'].geometry} `
+  if (obj.skeleton) result += `skeleton={nodes['${obj.name}'].skeleton} `
   if (obj.name.length && !options.compress) result += `name="${obj.name}" `
   if (obj.visible === false) result += `visible={false} `
   if (obj.morphTargetDictionary) result += `morphTargetDictionary={nodes['${obj.name}'].morphTargetDictionary} `
