@@ -656,7 +656,7 @@ THREE.GLTFLoader = (function() {
       n = []
     function s(t, a) {
       return r.getDependency('accessor', t).then(function(t) {
-        e.addAttribute(a, t)
+        //e.addAttribute(a, t)
       })
     }
     for (var i in a) {
@@ -1063,8 +1063,7 @@ THREE.GLTFLoader = (function() {
               u = n[o],
               d = r[o]
             if (u.mode === v || u.mode === T || u.mode === g || void 0 === u.mode)
-              !0 === (c = !0 === a.isSkinnedMesh ? new THREE.SkinnedMesh(p, d) : new THREE.Mesh(p, d)).isSkinnedMesh &&
-                c.normalizeSkinWeights(),
+              !0 === (c = !0 === a.isSkinnedMesh ? new THREE.SkinnedMesh(p, d) : new THREE.Mesh(p, d)).isSkinnedMesh,
                 u.mode === T
                   ? (c.drawMode = THREE.TriangleStripDrawMode)
                   : u.mode === g && (c.drawMode = THREE.TriangleFanDrawMode)

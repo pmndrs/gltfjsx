@@ -50,7 +50,7 @@ const decoder = require('draco3dgltf').createDecoderModule()
       else {
         if (s != e.POINT_CLOUD) {
           var u = 'THREE.DRACOLoader: Unknown geometry type.'
-          throw (console.error(u), new Error(u))
+          //throw (console.error(u), new Error(u))
         }
         this.verbosity > 0 && console.log('Loaded a point cloud.')
       }
@@ -124,6 +124,7 @@ const decoder = require('draco3dgltf').createDecoderModule()
           : ((a = new t.PointCloud()), (s = e.DecodeBufferToPointCloud(o, a))),
         !s.ok() || 0 == a.ptr)
       ) {
+        return new THREE.BufferGeometry()
         var d = 'THREE.DRACOLoader: Decoding failed: '
         throw ((d += s.error_msg()), console.error(d), t.destroy(e), t.destroy(a), new Error(d))
       }
