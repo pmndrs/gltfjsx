@@ -86,7 +86,9 @@ function print(objects, obj, level = 0, parent) {
 function printClips(gltf) {
   return (
     '{\n' +
-    gltf.animations.map((clip, i) => `      "${clip.name}": mixer.clipAction(animations[${i}], group.current),\n`) +
+    gltf.animations
+      .map((clip, i) => `      "${clip.name}": mixer.clipAction(animations[${i}], group.current)`)
+      .join(',\n') +
     '    }'
   )
 }

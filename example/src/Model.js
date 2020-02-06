@@ -31,7 +31,7 @@ export default function Model(props) {
               onClick={() => setActive(!active)}
               onPointerOver={e => (e.stopPropagation(), setHovered(true))}
               onPointerOut={() => setHovered(false)}
-              material-metalness={active ? 1 : 0.5}
+              material-metalness={active ? 1 : 0}
               material-color={hovered ? 'lightblue' : 'white'}
             />
           </group>

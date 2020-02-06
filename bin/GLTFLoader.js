@@ -1167,15 +1167,6 @@ THREE.GLTFLoader = (function() {
                     !0 === e.isMesh && e.morphTargetInfluences && R.push(e.name ? e.name : e.uuid)
                   })
                 : R.push(T)
-              for (var M = 0, S = R.length; M < S; M++) {
-                var L = new v(R[M] + '.' + y[m.path], h.array, f.array, g)
-                'CUBICSPLINE' === E.interpolation &&
-                  ((L.createInterpolant = function(e) {
-                    return new u(this.times, this.values, this.getValueSize() / 3, e)
-                  }),
-                  (L.createInterpolant.isInterpolantFactoryMethodGLTFCubicSpline = !0)),
-                  l.push(L)
-              }
             }
           }
           var A = void 0 !== t.name ? t.name : 'animation_' + e
