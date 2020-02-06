@@ -1,6 +1,6 @@
 ![](https://i.imgur.com/ZB4uUaz.png)
 
-This is an experimental tool that turns GLTF's files into re-usable [react-three-fiber](https://github.com/react-spring/react-three-fiber) JSX components that are easier to modify and customize.
+This is an experimental tool that turns GLTF's files into re-usable [react-three-fiber](https://github.com/react-spring/react-three-fiber) (>=4.0.12) JSX components that are easier to modify and customize.
 
 ```bash
 npx gltfjsx model.gltf [Model.js] [options]
