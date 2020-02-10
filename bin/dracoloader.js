@@ -150,7 +150,7 @@ const decoder = require('draco3dgltf').createDecoderModule()
           var h = n[E],
             w = i[E],
             p = e.GetAttributeByUniqueId(a, w)
-          this.addAttributeToGeometry(t, e, a, E, h, p, y, f)
+          //this.addAttributeToGeometry(t, e, a, E, h, p, y, f)
         }
       else
         for (var E in this.nativeAttributeMap) {
@@ -158,7 +158,7 @@ const decoder = require('draco3dgltf').createDecoderModule()
           if (-1 !== T) {
             this.verbosity > 0 && console.log('Loaded ' + E + ' attribute.')
             p = e.GetAttribute(a, T)
-            this.addAttributeToGeometry(t, e, a, E, Float32Array, p, y, f)
+            //this.addAttributeToGeometry(t, e, a, E, Float32Array, p, y, f)
           }
         }
       if (r == t.TRIANGULAR_MESH)

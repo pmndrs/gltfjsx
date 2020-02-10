@@ -126,16 +126,9 @@ function parseExtras(extras) {
   } else return ''
 }
 
-module.exports = function(file, output, exportOptions) {
+module.exports = function(file, nameExt, output, exportOptions) {
   Object.keys(exportOptions).forEach(key => (options[key] = exportOptions[key]))
-
-  const nameExt = file.match(/[-_\w]+[.][\w]+$/i)[0]
-  const name = nameExt
-    .split('.')
-    .slice(0, -1)
-    .join('.')
-
-  const stream = fs.createWriteStream(output || name.charAt(0).toUpperCase() + name.slice(1) + '.js')
+  const stream = fs.createWriteStream(output)
   stream.once('open', fd => {
     if (!fs.existsSync(file)) {
       console.error(`\nERROR: The input file: "${file}" does not exist at this path.\n`)
