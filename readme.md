@@ -2,7 +2,7 @@
 
 This is an experimental tool that turns GLTF's files into re-usable [react-three-fiber](https://github.com/react-spring/react-three-fiber) (>=4.0.13) JSX components that are easier to modify and customize. See it in action here: https://twitter.com/0xca0a/status/1224335000755146753
 
-![](https://i.imgur.com/UVdzCke.jpg)
+![](https://i.imgur.com/aZaRGWo.jpg)
 
 ```bash
 npx gltfjsx model.gltf [Model.js] [options]
