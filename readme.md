@@ -2,7 +2,7 @@
 
 This is an experimental tool that turns GLTF files into re-usable [react-three-fiber (>=4.0.13)](https://github.com/react-spring/react-three-fiber) JSX components.
 
-The usual GLTF workflow yields a static blob that you drop into the scene, this makes dynamic modifications cumbersome since objects can only be found back by traversal. With gltfjsx the full graph is under your control, you can add shadows, events, bind materials to state, make contents conditional, etc.
+The usual GLTF workflow yields a static blob that you drop into the scene, this makes dynamic modifications cumbersome since objects can only be found back by traversal. With gltfjsx the full graph is under your control, you can add shadows, events, bind materials to state, make contents conditional, remove or swap out parts, change parent-child relations, etc.
 
 See it in action here: https://twitter.com/0xca0a/status/1224335000755146753
 
