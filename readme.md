@@ -56,14 +56,14 @@ function Model(props) {
 }
 ```
 
-This component is async and suspends, wrap it into `<Suspense />` for fallbacks and, optionally, error-boundaries for error handling:
+This component is async and must be wrapped into `<Suspense>` for fallbacks and, optionally, error-boundaries:
 
 ```jsx
-<ErrorBoundary>
-  <Suspense fallback={<Fallback />}>
-    <Model />
-  </Suspense>
-</ErrorBoundary>
+import React, { Suspense } from 'react'
+
+<Suspense fallback={null}>
+  <Model />
+</Suspense>
 ```
 
 ## --draco
