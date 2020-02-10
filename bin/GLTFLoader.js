@@ -996,7 +996,7 @@ THREE.GLTFLoader = (function() {
           var e
           return (
             (e = r === THREE.ShaderMaterial ? n[t.KHR_MATERIALS_PBR_SPECULAR_GLOSSINESS].createMaterial(i) : new r(i)),
-            void 0 !== s.name && (e.name = s.name),
+            s.name && (e.name = s.name),
             e.map && (e.map.encoding = THREE.sRGBEncoding),
             e.emissiveMap && (e.emissiveMap.encoding = THREE.sRGBEncoding),
             e.specularMap && (e.specularMap.encoding = THREE.sRGBEncoding),
@@ -1103,7 +1103,7 @@ THREE.GLTFLoader = (function() {
               ))
             : 'orthographic' === r.type &&
               (t = new THREE.OrthographicCamera(a.xmag / -2, a.xmag / 2, a.ymag / 2, a.ymag / -2, a.znear, a.zfar)),
-          void 0 !== r.name && (t.name = r.name),
+          r.name && (t.name = r.name),
           b(t, r),
           Promise.resolve(t)
         )
@@ -1168,7 +1168,7 @@ THREE.GLTFLoader = (function() {
                 : R.push(T)
             }
           }
-          var A = void 0 !== t.name ? t.name : 'animation_' + e
+          var A = t.name ? t.name : 'animation_' + e
           return new THREE.AnimationClip(A, void 0, l)
         }
       )
@@ -1207,7 +1207,7 @@ THREE.GLTFLoader = (function() {
         : Promise.resolve(new THREE.Object3D())
       ).then(function(e) {
         if (
-          (void 0 !== o.name && ((e.userData.name = o.name), (e.name = THREE.PropertyBinding.sanitizeNodeName(o.name))),
+          (o.name && ((e.userData.name = o.name), (e.name = THREE.PropertyBinding.sanitizeNodeName(o.name))),
           b(e, o),
           o.extensions && w(a, e, o),
           void 0 !== o.matrix)
@@ -1266,7 +1266,7 @@ THREE.GLTFLoader = (function() {
           a = this.extensions,
           n = this.json.scenes[t],
           s = new THREE.Scene()
-        void 0 !== n.name && (s.name = n.name), b(s, n), n.extensions && w(a, s, n)
+        n.name && (s.name = n.name), b(s, n), n.extensions && w(a, s, n)
         for (var i = n.nodes || [], o = [], l = 0, c = i.length; l < c; l++) o.push(e(i[l], s, r, this))
         return Promise.all(o).then(function() {
           return s
