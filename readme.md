@@ -1,8 +1,12 @@
 ![](https://i.imgur.com/ZB4uUaz.png)
 
-This is an experimental tool that turns GLTF's files into re-usable [react-three-fiber](https://github.com/react-spring/react-three-fiber) (>=4.0.13) JSX components that are easier to modify and customize. See it in action here: https://twitter.com/0xca0a/status/1224335000755146753
+This is an experimental tool that turns GLTF files into re-usable [react-three-fiber (>=4.0.13)](https://github.com/react-spring/react-three-fiber) JSX components.
 
-![](https://i.imgur.com/aZaRGWo.jpg)
+The usual GLTF workflow yields a static blob that you drop into the scene, this makes dynamic modifications cumbersome since objects can only be found back by traversal. With gltfjsx the full graph is under your control, you can add shadows, events, bind materials to state, make contents conditional, etc.
+
+See it in action here: https://twitter.com/0xca0a/status/1224335000755146753
+
+![](https://i.imgur.com/xgWBcKF.jpg)
 
 ```bash
 npx gltfjsx model.gltf [Model.js] [options]
@@ -52,14 +56,14 @@ function Model(props) {
 }
 ```
 
-This component is async and suspends, wrap it into `<Suspense />` for fallbacks and, optionally, error-boundaries for error handling:
+This component is async and must be wrapped into `<Suspense>` for fallbacks and, optionally, error-boundaries:
 
 ```jsx
-<ErrorBoundary>
-  <Suspense fallback={<Fallback />}>
-    <Model />
-  </Suspense>
-</ErrorBoundary>
+import React, { Suspense } from 'react'
+
+<Suspense fallback={null}>
+  <Model />
+</Suspense>
 ```
 
 ## --draco
