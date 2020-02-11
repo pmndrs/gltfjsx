@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const version = require('./package.json').version
 const gltfjsx = require('./gltfjsx')
 const argv = require('yargs')
   .boolean('animation')
@@ -20,9 +21,11 @@ let name = nameExt
 let output = argv._[1] || name.charAt(0).toUpperCase() + name.slice(1) + '.js'
 
 if (argv._[0]) {
-  console.log('converting', file, 'to', output)
+  console.log(`gltfjsx ${version}, converting ${file} to ${output}`)
+  console.log('')
   gltfjsx(file, nameExt, output, argv)
-  console.log('done.')
+    .then(() => console.log('\ndone.'))
+    .catch(err => console.log('\nfailed.\n\n', err))
 } else {
   console.log('missing the input filename. type: gltfjsx --help')
 }
