@@ -53,7 +53,7 @@ function print(objects, gltf, obj, level = 0, parent) {
 
   // Bail out on lights and cameras
   if (obj instanceof THREE.Light || obj instanceof THREE.Camera || obj instanceof THREE.Bone)
-    return `${space}<primitive object={${name}} />${!parent ? '' : '\n'}`
+    return `${space}<primitive object={${node}} />${!parent ? '' : '\n'}`
 
   // Collect children
   if (obj.children) obj.children.forEach(child => (children += print(objects, gltf, child, level + 2, obj)))
