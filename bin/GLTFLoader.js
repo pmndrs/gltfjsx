@@ -692,26 +692,6 @@ THREE.GLTFLoader = (function() {
                   ((p = void 0 !== c.NORMAL ? r.getDependency('accessor', c.NORMAL) : e.attributes.normal), l.push(p))
               }
               return Promise.all([Promise.all(o), Promise.all(l)]).then(function(r) {
-                for (var s = r[0], i = r[1], o = 0, l = s.length; o < l; o++)
-                  e.attributes.position !== s[o] && (s[o] = P(s[o]))
-                for (o = 0, l = i.length; o < l; o++) e.attributes.normal !== i[o] && (i[o] = P(i[o]))
-                for (o = 0, l = t.length; o < l; o++) {
-                  var c = t[o],
-                    p = 'morphTarget' + o
-                  if (a && void 0 !== c.POSITION) {
-                    var u = s[o]
-                    u.name = p
-                    for (var d = e.attributes.position, h = 0, f = u.count; h < f; h++)
-                      u.setXYZ(h, u.getX(h) + d.getX(h), u.getY(h) + d.getY(h), u.getZ(h) + d.getZ(h))
-                  }
-                  if (n && void 0 !== c.NORMAL) {
-                    var E = i[o]
-                    E.name = p
-                    var m = e.attributes.normal
-                    for (h = 0, f = E.count; h < f; h++)
-                      E.setXYZ(h, E.getX(h) + m.getX(h), E.getY(h) + m.getY(h), E.getZ(h) + m.getZ(h))
-                  }
-                }
                 return a && (e.morphAttributes.position = s), n && (e.morphAttributes.normal = i), e
               })
             })(e, t.targets, r)
