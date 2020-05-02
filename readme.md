@@ -10,7 +10,7 @@ npx gltfjsx model.gltf [Model.js] [options]
 Options:
   --draco, -d         Adds draco-Loader                   [boolean]
   --animation, -a     Extracts animation clips            [boolean]
-  --types, -t         Adds Typescript definitions          [boolean]
+  --types, -t         Adds Typescript definitions         [boolean]
   --compress, -c      Removes names and empty groups      [boolean] [default: true]
   --precision, -p     Number of fractional digits         [number ] [default: 2]
   --binary, -b        Draco binaries                      [string ] [default: '/draco-gltf/']
