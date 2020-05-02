@@ -101,6 +101,26 @@ If you want to play an animation you can do so at any time:
 <mesh onClick={(e) => actions.current.storkFly_B_.play()} />
 ```
 
-## 1.x release notes and breaking changes
+## --types
+
+This will make your GLTF typesafe.
+
+```jsx
+type GLTFResult = GLTF & {
+  nodes: {
+    cube1: THREE.Mesh
+    cube2: THREE.Mesh
+  }
+  materials: {
+    base: THREE.MeshStandardMaterial
+    inner: THREE.MeshStandardMaterial
+  }
+}
+
+function Model(props: JSX.IntrinsicElements['group']) {
+  const { nodes, materials } = useLoader<GLTFResult>(GLTFLoader, '/model.gltf')
+```
+
+## Release notes and breaking changes
 
 https://github.com/react-spring/gltfjsx/blob/master/whatsnew.md

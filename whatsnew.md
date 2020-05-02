@@ -1,3 +1,10 @@
+# 2.0 ⚡️
+
+- Bugfixes, making loading GLTF's under Node safer
+- Typescript support
+- Cleaning up the output, removing unused hooks, etc
+- Prettier 2.x
+
 # 1.0 🎉
 
 ![](https://i.imgur.com/ZB4uUaz.png)
