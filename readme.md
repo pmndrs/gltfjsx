@@ -59,9 +59,12 @@ This component is async and must be wrapped into `<Suspense>` for fallbacks:
 
 ```jsx
 import React, { Suspense } from 'react'
-;<Suspense fallback={null}>
-  <Model />
-</Suspense>
+
+function App() {
+  return (
+    <Suspense fallback={null}>
+      <Model />
+    </Suspense>
 ```
 
 ## --draco
