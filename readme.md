@@ -105,7 +105,7 @@ If you want to play an animation you can do so at any time:
 
 This will make your GLTF typesafe.
 
-```jsx
+```tsx
 type GLTFResult = GLTF & {
   nodes: {
     cube1: THREE.Mesh
