@@ -1,5 +1,6 @@
 # 2.0 ⚡️
 
+- Defaults to compressed output
 - Bugfixes, making loading GLTF's under Node safer
 - Typescript support
 - Cleaning up the output, removing unused hooks, etc
