@@ -18,7 +18,7 @@ Options:
   --version           Show version number                 [boolean]
 ```
 
-You need to be set up for asset loading and the GLTF has to be present in your /public folder. This tools loads it, creates look-up tables of all the objects and materials inside, and writes out a JSX graph, which you can now alter comfortably.
+You need to be set up for asset loading and the GLTF has to be present in your /public folder. This tools loads it, creates look-up tables of all the objects and materials inside, and writes out a JSX graph, which you can now alter comfortably. It will not change or alter your files in any way otherwise.
 
 A typical result will look like this:
 
