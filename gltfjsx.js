@@ -137,7 +137,7 @@ function printClips(gltf) {
 
 function printAnimations(gltf, options) {
   let rootNode = ''
-  let actionsInitialValue = ''
+  let actionsValue = ''
 
   if (options.types) {
     actionsValue = `null as null | GLTFActions`
