@@ -201,7 +201,7 @@ import { GLTFLoader${options.types ? ', GLTF' : ''} } from 'three/examples/jsm/l
             }
 ${options.types ? printTypes(objects, animations) : ''}
 export default function Model(props${options.types ? ": JSX.IntrinsicElements['group']" : ''}) {
-  const group = ${options.types ? 'useRef<THREE.Object3D>()' : 'useRef()'}
+  const group = ${options.types ? 'useRef<THREE.Group>()' : 'useRef()'}
   const { nodes, materials${options.animation ? ', animations' : ''} } = useLoader${
               options.types ? '<GLTFResult>' : ''
             }(GLTFLoader, '/${nameExt}'${options.draco ? `, draco(${JSON.stringify(options.binary)})` : ``})${
