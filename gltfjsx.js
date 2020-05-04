@@ -137,10 +137,10 @@ function printClips(gltf) {
 
 function printAnimations(gltf, options) {
   let rootNode = ''
-  let actionsValue = ''
+  let useRefText = 'useRef()'
 
   if (options.types) {
-    actionsValue = `null as null | GLTFActions`
+    useRefText = 'useRef<GLTFActions>()'
     rootNode = 'null as any'
     gltf.scene.traverse((child) => {
       if (child.type === 'SkinnedMesh') {
@@ -150,7 +150,7 @@ function printAnimations(gltf, options) {
   }
 
   return gltf.animations && gltf.animations.length
-    ? `\n\n  const actions = useRef(${actionsValue})
+    ? `\n\n  const actions = ${useRefText}
   const [mixer] = useState(() => new THREE.AnimationMixer(${rootNode}))
   useFrame((state, delta) => mixer.update(delta))
   useEffect(() => {
@@ -201,7 +201,7 @@ import { GLTFLoader${options.types ? ', GLTF' : ''} } from 'three/examples/jsm/l
             }
 ${options.types ? printTypes(objects, animations) : ''}
 export default function Model(props${options.types ? ": JSX.IntrinsicElements['group']" : ''}) {
-  const group = useRef()
+  const group = ${options.types ? 'useRef<THREE.Object3D>()' : 'useRef()'}
   const { nodes, materials${options.animation ? ', animations' : ''} } = useLoader${
               options.types ? '<GLTFResult>' : ''
             }(GLTFLoader, '/${nameExt}'${options.draco ? `, draco(${JSON.stringify(options.binary)})` : ``})${
