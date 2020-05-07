@@ -34,7 +34,6 @@ title: Model
 import React from 'react'
 import { useLoader } from 'react-three-fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { draco } from 'drei'
 
 function Model(props) {
   const { nodes, materials } = useLoader(GLTFLoader, '/model.gltf')
