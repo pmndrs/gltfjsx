@@ -4,7 +4,7 @@ Turns GLTF files into re-usable [react-three-fiber](https://github.com/react-spr
 
 The usual GLTF workflow yields a static blob that you drop into the scene, this makes dynamic modifications cumbersome since objects can only be found back by traversal. With gltfjsx the full graph is under your control, you can add shadows, events, bind materials to state, make contents conditional, remove or swap out parts, change parent-child relations, etc.
 
-### Usage
+## Usage
 
 ```bash
 $ npx gltfjsx model.gltf [Model.js] [options]
