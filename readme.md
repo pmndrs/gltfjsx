@@ -4,10 +4,14 @@ Turns GLTF files into re-usable [react-three-fiber](https://github.com/react-spr
 
 The usual GLTF workflow yields a static blob that you drop into the scene, this makes dynamic modifications cumbersome since objects can only be found back by traversal. With gltfjsx the full graph is under your control, you can add shadows, events, bind materials to state, make contents conditional, remove or swap out parts, change parent-child relations, etc.
 
-```bash
-npx gltfjsx model.gltf [Model.js] [options]
+### Usage
 
-Options:
+```bash
+$ npx gltfjsx model.gltf [Model.js] [options]
+```
+
+### Options
+```bash
   --draco, -d         Adds draco-Loader                   [boolean]
   --animation, -a     Extracts animation clips            [boolean]
   --types, -t         Adds Typescript definitions         [boolean]
@@ -66,7 +70,7 @@ function App() {
     </Suspense>
 ```
 
-## --draco
+### --draco
 
 Adds a DRACOLoader, for which you need to be set up. The necessary files have to exist in your /public folder. It defaults to `/draco-gltf/` which should contain [dracos gltf decoder](https://github.com/mrdoob/three.js/tree/dev/examples/js/libs/draco/gltf). It uses the draco shortcut from the [drei](https://github.com/react-spring/drei) library, which needs to be present in your package.json.
 
@@ -79,7 +83,7 @@ function Model(props) {
   const { nodes, materials } = useLoader(GLTFLoader, '/model.gltf', draco('/draco-gltf/'))
 ```
 
-## --animation
+### --animation
 
 If your GLTF contains animations it will add a THREE.AnimationMixer to your component and extract the clips:
 
@@ -99,7 +103,7 @@ If you want to play an animation you can do so at any time:
 <mesh onClick={(e) => actions.current.storkFly_B_.play()} />
 ```
 
-## --types
+### --types
 
 This will make your GLTF typesafe.
 
