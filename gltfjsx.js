@@ -96,7 +96,8 @@ function print(objects, gltf, obj, level = 0, parent) {
 
   if (obj.geometry) result += `geometry={${node}.geometry} `
   if (obj.skeleton) result += `skeleton={${node}.skeleton} `
-  if (obj.name.length && (!options.compress || options.animation)) result += `name="${obj.name}" `
+  if (obj.name.length && (!options.compress || (options.animation && obj.morphTargetDictionary)))
+    result += `name="${obj.name}" `
   if (obj.visible === false) result += `visible={false} `
   if (obj.morphTargetDictionary) result += `morphTargetDictionary={${node}.morphTargetDictionary} `
   if (obj.morphTargetInfluences) result += `morphTargetInfluences={${node}.morphTargetInfluences} `
