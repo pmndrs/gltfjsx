@@ -1,11 +1,11 @@
-THREE.GLTFLoader = (function() {
+THREE.GLTFLoader = (function () {
   function e(e) {
     ;(this.manager = void 0 !== e ? e : THREE.DefaultLoadingManager), (this.dracoLoader = null)
   }
   e.prototype = {
     constructor: e,
     crossOrigin: 'anonymous',
-    load: function(e, t, r, a) {
+    load: function (e, t, r, a) {
       var n,
         s = this
       ;(n =
@@ -15,7 +15,7 @@ THREE.GLTFLoader = (function() {
           ? this.path
           : THREE.LoaderUtils.extractUrlBase(e)),
         s.manager.itemStart(e)
-      var i = function(t) {
+      var i = function (t) {
           a ? a(t) : console.error(t), s.manager.itemError(e), s.manager.itemEnd(e)
         },
         o = new THREE.FileLoader(s.manager)
@@ -23,12 +23,12 @@ THREE.GLTFLoader = (function() {
         o.setResponseType('arraybuffer'),
         o.load(
           e,
-          function(r) {
+          function (r) {
             try {
               s.parse(
                 r,
                 n,
-                function(r) {
+                function (r) {
                   t(r), s.manager.itemEnd(e)
                 },
                 i
@@ -41,25 +41,25 @@ THREE.GLTFLoader = (function() {
           i
         )
     },
-    setCrossOrigin: function(e) {
+    setCrossOrigin: function (e) {
       return (this.crossOrigin = e), this
     },
-    setPath: function(e) {
+    setPath: function (e) {
       return (this.path = e), this
     },
-    setResourcePath: function(e) {
+    setResourcePath: function (e) {
       return (this.resourcePath = e), this
     },
-    setDRACOLoader: function(e) {
+    setDRACOLoader: function (e) {
       return (this.dracoLoader = e), this
     },
-    parse: function(e, u, d, h) {
+    parse: function (e, u, d, h) {
       var f,
         E = {}
       if ('string' == typeof e) f = e
       else if (THREE.LoaderUtils.decodeText(new Uint8Array(e, 0, 4)) === s) {
         try {
-          E[t.KHR_BINARY_GLTF] = new (function(e) {
+          E[t.KHR_BINARY_GLTF] = new (function (e) {
             ;(this.name = t.KHR_BINARY_GLTF), (this.content = null), (this.body = null)
             var r = new DataView(e, 0, i)
             if (
@@ -160,7 +160,7 @@ THREE.GLTFLoader = (function() {
   function n() {
     this.name = t.KHR_MATERIALS_UNLIT
   }
-  ;(a.prototype.loadLight = function(e) {
+  ;(a.prototype.loadLight = function (e) {
     var t,
       r = this.lightDefs[e],
       a = new THREE.Color(16777215)
@@ -194,10 +194,10 @@ THREE.GLTFLoader = (function() {
       Promise.resolve(t)
     )
   }),
-    (n.prototype.getMaterialType = function() {
+    (n.prototype.getMaterialType = function () {
       return THREE.MeshBasicMaterial
     }),
-    (n.prototype.extendParams = function(e, t, r) {
+    (n.prototype.extendParams = function (e, t, r) {
       ;(e.color = new THREE.Color(1, 1, 1)), (e.opacity = 1)
       var a = t.pbrMetallicRoughness
       if (a && Array.isArray(a.baseColorFactor)) {
@@ -244,10 +244,10 @@ THREE.GLTFLoader = (function() {
         'envMapIntensity',
         'refractionRatio',
       ],
-      getMaterialType: function() {
+      getMaterialType: function () {
         return THREE.ShaderMaterial
       },
-      extendParams: function(e, t, r) {
+      extendParams: function (e, t, r) {
         var a = t.extensions[this.name],
           n = THREE.ShaderLib.standard,
           s = THREE.UniformsUtils.clone(n.uniforms),
@@ -310,7 +310,7 @@ THREE.GLTFLoader = (function() {
           Promise.all([])
         )
       },
-      createMaterial: function(e) {
+      createMaterial: function (e) {
         var t = new THREE.ShaderMaterial({
           defines: e.defines,
           vertexShader: e.vertexShader,
@@ -351,7 +351,7 @@ THREE.GLTFLoader = (function() {
           t
         )
       },
-      cloneMaterial: function(e) {
+      cloneMaterial: function (e) {
         var t = e.clone()
         t.isGLTFSpecularGlossinessMaterial = !0
         for (var r = this.specularGlossinessParams, a = 0, n = r.length; a < n; a++) {
@@ -360,7 +360,7 @@ THREE.GLTFLoader = (function() {
         }
         return t
       },
-      refreshUniforms: function(e, t, r, a, n, s) {
+      refreshUniforms: function (e, t, r, a, n, s) {
         if (!0 === n.isGLTFSpecularGlossinessMaterial) {
           var i,
             o = n.uniforms,
@@ -423,7 +423,7 @@ THREE.GLTFLoader = (function() {
   function u(e, t, r, a) {
     THREE.Interpolant.call(this, e, t, r, a)
   }
-  ;(l.prototype.decodePrimitive = function(e, t) {
+  ;(l.prototype.decodePrimitive = function (e, t) {
     var r = this.json,
       a = this.dracoLoader,
       n = e.extensions[this.name].bufferView,
@@ -443,11 +443,11 @@ THREE.GLTFLoader = (function() {
         ;(l[p] = d), (o[p] = !0 === u.normalized)
       }
     }
-    return t.getDependency('bufferView', n).then(function(e) {
-      return new Promise(function(t) {
+    return t.getDependency('bufferView', n).then(function (e) {
+      return new Promise(function (t) {
         a.decodeDracoFile(
           e,
-          function(e) {
+          function (e) {
             for (var r in e.attributes) {
               var a = e.attributes[r],
                 n = o[r]
@@ -461,7 +461,7 @@ THREE.GLTFLoader = (function() {
       })
     })
   }),
-    (c.prototype.extendTexture = function(e, t) {
+    (c.prototype.extendTexture = function (e, t) {
       return (
         (e = e.clone()),
         void 0 !== t.offset && e.offset.fromArray(t.offset),
@@ -475,14 +475,14 @@ THREE.GLTFLoader = (function() {
     }),
     (u.prototype = Object.create(THREE.Interpolant.prototype)),
     (u.prototype.constructor = u),
-    (u.prototype.copySampleValue_ = function(e) {
+    (u.prototype.copySampleValue_ = function (e) {
       for (var t = this.resultBuffer, r = this.sampleValues, a = this.valueSize, n = e * a * 3 + a, s = 0; s !== a; s++)
         t[s] = r[n + s]
       return t
     }),
     (u.prototype.beforeStart_ = u.prototype.copySampleValue_),
     (u.prototype.afterEnd_ = u.prototype.copySampleValue_),
-    (u.prototype.interpolate_ = function(e, t, r, a) {
+    (u.prototype.interpolate_ = function (e, t, r, a) {
       for (
         var n = this.resultBuffer,
           s = this.sampleValues,
@@ -628,19 +628,19 @@ THREE.GLTFLoader = (function() {
     ;(this.json = e || {}),
       (this.extensions = t || {}),
       (this.options = r || {}),
-      (this.cache = new (function() {
+      (this.cache = new (function () {
         var e = {}
         return {
-          get: function(t) {
+          get: function (t) {
             return e[t]
           },
-          add: function(t, r) {
+          add: function (t, r) {
             e[t] = r
           },
-          remove: function(t) {
+          remove: function (t) {
             delete e[t]
           },
-          removeAll: function() {
+          removeAll: function () {
             e = {}
           },
         }
@@ -655,7 +655,7 @@ THREE.GLTFLoader = (function() {
     var a = t.attributes,
       n = []
     function s(t, a) {
-      return r.getDependency('accessor', t).then(function(t) {
+      return r.getDependency('accessor', t).then(function (t) {
         //e.addAttribute(a, t)
       })
     }
@@ -664,16 +664,16 @@ THREE.GLTFLoader = (function() {
       o in e.attributes || n.push(s(a[i], o))
     }
     if (void 0 !== t.indices && !e.index) {
-      var l = r.getDependency('accessor', t.indices).then(function(t) {
+      var l = r.getDependency('accessor', t.indices).then(function (t) {
         e.setIndex(t)
       })
       n.push(l)
     }
     return (
       b(e, t),
-      Promise.all(n).then(function() {
+      Promise.all(n).then(function () {
         return void 0 !== t.targets
-          ? (function(e, t, r) {
+          ? (function (e, t, r) {
               for (
                 var a = !1, n = !1, s = 0, i = t.length;
                 s < i && (void 0 !== (c = t[s]).POSITION && (a = !0), void 0 !== c.NORMAL && (n = !0), !a || !n);
@@ -691,7 +691,7 @@ THREE.GLTFLoader = (function() {
                 n &&
                   ((p = void 0 !== c.NORMAL ? r.getDependency('accessor', c.NORMAL) : e.attributes.normal), l.push(p))
               }
-              return Promise.all([Promise.all(o), Promise.all(l)]).then(function(r) {
+              return Promise.all([Promise.all(o), Promise.all(l)]).then(function (r) {
                 return a && (e.morphAttributes.position = s), n && (e.morphAttributes.normal = i), e
               })
             })(e, t.targets, r)
@@ -700,14 +700,14 @@ THREE.GLTFLoader = (function() {
     )
   }
   return (
-    (F.prototype.parse = function(e, t) {
+    (F.prototype.parse = function (e, t) {
       var r = this,
         a = this.json,
         n = this.extensions
       this.cache.removeAll(),
         this.markDefs(),
         Promise.all([this.getDependencies('scene'), this.getDependencies('animation'), this.getDependencies('camera')])
-          .then(function(t) {
+          .then(function (t) {
             var s = {
               scene: t[0][a.scene || 0],
               scenes: t[0],
@@ -721,7 +721,7 @@ THREE.GLTFLoader = (function() {
           })
           .catch(t)
     }),
-    (F.prototype.markDefs = function() {
+    (F.prototype.markDefs = function () {
       for (
         var e = this.json.nodes || [],
           t = this.json.skins || [],
@@ -743,7 +743,7 @@ THREE.GLTFLoader = (function() {
       }
       ;(this.json.meshReferences = a), (this.json.meshUses = n)
     }),
-    (F.prototype.getDependency = function(e, r) {
+    (F.prototype.getDependency = function (e, r) {
       var a = e + ':' + r,
         n = this.cache.get(a)
       if (!n) {
@@ -788,13 +788,13 @@ THREE.GLTFLoader = (function() {
       }
       return n
     }),
-    (F.prototype.getDependencies = function(e) {
+    (F.prototype.getDependencies = function (e) {
       var t = this.cache.get(e)
       if (!t) {
         var r = this,
           a = this.json[e + ('mesh' === e ? 'es' : 's')] || []
         ;(t = Promise.all(
-          a.map(function(t, a) {
+          a.map(function (t, a) {
             return r.getDependency(e, a)
           })
         )),
@@ -802,26 +802,26 @@ THREE.GLTFLoader = (function() {
       }
       return t
     }),
-    (F.prototype.loadBuffer = function(e) {
+    (F.prototype.loadBuffer = function (e) {
       var r = this.json.buffers[e],
         a = this.fileLoader
       if (r.type && 'arraybuffer' !== r.type)
         throw new Error('THREE.GLTFLoader: ' + r.type + ' buffer type is not supported.')
       if (void 0 === r.uri && 0 === e) return Promise.resolve(this.extensions[t.KHR_BINARY_GLTF].body)
       var n = this.options
-      return new Promise(function(e, t) {
+      return new Promise(function (e, t) {
         e(new ArrayBuffer(0))
       })
     }),
-    (F.prototype.loadBufferView = function(e) {
+    (F.prototype.loadBufferView = function (e) {
       var t = this.json.bufferViews[e]
-      return this.getDependency('buffer', t.buffer).then(function(e) {
+      return this.getDependency('buffer', t.buffer).then(function (e) {
         var r = t.byteLength || 0,
           a = t.byteOffset || 0
         return e.slice(a, a + r)
       })
     }),
-    (F.prototype.loadAccessor = function(e) {
+    (F.prototype.loadAccessor = function (e) {
       var t = this,
         r = this.json,
         a = this.json.accessors[e]
@@ -832,7 +832,7 @@ THREE.GLTFLoader = (function() {
         void 0 !== a.sparse &&
           (n.push(this.getDependency('bufferView', a.sparse.indices.bufferView)),
           n.push(this.getDependency('bufferView', a.sparse.values.bufferView))),
-        Promise.all(n).then(function(e) {
+        Promise.all(n).then(function (e) {
           var n,
             s,
             i = e[0],
@@ -867,7 +867,7 @@ THREE.GLTFLoader = (function() {
         })
       )
     }),
-    (F.prototype.assignFinalMaterial = function(e) {
+    (F.prototype.assignFinalMaterial = function (e) {
       var r = e.geometry,
         a = e.material,
         n = this.extensions,
@@ -931,7 +931,7 @@ THREE.GLTFLoader = (function() {
           (e.onBeforeRender = n[t.KHR_MATERIALS_PBR_SPECULAR_GLOSSINESS].refreshUniforms),
         (e.material = a)
     }),
-    (F.prototype.loadMaterial = function(e) {
+    (F.prototype.loadMaterial = function (e) {
       var r,
         a = this.json,
         n = this.extensions,
@@ -972,7 +972,7 @@ THREE.GLTFLoader = (function() {
         void 0 !== s.emissiveFactor &&
           r !== THREE.MeshBasicMaterial &&
           (i.emissive = new THREE.Color().fromArray(s.emissiveFactor)),
-        Promise.all(l).then(function() {
+        Promise.all(l).then(function () {
           var e
           return (
             (e = r === THREE.ShaderMaterial ? n[t.KHR_MATERIALS_PBR_SPECULAR_GLOSSINESS].createMaterial(i) : new r(i)),
@@ -987,12 +987,12 @@ THREE.GLTFLoader = (function() {
         })
       )
     }),
-    (F.prototype.loadGeometries = function(e) {
+    (F.prototype.loadGeometries = function (e) {
       var r = this,
         a = this.extensions,
         n = this.primitiveCache
       function s(e) {
-        return a[t.KHR_DRACO_MESH_COMPRESSION].decodePrimitive(e, r).then(function(t) {
+        return a[t.KHR_DRACO_MESH_COMPRESSION].decodePrimitive(e, r).then(function (t) {
           return C(t, e, r)
         })
       }
@@ -1013,7 +1013,8 @@ THREE.GLTFLoader = (function() {
       }
       return Promise.all(l)
     }),
-    (F.prototype.loadMesh = function(e) {
+    (F.prototype.loadMesh = function (e) {
+      var jsonNodes = this.json.nodes
       for (
         var t = this, r = this.json, a = (this.extensions, r.meshes[e]), n = a.primitives, s = [], i = 0, o = n.length;
         i < o;
@@ -1035,8 +1036,9 @@ THREE.GLTFLoader = (function() {
             : this.getDependency('material', n[i].material)
         s.push(l)
       }
-      return Promise.all(s).then(function(r) {
-        return t.loadGeometries(n).then(function(s) {
+      return Promise.all(s).then(function (r) {
+        var meshNode = jsonNodes.find((node) => node.mesh === e) || {}
+        return t.loadGeometries(n).then(function (s) {
           for (var i = [], o = 0, l = s.length; o < l; o++) {
             var c,
               p = s[o],
@@ -1054,6 +1056,7 @@ THREE.GLTFLoader = (function() {
               if (u.mode !== h) throw new Error('THREE.GLTFLoader: Primitive mode unsupported: ' + u.mode)
               c = new THREE.Points(p, d)
             }
+            Object.assign(c.userData, meshNode.extras)
             Object.keys(c.geometry.morphAttributes).length > 0 && x(c, a),
               (c.name = a.name || 'mesh_' + e),
               s.length > 1 && (c.name += '_' + o),
@@ -1068,7 +1071,7 @@ THREE.GLTFLoader = (function() {
         })
       })
     }),
-    (F.prototype.loadCamera = function(e) {
+    (F.prototype.loadCamera = function (e) {
       var t,
         r = this.json.cameras[e],
         a = r[r.type]
@@ -1089,16 +1092,16 @@ THREE.GLTFLoader = (function() {
         )
       console.warn('THREE.GLTFLoader: Missing camera parameters.')
     }),
-    (F.prototype.loadSkin = function(e) {
+    (F.prototype.loadSkin = function (e) {
       var t = this.json.skins[e],
         r = { joints: t.joints }
       return void 0 === t.inverseBindMatrices
         ? Promise.resolve(r)
-        : this.getDependency('accessor', t.inverseBindMatrices).then(function(e) {
+        : this.getDependency('accessor', t.inverseBindMatrices).then(function (e) {
             return (r.inverseBindMatrices = e), r
           })
     }),
-    (F.prototype.loadAnimation = function(e) {
+    (F.prototype.loadAnimation = function (e) {
       for (
         var t = this.json.animations[e], r = [], a = [], n = [], s = [], i = [], o = 0, l = t.channels.length;
         o < l;
@@ -1117,7 +1120,7 @@ THREE.GLTFLoader = (function() {
           i.push(d)
       }
       return Promise.all([Promise.all(r), Promise.all(a), Promise.all(n), Promise.all(s), Promise.all(i)]).then(
-        function(r) {
+        function (r) {
           for (var a = r[0], n = r[1], s = r[2], i = r[3], o = r[4], l = [], c = 0, p = a.length; c < p; c++) {
             var d = a[c],
               h = n[c],
@@ -1142,7 +1145,7 @@ THREE.GLTFLoader = (function() {
                 g = void 0 !== E.interpolation ? H[E.interpolation] : THREE.InterpolateLinear,
                 R = []
               y[m.path] === y.weights
-                ? d.traverse(function(e) {
+                ? d.traverse(function (e) {
                     !0 === e.isMesh && e.morphTargetInfluences && R.push(e.name ? e.name : e.uuid)
                   })
                 : R.push(T)
@@ -1153,7 +1156,7 @@ THREE.GLTFLoader = (function() {
         }
       )
     }),
-    (F.prototype.loadNode = function(e) {
+    (F.prototype.loadNode = function (e) {
       var r = this.json,
         a = this.extensions,
         n = this,
@@ -1163,7 +1166,7 @@ THREE.GLTFLoader = (function() {
       return (!0 === o.isBone
         ? Promise.resolve(new THREE.Bone())
         : void 0 !== o.mesh
-        ? n.getDependency('mesh', o.mesh).then(function(e) {
+        ? n.getDependency('mesh', o.mesh).then(function (e) {
             var t
             if (s[o.mesh] > 1) {
               var r = i[o.mesh]++
@@ -1173,7 +1176,7 @@ THREE.GLTFLoader = (function() {
             } else t = e
             return (
               void 0 !== o.weights &&
-                t.traverse(function(e) {
+                t.traverse(function (e) {
                   if (e.isMesh)
                     for (var t = 0, r = o.weights.length; t < r; t++) e.morphTargetInfluences[t] = o.weights[t]
                 }),
@@ -1185,7 +1188,7 @@ THREE.GLTFLoader = (function() {
         : o.extensions && o.extensions[t.KHR_LIGHTS_PUNCTUAL] && void 0 !== o.extensions[t.KHR_LIGHTS_PUNCTUAL].light
         ? n.getDependency('light', o.extensions[t.KHR_LIGHTS_PUNCTUAL].light)
         : Promise.resolve(new THREE.Object3D())
-      ).then(function(e) {
+      ).then(function (e) {
         if (
           (o.name && ((e.userData.name = o.name), (e.name = THREE.PropertyBinding.sanitizeNodeName(o.name))),
           b(e, o),
@@ -1198,22 +1201,22 @@ THREE.GLTFLoader = (function() {
         return e
       })
     }),
-    (F.prototype.loadScene = (function() {
+    (F.prototype.loadScene = (function () {
       function e(t, r, a, n) {
         var s = a.nodes[t]
         return n
           .getDependency('node', t)
-          .then(function(e) {
+          .then(function (e) {
             return void 0 === s.skin
               ? e
               : n
                   .getDependency('skin', s.skin)
-                  .then(function(e) {
+                  .then(function (e) {
                     for (var r = [], a = 0, s = (t = e).joints.length; a < s; a++)
                       r.push(n.getDependency('node', t.joints[a]))
                     return Promise.all(r)
                   })
-                  .then(function(r) {
+                  .then(function (r) {
                     for (var a = !0 === e.isGroup ? e.children : [e], n = 0, s = a.length; n < s; n++) {
                       for (var i = a[n], o = [], l = [], c = 0, p = r.length; c < p; c++) {
                         var u = r[c]
@@ -1230,7 +1233,7 @@ THREE.GLTFLoader = (function() {
                   })
             var t
           })
-          .then(function(t) {
+          .then(function (t) {
             r.add(t)
             var i = []
             if (s.children)
@@ -1241,14 +1244,14 @@ THREE.GLTFLoader = (function() {
             return Promise.all(i)
           })
       }
-      return function(t) {
+      return function (t) {
         var r = this.json,
           a = this.extensions,
           n = this.json.scenes[t],
           s = new THREE.Scene()
         n.name && (s.name = n.name), b(s, n), n.extensions && w(a, s, n)
         for (var i = n.nodes || [], o = [], l = 0, c = i.length; l < c; l++) o.push(e(i[l], s, r, this))
-        return Promise.all(o).then(function() {
+        return Promise.all(o).then(function () {
           return s
         })
       }
