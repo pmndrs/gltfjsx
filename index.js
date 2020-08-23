@@ -11,6 +11,7 @@ const argv = require('yargs')
   .option('compress', { alias: 'c', default: true, describe: 'Removes names and empty groups', type: 'boolean' })
   .option('precision', { alias: 'p', default: 2, describe: 'Number of fractional digits', type: 'number' })
   .option('binary', { alias: 'b', describe: 'Draco path', default: '/draco-gltf/', type: 'string' })
+  .option('extras', { alias: 'x', default: false, describe: 'Mesh userData has Custom Properties', type: 'boolean' })
   .usage('npx gltfjsx model.gltf [Model.js] [options]')
   .help().argv
 
