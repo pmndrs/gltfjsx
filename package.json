@@ -1,6 +1,6 @@
 {
   "name": "gltfjsx",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "gltf to jsx",
   "bin": {
     "gltfjsx": "./index.js"
