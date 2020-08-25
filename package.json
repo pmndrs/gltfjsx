@@ -44,7 +44,7 @@
   "dependencies": {
     "draco3dgltf": "1.3.6",
     "is-var-name": "^2.0.0",
-    "jsdom": "16.2.2",
+    "jsdom": "^16.4.0",
     "jsdom-global": "3.0.2",
     "prettier": "2.0.5",
     "three": "0.118.3",
