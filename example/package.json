@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "drei": "^0.0.18",
+    "drei": "^1.5.4",
     "lerp": "^1.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1",
-    "react-three-fiber": "^4.1.4",
-    "three": "^0.116.1"
+    "react-scripts": "3.4.3",
+    "react-three-fiber": "^4.2.21",
+    "three": "^0.120.1"
   },
   "scripts": {
     "start": "react-app-rewired start",
@@ -33,8 +33,8 @@
     ]
   },
   "devDependencies": {
-    "customize-cra": "^0.9.1",
-    "customize-cra-react-refresh": "^1.0.1",
+    "customize-cra": "^1.0.0",
+    "customize-cra-react-refresh": "^1.1.0",
     "react-app-rewired": "^2.1.6"
   }
 }
