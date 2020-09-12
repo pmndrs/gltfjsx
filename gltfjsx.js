@@ -196,7 +196,7 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
 import React, { useRef${options.animation ? ', useState, useEffect' : ''} } from 'react'${
               options.animation ? `import { useFrame } from 'react-three-fiber'` : ''
             }
-import { useGLTFLoader } from 'drei'
+import { useGLTFLoader } from 'drei/loaders/useGLTFLoader'
 ${options.types ? printTypes(objects, animations) : ''}
 export default function Model(props${options.types ? ": JSX.IntrinsicElements['group']" : ''}) {
   const group = ${options.types ? 'useRef<THREE.Group>()' : 'useRef()'}
