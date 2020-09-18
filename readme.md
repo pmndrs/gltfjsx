@@ -170,6 +170,7 @@ Edit batchgltf.json
 ```
 
 ```
-node batchgltfs.js
+$ npx batchgltfs
+$ npx batchgltfs custombatch.json
 ```
 
