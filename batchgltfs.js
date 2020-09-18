@@ -24,7 +24,7 @@ fs.readFile(file, (err, data) => {
   let result = settings.assets.reduce((accumulatorPromise, asset) => {
     return accumulatorPromise.then(() => {
       return convert(asset, settings).then(() => {
-        copyGltfToPublicFolder(asset.gltf, settings.publicDir)
+        copyGltfToPublicFolder(asset.gltf, Path.join(process.cwd(), settings.publicDir))
       })
     })
   }, Promise.resolve())
