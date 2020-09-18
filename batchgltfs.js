@@ -55,7 +55,7 @@ const convert = (asset, settings) => {
   return new Promise((resolve, reject) => {
     const options = { ...settings.defaultOptions, ...asset.options }
     const fd_src = fileDetails(asset.gltf)
-    const fd_dst = fileDetails(Path.join(__dirname, settings.srcDir, asset.className))
+    const fd_dst = fileDetails(Path.join(process.cwd(), settings.srcDir, asset.className))
     let gltfClass = Path.join(fd_dst.folder, fd_dst.name + (options.types ? '.tsx' : '.js'))
     console.log(`|-----------------------------------------------------------|`)
     console.log(`   Converting`)
@@ -101,7 +101,7 @@ const convert = (asset, settings) => {
  */
 const copyGltfToPublicFolder = (src, dst) => {
   const fd_src = fileDetails(src)
-  const fileDst = Path.join(__dirname, dst, fd_src.fullName)
+  const fileDst = Path.join(dst, fd_src.fullName)
   console.log(`|-----------------------------------------------------------|`)
   console.log(`   Copy Asset : ${fd_src.fullName} to ${fileDst}`)
   console.log(`|-----------------------------------------------------------|`)
