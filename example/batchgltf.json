@@ -1,0 +1,33 @@
+{
+  "project": "Batch gltfs for your project",
+  "publicDir": "./example/public",
+  "srcDir": "example/src/world",
+  "defaultOptions": {
+    "draco": false,
+    "animation": false,
+    "types": false,
+    "compress": false,
+    "precision": 2,
+    "binary": "draco-gltf",
+    "castShadow": true,
+    "receiveShadow": true
+  },
+  "assets": [
+    {
+      "gltf": "./gltfs/Monkeys.gltf",
+      "className": "Monkeys.js",
+      "options": {
+        "types": false
+      }
+    },
+    {
+      "gltf": "./gltfs/MonkeysLit.gltf",
+      "className": "MonkeyLit.js",
+      "options": {
+        "types": false,
+        "castShadow": false,
+        "receiveShadow": false
+      }
+    }
+  ]
+}

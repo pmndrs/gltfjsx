@@ -128,3 +128,48 @@ function Model(props: JSX.IntrinsicElements['group']) {
 ## Release notes and breaking changes
 
 https://github.com/react-spring/gltfjsx/blob/master/whatsnew.md
+
+
+# BatchgltfsTojsx.js
+Batch process a bunch of gltf files. Also copies gltf files to target public colder.
+
+Set defaultOptions for all assets and specify overrides for each model.
+
+Edit batchgltf.json
+``` json
+{
+  "project": "Batch gltfs for your project",
+  "example": "npx gltfjsx model.gltf [Model.js] [options]",
+  "publicDir": "./example/public",
+  "srcDir": "example/src/world",
+  "defaultOptions": {
+    "draco": false,
+    "animation": false,
+    "types": false,
+    "compress": false,
+    "precision": 2,
+    "binary": "draco-gltf"
+  },
+  "assets": [
+    {
+      "gltf": "./gltfs/Monkeys.gltf",
+      "className": "Monkeys.js",
+      "options": {
+        "types": false
+      }
+    },
+    {
+      "gltf": "./gltfs/MonkeysLit.gltf",
+      "className": "MonkeyLit.js",
+      "options": {
+        "types": false
+      }
+    }
+  ]
+}
+```
+
+```
+node batchgltfs.js
+```
+
