@@ -1,6 +1,6 @@
 {
   "project": "Batch gltfs for your project",
-  "publicDir": "./public",
+  "publicDir": "./public/models",
   "srcDir": "./src/world",
   "defaultOptions": {
     "draco": false,

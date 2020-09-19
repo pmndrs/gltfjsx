@@ -11,14 +11,15 @@ const argv = require('yargs')
   .option('compress', { alias: 'c', default: true, describe: 'Removes names and empty groups', type: 'boolean' })
   .option('precision', { alias: 'p', default: 2, describe: 'Number of fractional digits', type: 'number' })
   .option('binary', { alias: 'b', describe: 'Draco path', default: '/draco-gltf/', type: 'string' })
+  .option('publicDir', { alias: 'P', describe: 'Path within public folder to gltf', default: '', type: 'string' })
   .option('receiveShadow', {
-    alias: 'rs',
+    alias: 'R',
     describe: 'Applies receiveShadow to all mesh in gltf',
     type: 'boolean',
     default: false,
   })
   .option('castShadow', {
-    alias: 'rs',
+    alias: 'C',
     describe: 'Applies castShadow to all mesh in gltf',
     type: 'boolean',
     default: false,

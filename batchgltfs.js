@@ -35,6 +35,18 @@ fs.readFile(file, (err, data) => {
   })
 })
 
+/**
+ * Strip everything up to and including 'public/'  from path.
+ * @param path
+ * @returns {string}
+ */
+const getPathFromPublicPath = (path) => {
+  //"publicDir": "./public/models",
+  //"publicDir": "public/models",
+  path = path.replace(/.*public\//, '')
+  return path
+}
+
 const fileDetails = (filePath) => {
   // console.log(`File Details:`);
   // console.log(`    src: ${filePath}`);
@@ -53,7 +65,11 @@ const fileDetails = (filePath) => {
 
 const convert = (asset, settings) => {
   return new Promise((resolve, reject) => {
-    const options = { ...settings.defaultOptions, ...asset.options }
+    const options = {
+      publicDir: getPathFromPublicPath(settings.publicDir),
+      ...settings.defaultOptions,
+      ...asset.options,
+    }
     const fd_src = fileDetails(asset.gltf)
     const fd_dst = fileDetails(Path.join(process.cwd(), settings.srcDir, asset.className))
     let gltfClass = Path.join(fd_dst.folder, fd_dst.name + (options.types ? '.tsx' : '.js'))
@@ -107,6 +123,16 @@ const copyGltfToPublicFolder = (src, dst) => {
   console.log(`|-----------------------------------------------------------|`)
   let doCopy = true
 
+  // Validate destination folder for gltf files.
+  try {
+    console.log('Check Folder exists: ', dst)
+    if (!fs.existsSync(dst)) {
+      fs.mkdirSync(dst, { recursive: true })
+    }
+  } catch (err) {
+    console.error('ERROR: Failed to check and create jsx folder destination \r', err)
+  }
+
   // Check if file already exists and if its changed then do copy.
   try {
     if (fs.existsSync(fileDst)) {
@@ -124,6 +150,7 @@ const copyGltfToPublicFolder = (src, dst) => {
 
   // Copy gltf to public directory.
   if (doCopy) {
+    console.log('Copy File ')
     fs.copyFile(src, fileDst, (err) => {
       if (err) throw err
       console.log(`COMPLETE: ${src} was copied to ${dst}`)

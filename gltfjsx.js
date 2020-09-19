@@ -213,9 +213,9 @@ export default (props${options.types ? ": JSX.IntrinsicElements['group']" : ''})
   const group = ${options.types ? 'useRef<THREE.Group>()' : 'useRef()'}
   const { nodes, materials${options.animation ? ', animations' : ''} } = useLoader${
               options.types ? '<GLTFResult>' : ''
-            }(GLTFLoader, '/${nameExt}'${options.draco ? `, draco(${JSON.stringify(options.binary)})` : ``})${
-              options.animation ? printAnimations(gltf, options) : ``
-            }
+            }(GLTFLoader,  '${options.publicDir}/${nameExt}'${
+              options.draco ? `, draco(${JSON.stringify(options.binary)})` : ``
+            })${options.animation ? printAnimations(gltf, options) : ``}
   return (
     <group ref={group} {...props} dispose={null}>
 ${scene}
