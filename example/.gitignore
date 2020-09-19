@@ -21,3 +21,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+/public/Monkeys.gltf
+/src/world/
+/public/MonkeysLit.gltf

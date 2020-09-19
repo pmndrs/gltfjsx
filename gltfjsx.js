@@ -88,6 +88,14 @@ function print(objects, gltf, obj, level = 0, parent) {
 
   const oldResult = result
 
+  // apply mesh props for shadows.
+  if (options.receiveShadow) {
+    result += ` receiveShadow `
+  }
+  if (options.castShadow) {
+    result += ` castShadow `
+  }
+
   // Write out materials
   if (obj.material) {
     if (obj.material.name) result += `material={materials${sanitizeName(obj.material.name)}} `
@@ -201,13 +209,13 @@ import { GLTFLoader${options.types ? ', GLTF' : ''} } from 'three/examples/jsm/l
               options.draco ? `\nimport { draco } from 'drei'` : ``
             }
 ${options.types ? printTypes(objects, animations) : ''}
-export default function Model(props${options.types ? ": JSX.IntrinsicElements['group']" : ''}) {
+export default (props${options.types ? ": JSX.IntrinsicElements['group']" : ''}) => {
   const group = ${options.types ? 'useRef<THREE.Group>()' : 'useRef()'}
   const { nodes, materials${options.animation ? ', animations' : ''} } = useLoader${
               options.types ? '<GLTFResult>' : ''
-            }(GLTFLoader, '/${nameExt}'${options.draco ? `, draco(${JSON.stringify(options.binary)})` : ``})${
-              options.animation ? printAnimations(gltf, options) : ``
-            }
+            }(GLTFLoader,  '${options.publicDir ? options.publicDir : ''}/${nameExt}'${
+              options.draco ? `, draco(${JSON.stringify(options.binary)})` : ``
+            })${options.animation ? printAnimations(gltf, options) : ``}
   return (
     <group ref={group} {...props} dispose={null}>
 ${scene}

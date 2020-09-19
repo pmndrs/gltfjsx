@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "drei": "^0.0.18",
+    "gltfjsx": "file:..",
     "lerp": "^1.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
