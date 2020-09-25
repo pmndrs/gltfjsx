@@ -127,4 +127,4 @@ function Model(props: JSX.IntrinsicElements['group']) {
 
 ## Release notes and breaking changes
 
-https://github.com/react-spring/gltfjsx/blob/master/whatsnew.md
+https://github.com/pmndrs/gltfjsx/blob/master/whatsnew.md

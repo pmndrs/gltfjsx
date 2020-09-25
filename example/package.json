@@ -2,15 +2,6 @@
   "name": "example",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "drei": "^0.0.18",
-    "lerp": "^1.0.3",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1",
-    "react-three-fiber": "^4.1.4",
-    "three": "^0.116.1"
-  },
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
@@ -31,6 +22,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "dependencies": {
+    "@react-three/drei": "^1.5.7",
+    "lerp": "^1.0.3",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.1",
+    "react-three-fiber": "^5.0.0",
+    "three": "^0.120.1"
   },
   "devDependencies": {
     "customize-cra": "^0.9.1",
