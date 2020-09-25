@@ -1,8 +1,8 @@
-![](https://i.imgur.com/ZB4uUaz.png)
+![GLTFSJSX](https://i.imgur.com/ZB4uUaz.png)
 
 [![Discord Shield](https://discordapp.com/api/guilds/740090768164651008/widget.png?style=shield)](https://discord.gg/ZZjjNvJ)
 
-Turns GLTF assets into dynamic, re-usable [react-three-fiber](https://github.com/react-spring/react-three-fiber) JSX components. See it in action here: https://twitter.com/0xca0a/status/1224335000755146753
+Turns GLTF assets into dynamic, re-usable [react-three-fiber](https://github.com/pmndrs/react-three-fiber) JSX components. See it in action here: https://twitter.com/0xca0a/status/1224335000755146753
 
 The usual GLTF workflow is cumbersome: objects can only be found by traversal, changes are made by mutation, making contents conditional is a complete mess. With gltfjsx you don't search for objects any longer, the full graph is declarative. All the changes that you make are immutable: shadows, events, materials, conditional contents, removing or swapping out parts, changing parent-child relations.
 
@@ -74,12 +74,12 @@ function App() {
 
 ### --draco
 
-Adds a DRACOLoader, for which you need to be set up. The necessary files have to exist in your /public folder. It defaults to `/draco-gltf/` which should contain [dracos gltf decoder](https://github.com/mrdoob/three.js/tree/dev/examples/js/libs/draco/gltf). It uses the draco shortcut from the [drei](https://github.com/react-spring/drei) library, which needs to be present in your package.json.
+Adds a DRACOLoader, for which you need to be set up. The necessary files have to exist in your /public folder. It defaults to `/draco-gltf/` which should contain [dracos gltf decoder](https://github.com/mrdoob/three.js/tree/dev/examples/js/libs/draco/gltf). It uses the draco shortcut from the [drei](https://github.com/pmndrs/drei) library, which needs to be present in your package.json.
 
 Your model will look like this:
 
 ```jsx
-import { draco } from 'drei'
+import { draco } from '@react-three/drei'
 
 function Model(props) {
   const { nodes, materials } = useLoader(GLTFLoader, '/model.gltf', draco('/draco-gltf/'))
