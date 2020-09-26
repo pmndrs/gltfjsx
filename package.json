@@ -2,6 +2,24 @@
   "name": "@react-three/gltfjsx",
   "version": "2.0.5",
   "description": "gltf to jsx",
+  "keywords": [
+    "gltf",
+    "jsx",
+    "react",
+    "fiber",
+    "three",
+    "threejs"
+  ],
+  "author": "Paul Henschel",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pmndrs/gltfjsx.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pmndrs/gltfjsx/issues"
+  },
+  "homepage": "https://github.com/pmndrs/gltfjsx#readme",
   "bin": {
     "gltfjsx": "./index.js"
   },
@@ -23,24 +41,6 @@
       "prettier --write"
     ]
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pmndrs/gltfjsx.git"
-  },
-  "keywords": [
-    "gltf",
-    "jsx",
-    "react",
-    "fiber",
-    "three",
-    "threejs"
-  ],
-  "author": "Paul Henschel",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/pmndrs/gltfjsx/issues"
-  },
-  "homepage": "https://github.com/pmndrs/gltfjsx#readme",
   "dependencies": {
     "draco3dgltf": "1.3.6",
     "is-var-name": "^2.0.0",
