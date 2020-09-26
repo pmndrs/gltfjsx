@@ -6,6 +6,7 @@ const DracoLoader = require('./bin/dracoloader')
 THREE.DRACOLoader.getDecoderModule = () => {}
 const prettier = require('prettier')
 const isVarName = require('is-var-name')
+const path = require('path')
 
 const options = {}
 
@@ -171,7 +172,19 @@ function parseExtras(extras) {
   } else return ''
 }
 
-module.exports = function (file, nameExt, output, exportOptions) {
+function getRelativeFilePath(file, exportOptions) {
+  const filePath = path.resolve(file)
+  const rootPath = exportOptions.root ? path.resolve(exportOptions.root) : path.dirname(file)
+
+  const relativePath = path.relative(rootPath, filePath) || ''
+  if (process.platform === 'win32') {
+    return relativePath.replace(/\\/g, '/')
+  }
+
+  return relativePath
+}
+
+module.exports = function (file, output, exportOptions) {
   return new Promise((resolve, reject) => {
     Object.keys(exportOptions).forEach((key) => (options[key] = exportOptions[key]))
     const stream = fs.createWriteStream(output)
@@ -179,6 +192,7 @@ module.exports = function (file, nameExt, output, exportOptions) {
       if (!fs.existsSync(file)) {
         console.error(`\nERROR: The input file: "${file}" does not exist at this path.\n`)
       } else {
+        const filePath = getRelativeFilePath(file, exportOptions)
         const data = fs.readFileSync(file)
         const arrayBuffer = toArrayBuffer(data)
         gltfLoader.parse(
@@ -203,7 +217,7 @@ export default function Model(props${options.types ? ": JSX.IntrinsicElements['g
   const group = ${options.types ? 'useRef<THREE.Group>()' : 'useRef()'}
   const { nodes, materials${options.animation ? ', animations' : ''} } = useGLTFLoader${
               options.types ? '<GLTFResult>' : ''
-            }('/${nameExt}'${options.draco ? `, ${options.binary ? JSON.stringify(options.binary) : 'true'}` : ``})${
+            }('/${filePath}'${options.draco ? `, ${options.binary ? JSON.stringify(options.binary) : 'true'}` : ``})${
               options.animation ? printAnimations(gltf, options) : ``
             }
   return (

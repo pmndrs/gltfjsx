@@ -11,6 +11,7 @@ const argv = require('yargs')
   .option('compress', { alias: 'c', default: true, describe: 'Removes names and empty groups', type: 'boolean' })
   .option('precision', { alias: 'p', default: 2, describe: 'Number of fractional digits', type: 'number' })
   .option('binary', { alias: 'b', describe: 'Draco path', default: undefined, type: 'string' })
+  .option('root', { alias: 'r', describe: 'Sets directory from which .gltf file is served', type: 'string' })
   .usage('npx gltfjsx model.gltf [Model.js] [options]')
   .help().argv
 
@@ -22,7 +23,7 @@ if (argv._[0]) {
 
   console.log(`gltfjsx ${version}, converting ${file} to ${output}`)
   console.log('')
-  gltfjsx(file, nameExt, output, argv)
+  gltfjsx(file, output, argv)
     .then(() => console.log('\ndone.'))
     .catch((err) => console.log('\nfailed.\n\n', err))
 } else {
