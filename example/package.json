@@ -3,12 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "drei": "^1.5.4",
-    "lerp": "^1.0.3",
+    "@react-three/drei": "^1.5.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3",
-    "react-three-fiber": "^4.2.21",
+    "react-three-fiber": "^5.0.1",
     "three": "^0.120.1"
   },
   "scripts": {
