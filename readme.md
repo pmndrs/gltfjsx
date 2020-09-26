@@ -14,14 +14,15 @@ $ npx @react-three/gltfjsx model.gltf [Model.js] [options]
 
 ### Options
 ```bash
-  --draco, -d         Adds draco-Loader                   [boolean]
-  --animation, -a     Extracts animation clips            [boolean]
-  --types, -t         Adds Typescript definitions         [boolean]
-  --compress, -c      Removes names and empty groups      [boolean] [default: true]
-  --precision, -p     Number of fractional digits         [number ] [default: 2]
-  --binary, -b        Draco binaries                      [string ] [default: '/draco-gltf/']
-  --help              Show help                           [boolean]
-  --version           Show version number                 [boolean]
+  --draco, -d         Adds draco-Loader                         [boolean]
+  --animation, -a     Extracts animation clips                  [boolean]
+  --types, -t         Adds Typescript definitions               [boolean]
+  --compress, -c      Removes names and empty groups            [boolean] [default: true]
+  --precision, -p     Number of fractional digits               [number ] [default: 2]
+  --binary, -b        Draco binaries                            [string ] [default from Google CDN]
+  --root, -r          Sets directory from which .gltf is served [string ]
+  --help              Show help                                 [boolean]
+  --version           Show version number                       [boolean]
 ```
 
 You need to be set up for asset loading and the GLTF has to be present in your /public folder. This tools loads it, creates look-up tables of all the objects and materials inside, and writes out a JSX graph, which you can now alter comfortably. It will not change or alter your files in any way otherwise.
