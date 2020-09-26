@@ -203,7 +203,9 @@ export default function Model(props${options.types ? ": JSX.IntrinsicElements['g
   const group = ${options.types ? 'useRef<THREE.Group>()' : 'useRef()'}
   const { nodes, materials${options.animation ? ', animations' : ''} } = useGLTFLoader${
               options.types ? '<GLTFResult>' : ''
-            }('/${nameExt}'${options.draco ? `, true` : ``})${options.animation ? printAnimations(gltf, options) : ``}
+            }('/${nameExt}'${options.draco ? `, ${options.binary ? JSON.stringify(options.binary) : 'true'}` : ``})${
+              options.animation ? printAnimations(gltf, options) : ``
+            }
   return (
     <group ref={group} {...props} dispose={null}>
 ${scene}
