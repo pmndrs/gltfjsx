@@ -9,7 +9,7 @@ The usual GLTF workflow is cumbersome: objects can only be found by traversal, c
 ## Usage
 
 ```bash
-$ npx gltfjsx model.gltf [Model.js] [options]
+$ npx @react-three/gltfjsx model.gltf [Model.js] [options]
 ```
 
 ### Options
