@@ -10,7 +10,7 @@ const argv = require('yargs')
   .option('animation', { alias: 'a', describe: 'Extracts animation clips', type: 'boolean' })
   .option('compress', { alias: 'c', default: true, describe: 'Removes names and empty groups', type: 'boolean' })
   .option('precision', { alias: 'p', default: 2, describe: 'Number of fractional digits', type: 'number' })
-  .option('binary', { alias: 'b', describe: 'Draco path', default: '/draco-gltf/', type: 'string' })
+  .option('binary', { alias: 'b', describe: 'Draco path', default: undefined, type: 'string' })
   .option('root', { alias: 'r', describe: 'Sets directory from which .gltf file is served', type: 'string' })
   .usage('npx gltfjsx model.gltf [Model.js] [options]')
   .help().argv
