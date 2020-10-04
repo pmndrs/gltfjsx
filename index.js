@@ -3,14 +3,15 @@
 const version = require('./package.json').version
 const gltfjsx = require('./gltfjsx')
 const argv = require('yargs')
-  .boolean('animation')
-  .boolean('draco')
-  .option('draco', { alias: 'd', describe: 'Adds draco-Loader', type: 'boolean' })
   .option('types', { alias: 't', describe: 'Adds Typescript definitions', type: 'boolean' })
-  .option('animation', { alias: 'a', describe: 'Extracts animation clips', type: 'boolean' })
-  .option('compress', { alias: 'c', default: true, describe: 'Removes names and empty groups', type: 'boolean' })
+  .option('verbose', {
+    alias: 'v',
+    default: false,
+    describe: 'Verbose output w/ names and empty groups',
+    type: 'boolean',
+  })
   .option('precision', { alias: 'p', default: 2, describe: 'Number of fractional digits', type: 'number' })
-  .option('binary', { alias: 'b', describe: 'Draco path', default: undefined, type: 'string' })
+  .option('draco', { alias: 'd', describe: 'Draco path', default: undefined, type: 'string' })
   .option('root', { alias: 'r', describe: 'Sets directory from which .gltf file is served', type: 'string' })
   .usage('npx gltfjsx model.gltf [Model.js] [options]')
   .help().argv

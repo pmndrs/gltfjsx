@@ -4,7 +4,9 @@
 
 Turns GLTF assets into dynamic, re-usable [react-three-fiber](https://github.com/pmndrs/react-three-fiber) JSX components. See it in action here: https://twitter.com/0xca0a/status/1224335000755146753
 
-The usual GLTF workflow is cumbersome: objects can only be found by traversal, changes are made by mutation, making contents conditional is a complete mess. With gltfjsx you don't search for objects any longer, the full graph is declarative. All the changes that you make are immutable: shadows, events, materials, conditional contents, removing or swapping out parts, changing parent-child relations.
+The usual GLTF workflow is cumbersome: objects can only be found by traversal, changes are made by mutation, making contents conditional is hard. 
+
+With gltfjsx the full graph is declarative and immutable. It creates look-up tables of all the objects and materials inside your asset, it will not touch or modify your files in any way.
 
 ## Usage
 
@@ -14,20 +16,22 @@ $ npx @react-three/gltfjsx model.gltf [Model.js] [options]
 
 ### Options
 ```bash
-  --draco, -d         Adds draco-Loader                         [boolean]
-  --animation, -a     Extracts animation clips                  [boolean]
-  --types, -t         Adds Typescript definitions               [boolean]
-  --compress, -c      Removes names and empty groups            [boolean] [default: true]
+  --types, -t         Adds Typescript definitions                [boolean]
+  --verbose, -v       Verbose output w/ names and empty groups  [boolean] [default: false]
   --precision, -p     Number of fractional digits               [number ] [default: 2]
-  --binary, -b        Draco binaries                            [string ] [default from Google CDN]
+  --draco, -d         Draco binaries                            [string ] [default from Google CDN]
   --root, -r          Sets directory from which .gltf is served [string ]
   --help              Show help                                 [boolean]
   --version           Show version number                       [boolean]
 ```
 
-You need to be set up for asset loading and the GLTF has to be present in your /public folder. This tools loads it, creates look-up tables of all the objects and materials inside, and writes out a JSX graph, which you can now alter comfortably. It will not change or alter your files in any way otherwise.
+### Requirements
 
-A typical result will look like this:
+- The GLTF file has to be present in your projects `/public` folder
+- [react-three-fiber](https://github.com/pmndrs/react-three-fiber) version 5 or later
+- [@react-three/drei](https://github.com/pmndrs/drei) version 2 or later
+
+### A typical result will look like this
 
 ```jsx
 /*
@@ -40,10 +44,10 @@ title: Model
 
 import React from 'react'
 import { useLoader } from 'react-three-fiber'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { useGLTF } from '@react-three/drei/useGLTF'
 
 function Model(props) {
-  const { nodes, materials } = useLoader(GLTFLoader, '/model.gltf')
+  const { nodes, materials } = useGLTF('/model.gltf')
   return (
     <group {...props} dispose={null}>
       <group name="Camera" position={[10, 0, 50]} rotation={[Math.PI / 2, 0, 0]}>
@@ -73,20 +77,11 @@ function App() {
     </Suspense>
 ```
 
-### --draco
+### Draco compression
 
-Adds a DRACOLoader, for which you need to be set up. The necessary files have to exist in your /public folder. It defaults to `/draco-gltf/` which should contain [dracos gltf decoder](https://github.com/mrdoob/three.js/tree/dev/examples/js/libs/draco/gltf). It uses the draco shortcut from the [drei](https://github.com/pmndrs/drei) library, which needs to be present in your package.json.
+You don't need to do anything if your models are draco compressed, since `useGLTF` defaults to a draco CDN (`https://www.gstatic.com/draco/v1/decoders/`). By adding the `--draco` flag you can refer to [local binaries](https://github.com/mrdoob/three.js/tree/dev/examples/js/libs/draco/gltf) which must reside in your /public folder.
 
-Your model will look like this:
-
-```jsx
-import { draco } from '@react-three/drei'
-
-function Model(props) {
-  const { nodes, materials } = useLoader(GLTFLoader, '/model.gltf', draco('/draco-gltf/'))
-```
-
-### --animation
+### Animation
 
 If your GLTF contains animations it will add a THREE.AnimationMixer to your component and extract the clips:
 
@@ -106,9 +101,22 @@ If you want to play an animation you can do so at any time:
 <mesh onClick={(e) => actions.current.storkFly_B_.play()} />
 ```
 
-### --types
+### Preload
 
-This will make your GLTF typesafe.
+The asset will be preloaded by default, this makes it quicker to load and reduces time-to-paint. Remove the preloader if you don't need it.
+
+```jsx
+function Model(props) {
+  const { nodes, materials } = useGLTF('/model.gltf')
+  ...
+}
+
+useGLTF.preload('/model.gltf')
+```
+
+### Types
+
+Add the `--types` flag and your GLTF will be typesafe.
 
 ```tsx
 type GLTFResult = GLTF & {
@@ -123,9 +131,5 @@ type GLTFResult = GLTF & {
 }
 
 function Model(props: JSX.IntrinsicElements['group']) {
-  const { nodes, materials } = useLoader<GLTFResult>(GLTFLoader, '/model.gltf')
+  const { nodes, materials } = useGLTF<GLTFResult>('/model.gltf')
 ```
-
-## Release notes and breaking changes
-
-https://github.com/pmndrs/gltfjsx/blob/master/whatsnew.md

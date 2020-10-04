@@ -46,13 +46,13 @@
     "is-var-name": "^2.0.0",
     "jsdom": "^16.4.0",
     "jsdom-global": "3.0.2",
-    "prettier": "2.0.5",
-    "three": "0.120.1",
-    "yargs": "15.4.0"
+    "prettier": "2.1.2",
+    "three": "0.121.1",
+    "yargs": "16.0.3"
   },
   "devDependencies": {
-    "husky": "4.2.5",
-    "lint-staged": "10.2.11"
+    "husky": "4.3.0",
+    "lint-staged": "10.4.0"
   },
   "collective": {
     "type": "opencollective",
