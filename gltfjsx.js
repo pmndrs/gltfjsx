@@ -2,7 +2,7 @@ const fs = require('fs')
 require('jsdom-global')()
 const THREE = (global.THREE = require('three'))
 require('./bin/GLTFLoader')
-const DracoLoader = require('./bin/dracoloader')
+const DracoLoader = require('./bin/DRACOLoader')
 THREE.DRACOLoader.getDecoderModule = () => {}
 const prettier = require('prettier')
 const isVarName = require('is-var-name')
