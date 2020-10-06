@@ -12,7 +12,6 @@ fs.mkdirSync('.test')
 
 const config = { types: false, precision: 2, verbose: false, draco: undefined, silent: true }
 const entries = fg.sync(['node_modules/glTF-Sample-Models/2.0/**/*.{gltf,glb}'], { dot: true })
-console.log(entries.length)
 
 function TestGltfs() {
   const [file, setFile] = React.useState()
