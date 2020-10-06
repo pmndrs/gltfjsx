@@ -5,7 +5,7 @@ const importJsx = require('import-jsx')
 const fg = require('fast-glob')
 const fs = require('fs-extra')
 const gltfjsx = require('../gltfjsx')
-const ErrorBoundary = importJsx('./ErrorBoundary.js')
+const ErrorBoundary = importJsx('./ErrorBoundary')
 
 fs.removeSync('.test')
 fs.mkdirSync('.test')
