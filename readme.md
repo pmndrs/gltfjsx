@@ -15,11 +15,11 @@ Usage
   npx @react-three/gltfjsx [Model.js] [options]
 
 Options
-  --types, -t     Add Typescript definitions
-  --verbose, -v   Verbose output w/ names and empty groups
-  --precision, -p Number of fractional digits (default: 2)
-  --draco, -d     Draco binary path
-  --root, -r      Sets directory from which .gltf file is served
+  --types, -t      Add Typescript definitions
+  --verbose, -v    Verbose output w/ names and empty groups
+  --precision, -p  Number of fractional digits (default: 2)
+  --draco, -d      Draco binary path
+  --root, -r       Sets directory from which .gltf file is served
 
 Examples
   npx @react-three/gltfjsx model.glb -t

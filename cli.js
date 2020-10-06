@@ -13,11 +13,11 @@ const cli = meow(
 	  $ gltfjsx [Model.js] [options]
 
 	Options
-		--types, -t     Add Typescript definitions
-		--verbose, -v   Verbose output w/ names and empty groups
-		--precision, -p Number of fractional digits (default: 2)
-		--draco, -d     Draco binary path
-		--root, -r      Sets directory from which .gltf file is served
+		--types, -t      Add Typescript definitions
+		--verbose, -v    Verbose output w/ names and empty groups
+    --precision, -p  Number of fractional digits (default: 2)
+		--draco, -d      Draco binary path
+		--root, -r       Sets directory from which .gltf file is served
 
 	Examples
 	  $ gltfjsx model.glb
@@ -32,6 +32,8 @@ const cli = meow(
     },
   }
 )
+
+console.log(cli.flags)
 
 if (cli.input.length === 0) {
   console.log(cli.help)
