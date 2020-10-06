@@ -2,6 +2,9 @@
   "name": "@react-three/gltfjsx",
   "version": "3.0.1",
   "description": "gltf to jsx",
+  "scripts": {
+    "test": "node test"
+  },
   "keywords": [
     "gltf",
     "jsx",
@@ -51,6 +54,9 @@
     "yargs": "16.0.3"
   },
   "devDependencies": {
+    "fast-glob": "^3.2.4",
+    "fs-extra": "^9.0.1",
+    "glTF-Sample-Models": "https://github.com/KhronosGroup/glTF-Sample-Models",
     "husky": "4.3.0",
     "lint-staged": "10.4.0"
   },

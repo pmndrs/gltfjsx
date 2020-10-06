@@ -21,6 +21,7 @@ $ npx @react-three/gltfjsx model.gltf [Model.js] [options]
   --precision, -p     Number of fractional digits               [number ] [default: 2]
   --draco, -d         Draco binaries                            [string ] [default from Google CDN]
   --root, -r          Sets directory from which .gltf is served [string ]
+  --silent, -s        No console output                         [boolean]
   --help              Show help                                 [boolean]
   --version           Show version number                       [boolean]
 ```

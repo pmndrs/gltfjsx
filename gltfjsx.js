@@ -72,7 +72,7 @@ function print(objects, gltf, obj, level = 0, parent) {
   let type = obj.type.charAt(0).toLowerCase() + obj.type.slice(1)
   let node = 'nodes' + sanitizeName(obj.name)
 
-  console.log(new Array(level).fill().join(' ') + obj.name)
+  if (!options.silent) console.log(new Array(level).fill().join(' ') + obj.name)
 
   // Turn object3d's into groups, it should be faster according to the threejs docs
   if (type === 'object3D') type = 'group'

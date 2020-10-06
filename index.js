@@ -13,6 +13,7 @@ const argv = require('yargs')
   .option('precision', { alias: 'p', default: 2, describe: 'Number of fractional digits', type: 'number' })
   .option('draco', { alias: 'd', describe: 'Draco path', default: undefined, type: 'string' })
   .option('root', { alias: 'r', describe: 'Sets directory from which .gltf file is served', type: 'string' })
+  .option('silent', { alias: 's', describe: 'No console output', type: 'boolean' })
   .usage('npx gltfjsx model.gltf [Model.js] [options]')
   .help().argv
 
