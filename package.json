@@ -1,69 +1,90 @@
 {
-  "name": "@react-three/gltfjsx",
-  "version": "3.0.3",
-  "description": "gltf to jsx",
-  "scripts": {
-    "test": "node src/test"
-  },
-  "keywords": [
-    "gltf",
-    "jsx",
-    "react",
-    "fiber",
-    "three",
-    "threejs"
-  ],
-  "author": "Paul Henschel",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pmndrs/gltfjsx.git"
-  },
-  "bugs": {
-    "url": "https://github.com/pmndrs/gltfjsx/issues"
-  },
-  "homepage": "https://github.com/pmndrs/gltfjsx#readme",
-  "bin": {
-    "gltfjsx": "./src/index.js"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npx lint-staged"
-    }
-  },
-  "prettier": {
-    "semi": false,
-    "trailingComma": "es5",
-    "singleQuote": true,
-    "jsxBracketSameLine": true,
-    "tabWidth": 2,
-    "printWidth": 120
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "prettier --write"
-    ]
-  },
-  "dependencies": {
-    "draco3dgltf": "1.3.6",
-    "is-var-name": "^2.0.0",
-    "jsdom": "^16.4.0",
-    "jsdom-global": "3.0.2",
-    "prettier": "2.1.2",
-    "three": "0.121.1",
-    "yargs": "16.0.3"
-  },
-  "devDependencies": {
-    "fast-glob": "^3.2.4",
-    "fs-extra": "^9.0.1",
-    "glTF-Sample-Models": "https://github.com/KhronosGroup/glTF-Sample-Models",
-    "husky": "4.3.0",
-    "import-jsx": "^4.0.0",
-    "lint-staged": "10.4.0",
-    "react": "^16.13.1"
-  },
-  "collective": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/react-three-fiber"
-  }
+	"name": "@react-three/gltfjsx",
+	"version": "3.0.3",
+	"description": "gltf to jsx",
+	"scripts": {
+		"test": "node src/test"
+	},
+	"keywords": [
+		"gltf",
+		"jsx",
+		"react",
+		"fiber",
+		"three",
+		"threejs"
+	],
+	"author": "Paul Henschel",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/pmndrs/gltfjsx.git"
+	},
+	"bugs": {
+		"url": "https://github.com/pmndrs/gltfjsx/issues"
+	},
+	"homepage": "https://github.com/pmndrs/gltfjsx#readme",
+	"bin": "cli.js",
+	"files": [
+		"cli.js"
+	],
+	"engines": {
+		"node": ">=10"
+	},
+	"dependencies": {
+		"draco3dgltf": "^1.3.6",
+		"glTF-Sample-Models": "https://github.com/KhronosGroup/glTF-Sample-Models",
+		"import-jsx": "^4.0.0",
+		"ink": "^3.0.7",
+		"is-var-name": "^2.0.0",
+		"jsdom": "^16.4.0",
+		"jsdom-global": "^3.0.2",
+		"meow": "^7.1.1",
+		"prettier": "^2.1.2",
+		"react": "^16.13.1",
+		"three": "^0.121.1",
+		"use-error-boundary": "^2.0.4"
+	},
+	"devDependencies": {
+		"@ava/babel": "^1.0.1",
+		"@babel/preset-env": "^7.11.5",
+		"@babel/preset-react": "^7.10.4",
+		"@babel/register": "^7.11.5",
+		"chalk": "^4.1.0",
+		"eslint-config-xo-react": "^0.23.0",
+		"eslint-plugin-react": "^7.21.3",
+		"eslint-plugin-react-hooks": "^4.1.2",
+		"fast-glob": "^3.2.4",
+		"fs-extra": "^9.0.1",
+		"husky": "^4.3.0",
+		"ink-testing-library": "^2.1.0",
+		"lint-staged": "^10.4.0"
+	},
+	"babel": {
+		"presets": [
+			"@babel/preset-env",
+			"@babel/preset-react"
+		]
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "npx lint-staged"
+		}
+	},
+	"prettier": {
+		"semi": false,
+		"trailingComma": "es5",
+		"singleQuote": true,
+		"jsxBracketSameLine": true,
+		"tabWidth": 2,
+		"printWidth": 120
+	},
+	"lint-staged": {
+		"*.{js,jsx,ts,tsx}": [
+			"prettier --write"
+		]
+	},
+	"collective": {
+		"type": "opencollective",
+		"url": "https://opencollective.com/react-three-fiber"
+	}
 }

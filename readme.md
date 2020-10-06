@@ -11,19 +11,18 @@ With gltfjsx the full graph is declarative and immutable. It creates look-up tab
 ## Usage
 
 ```bash
-$ npx @react-three/gltfjsx model.gltf [Model.js] [options]
-```
+Usage
+  npx @react-three/gltfjsx [Model.js] [options]
 
-### Options
-```bash
-  --types, -t         Adds Typescript definitions                [boolean]
-  --verbose, -v       Verbose output w/ names and empty groups  [boolean] [default: false]
-  --precision, -p     Number of fractional digits               [number ] [default: 2]
-  --draco, -d         Draco binaries                            [string ] [default from Google CDN]
-  --root, -r          Sets directory from which .gltf is served [string ]
-  --silent, -s        No console output                         [boolean]
-  --help              Show help                                 [boolean]
-  --version           Show version number                       [boolean]
+Options
+  --types, -t     Add Typescript definitions
+  --verbose, -v   Verbose output w/ names and empty groups
+  --precision, -p Number of fractional digits (default: 2)
+  --draco, -d     Draco binary path
+  --root, -r      Sets directory from which .gltf file is served
+
+Examples
+  npx @react-three/gltfjsx model.glb -t
 ```
 
 ### Requirements
