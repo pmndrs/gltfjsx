@@ -64,6 +64,8 @@ function Model(props) {
     </group>
   )
 }
+
+useGLTF.preload('/model.gltf')
 ```
 
 This component is async and must be wrapped into `<Suspense>` for fallbacks:
