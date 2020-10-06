@@ -3,7 +3,7 @@ const React = require('react')
 const { Text, Box } = require('ink')
 const importJsx = require('import-jsx')
 const gltfjsx = require('../gltfjsx')
-const ErrorBoundary = importJsx('./ErrorBoundary')
+const ErrorBoundary = importJsx('./ErrorBoundary.js')
 
 function Conversion({ file, ...config }) {
   let nameExt = file.match(/[-_\w]+[.][\w]+$/i)[0]

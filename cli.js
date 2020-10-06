@@ -5,7 +5,7 @@ const importJsx = require('import-jsx')
 const { render } = require('ink')
 const meow = require('meow')
 
-const App = importJsx('./src/components/App')
+const App = importJsx('./src/components/App.js')
 
 const cli = meow(
   `
@@ -32,8 +32,6 @@ const cli = meow(
     },
   }
 )
-
-console.log(cli.flags)
 
 if (cli.input.length === 0) {
   console.log(cli.help)
