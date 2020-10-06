@@ -47,7 +47,7 @@ import React from 'react'
 import { useLoader } from 'react-three-fiber'
 import { useGLTF } from '@react-three/drei/useGLTF'
 
-function Model(props) {
+export default function Model(props) {
   const { nodes, materials } = useGLTF('/model.gltf')
   return (
     <group {...props} dispose={null}>
@@ -109,7 +109,7 @@ If you want to play an animation you can do so at any time:
 The asset will be preloaded by default, this makes it quicker to load and reduces time-to-paint. Remove the preloader if you don't need it.
 
 ```jsx
-function Model(props) {
+export default function Model(props) {
   const { nodes, materials } = useGLTF('/model.gltf')
   ...
 }
@@ -133,6 +133,6 @@ type GLTFResult = GLTF & {
   }
 }
 
-function Model(props: JSX.IntrinsicElements['group']) {
+export default function Model(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF<GLTFResult>('/model.gltf')
 ```
