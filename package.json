@@ -3,7 +3,7 @@
   "version": "3.0.2",
   "description": "gltf to jsx",
   "scripts": {
-    "test": "node test"
+    "test": "node src/test"
   },
   "keywords": [
     "gltf",
@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/pmndrs/gltfjsx#readme",
   "bin": {
-    "gltfjsx": "./index.js"
+    "gltfjsx": "./src/index.js"
   },
   "husky": {
     "hooks": {
@@ -58,7 +58,9 @@
     "fs-extra": "^9.0.1",
     "glTF-Sample-Models": "https://github.com/KhronosGroup/glTF-Sample-Models",
     "husky": "4.3.0",
-    "lint-staged": "10.4.0"
+    "import-jsx": "^4.0.0",
+    "lint-staged": "10.4.0",
+    "react": "^16.13.1"
   },
   "collective": {
     "type": "opencollective",

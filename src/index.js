@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const version = require('./package.json').version
+const version = require('../package.json').version
 const gltfjsx = require('./gltfjsx')
 const argv = require('yargs')
   .option('types', { alias: 't', describe: 'Adds Typescript definitions', type: 'boolean' })
