@@ -28,8 +28,9 @@ Examples
 ### Requirements
 
 - The GLTF file has to be present in your projects `/public` folder
-- [react-three-fiber](https://github.com/pmndrs/react-three-fiber) version 5 or later
-- [@react-three/drei](https://github.com/pmndrs/drei) version 2 or later
+- [three](https://github.com/mrdoob/three.js/) (>= 121.x)
+- [react-three-fiber](https://github.com/pmndrs/react-three-fiber) (>= 5.x)
+- [@react-three/drei](https://github.com/pmndrs/drei) (>= 2.x)
 
 ### A typical result will look like this
 
