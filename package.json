@@ -37,7 +37,7 @@
     "meow": "^7.1.1",
     "prettier": "^2.1.2",
     "react": "^16.13.1",
-    "three": "^0.121.1",
+    "three": "^0.122.0",
     "use-error-boundary": "^2.0.4"
   },
   "devDependencies": {
