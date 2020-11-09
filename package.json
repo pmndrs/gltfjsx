@@ -1,6 +1,6 @@
 {
   "name": "@react-three/gltfjsx",
-  "version": "3.0.8",
+  "version": "3.0.9",
   "description": "gltf to jsx",
   "scripts": {
     "test": "node src/test"
