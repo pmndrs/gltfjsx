@@ -228,7 +228,7 @@ export default function Model(props${options.types ? ": JSX.IntrinsicElements['g
                 options.draco ? `, ${JSON.stringify(options.draco)}` : ''
               })${options.types ? ' as GLTFResult' : ''}${printAnimations(gltf, animations, options)}
   return (
-    <group ref={group} {...props}>
+    <group ref={group} {...props} dispose={null}>
 ${scene}
     </group>
   )
