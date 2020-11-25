@@ -114,6 +114,7 @@ function print(objects, gltf, obj, level = 0, parent) {
     result += `rotation={[${rDeg(obj.rotation.x)}, ${rDeg(obj.rotation.y)}, ${rDeg(obj.rotation.z)},]} `
   if (obj.scale instanceof THREE.Vector3 && obj.scale.x !== 1 && obj.scale.y !== 1 && obj.scale.z !== 1)
     result += `scale={[${rNbr(obj.scale.x)}, ${rNbr(obj.scale.y)}, ${rNbr(obj.scale.z)},]} `
+  if (obj.userData && Object.keys(obj.userData).length) result += `userData={${JSON.stringify(obj.userData)}} `
 
   // Remove empty groups
   if (
