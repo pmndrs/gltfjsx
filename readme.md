@@ -10,7 +10,7 @@ The usual GLTF workflow is cumbersome: objects can only be found by traversal, c
 
 ```bash
 Usage
-  npx @react-three/gltfjsx [Model.js] [options]
+  npx @react-three/gltfjsx [path/to/model.gltf] [options]
 
 Options
   --types, -t      Add Typescript definitions
