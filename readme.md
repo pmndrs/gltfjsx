@@ -10,11 +10,12 @@ The usual GLTF workflow is cumbersome: objects can only be found by traversal, c
 
 ```bash
 Usage
-  npx gltfjsx [Model.js] [options]
+  npx gltfjsx [path/to/model.gltf] [options]
 
 Options
   --types, -t      Add Typescript definitions
   --verbose, -v    Verbose output w/ names and empty groups
+  --meta, -m       Include metadata (as userData)
   --precision, -p  Number of fractional digits (default: 2)
   --draco, -d      Draco binary path
   --root, -r       Sets directory from which .gltf file is served
