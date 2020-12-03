@@ -9,8 +9,6 @@ const isVarName = require('is-var-name')
 const path = require('path')
 
 let options = {}
-let timeout = 0
-let delay = 20
 
 function toArrayBuffer(buf) {
   var ab = new ArrayBuffer(buf.length)
@@ -67,33 +65,56 @@ type GLTFActions = Record<ActionName, THREE.AnimationAction>;\n`
 }\n${animationTypes}`
 }
 
-function print(objects, gltf, obj, level = 0, parent) {
+function print(objects, gltf, obj, parent) {
   let result = ''
-  let space = new Array(level).fill(' ').join('')
   let children = ''
   let type = obj.type.charAt(0).toLowerCase() + obj.type.slice(1)
   let node = 'nodes' + sanitizeName(obj.name)
+  let hasAnimations = gltf.animations?.length > 0
 
   if (options.setLog)
     setTimeout(
-      () => options.setLog((state) => [...state, new Array(level).fill().join(' ') + obj.name]),
+      () => options.setLog((state) => [...state, obj.name]),
       (options.timeout = options.timeout + options.delay)
     )
 
   // Turn object3d's into groups, it should be faster according to the threejs docs
   if (type === 'object3D') type = 'group'
+  if (obj instanceof THREE.PerspectiveCamera) type = 'PerspectiveCamera'
+  if (obj instanceof THREE.OrthographicCamera) type = 'OrthographicCamera'
 
-  // Bail out on lights and cameras
-  if (obj instanceof THREE.Light || obj instanceof THREE.Camera || obj instanceof THREE.Bone)
-    return `${space}<primitive object={${node}} />${!parent ? '' : '\n'}`
+  // Bail out on lights and bones
+  if (obj instanceof THREE.Bone) {
+    return `<primitive object={${node}} />${!parent ? '' : '\n'}`
+  }
 
   // Collect children
-  if (obj.children) obj.children.forEach((child) => (children += print(objects, gltf, child, level + 2, obj)))
+  if (obj.children) obj.children.forEach((child) => (children += print(objects, gltf, child, obj)))
 
   // Form the object in JSX syntax
-  result = `${space}<${type} `
+  result = `<${type} `
 
   const oldResult = result
+
+  // Include names when output is uncompressed or morphTargetDictionaries are present
+  if (
+    obj.name.length &&
+    (options.verbose ||
+      obj.morphTargetDictionary ||
+      (hasAnimations && gltf.animations.find((clip) => clip.targetNames.includes(obj.name))))
+  )
+    result += `name="${obj.name}" `
+
+  // Handle cameras
+  if (obj instanceof THREE.Camera) {
+    result += `makeDefault={false} `
+    if (obj.zoom !== 1) result += `zoom={${rNbr(obj.zoom)}} `
+    if (obj.far !== 2000) result += `far={${rNbr(obj.far)}} `
+    if (obj.near !== 0.1) result += `near={${rNbr(obj.near)}} `
+  }
+  if (obj instanceof THREE.PerspectiveCamera) {
+    if (obj.fov !== 50) result += `fov={${rNbr(obj.fov)}} `
+  }
 
   // Write out materials
   if (obj.material) {
@@ -103,11 +124,20 @@ function print(objects, gltf, obj, level = 0, parent) {
 
   if (obj.geometry) result += `geometry={${node}.geometry} `
   if (obj.skeleton) result += `skeleton={${node}.skeleton} `
-  // Include names when output is uncompressed or morphTargetDictionaries are present
-  if (obj.name.length && (options.verbose || obj.morphTargetDictionary)) result += `name="${obj.name}" `
   if (obj.visible === false) result += `visible={false} `
+  if (obj.castShadow === true) result += `castShadow `
+  if (obj.receiveShadow === true) result += `receiveShadow `
   if (obj.morphTargetDictionary) result += `morphTargetDictionary={${node}.morphTargetDictionary} `
   if (obj.morphTargetInfluences) result += `morphTargetInfluences={${node}.morphTargetInfluences} `
+  if (obj.intensity) result += `intensity={${rNbr(obj.intensity)}} `
+  //if (obj.power && obj.power !== 4 * Math.PI) result += `power={${rNbr(obj.power)}} `
+  if (obj.angle && obj.angle !== Math.PI / 3) result += `angle={${rDeg(obj.angle)}} `
+  if (obj.penumbra && obj.penumbra !== 0) result += `penumbra={${rNbr(obj.penumbra)}} `
+  if (obj.decay && obj.decay !== 1) result += `decay={${rNbr(obj.decay)}} `
+  if (obj.distance && obj.distance !== 0) result += `distance={${rNbr(obj.distance)}} `
+  if (obj.color && obj.color.getHexString() !== 'ffffff') result += `color="#${obj.color.getHexString()}" `
+  if (obj.up instanceof THREE.Vector3 && !obj.up.equals(new THREE.Vector3(0, 1, 0)))
+    result += `up={[${rNbr(obj.up.x)}, ${rNbr(obj.up.y)}, ${rNbr(obj.up.z)},]} `
   if (obj.position instanceof THREE.Vector3 && obj.position.length())
     result += `position={[${rNbr(obj.position.x)}, ${rNbr(obj.position.y)}, ${rNbr(obj.position.z)},]} `
   if (obj.rotation instanceof THREE.Euler && obj.rotation.toVector3().length())
@@ -131,7 +161,7 @@ function print(objects, gltf, obj, level = 0, parent) {
   result += `${children.length ? '>' : '/>'}\n`
 
   // Add children and return
-  if (children.length) result += children + `${space}</${type}>${!parent ? '' : '\n'}`
+  if (children.length) result += children + `</${type}>${!parent ? '' : '\n'}`
   return result
 }
 
@@ -210,18 +240,23 @@ module.exports = function (file, output, exportOptions) {
             (gltf) => {
               const objects = []
               gltf.scene.traverse((child) => objects.push(child))
-              const scene = print(objects, gltf, gltf.scene, 0)
               const animations = gltf.animations
               const hasAnimations = animations.length > 0
-
+              const scene = print(objects, gltf, gltf.scene)
               const result = `/*
-auto-generated by: https://github.com/pmndrs/gltfjsx
+Auto-generated by: https://github.com/pmndrs/gltfjsx
 ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
+${hasAnimations || options.types ? `\nimport * as THREE from 'three'` : ''}
 import React, { useRef${hasAnimations ? ', useState, useEffect' : ''} } from 'react'${
                 hasAnimations ? `\nimport { useFrame } from 'react-three-fiber'` : ''
               }
 import { useGLTF } from '@react-three/drei/useGLTF'
-
+${scene.includes('PerspectiveCamera') ? `import { PerspectiveCamera } from '@react-three/drei/PerspectiveCamera'` : ''}
+${
+  scene.includes('OrthographicCamera')
+    ? `import { OrthographicCamera } from '@react-three/drei/OrthographicCamera'`
+    : ''
+}
 ${options.types ? 'import { GLTF } from "three/examples/jsm/loaders/GLTFLoader"' : ''}
 ${options.types ? printTypes(objects, animations) : ''}
 export default function Model(props${options.types ? ": JSX.IntrinsicElements['group']" : ''}) {

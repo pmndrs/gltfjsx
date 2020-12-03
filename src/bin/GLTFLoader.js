@@ -2496,8 +2496,9 @@ THREE.GLTFLoader = (function () {
       }
 
       var name = animationDef.name ? animationDef.name : 'animation_' + animationIndex
-
-      return new THREE.AnimationClip(name, undefined, tracks)
+      var clip = new THREE.AnimationClip(name, undefined, tracks)
+      clip.targetNames = targetNames
+      return clip
     })
   }
 
