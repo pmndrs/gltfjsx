@@ -25,7 +25,6 @@ function rNbr(number) {
 }
 
 function rDeg(number) {
-  const eps = 0.001
   const abs = Math.abs(Math.round(parseFloat(number) * 100000))
   for (let i = 1; i <= 10; i++) {
     if (abs === Math.round(parseFloat(Math.PI / i) * 100000))
