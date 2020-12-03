@@ -10,7 +10,7 @@ The usual GLTF workflow is cumbersome: objects can only be found by traversal, c
 
 ```bash
 Usage
-  npx @react-three/gltfjsx [Model.js] [options]
+  npx gltfjsx [Model.js] [options]
 
 Options
   --types, -t      Add Typescript definitions
@@ -20,7 +20,7 @@ Options
   --root, -r       Sets directory from which .gltf file is served
 
 Examples
-  npx @react-three/gltfjsx model.glb -t
+  npx gltfjsx model.glb -t
 ```
 
 ### Requirements
