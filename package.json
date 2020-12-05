@@ -28,7 +28,7 @@
     "node": ">=10"
   },
   "dependencies": {
-    "draco3dgltf": "^1.3.6",
+    "draco3dgltf": "^1.4.0",
     "import-jsx": "^4.0.0",
     "ink": "^3.0.7",
     "is-var-name": "^2.0.0",

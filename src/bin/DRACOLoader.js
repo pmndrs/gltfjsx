@@ -39,7 +39,7 @@ const decoder = require('draco3dgltf').createDecoderModule()
       return void 0 !== e && (r = e), (this.getAttributeOptions(t).skipDequantization = r), this
     },
     decodeDracoFile: function (t, e, r, o) {
-      this.decodeDracoFileInternal(t, decoder, e, r, o)
+      decoder.then((decoder) => this.decodeDracoFileInternal(t, decoder, e, r, o))
     },
     decodeDracoFileInternal: function (t, e, r, o, i) {
       var n = new e.DecoderBuffer()

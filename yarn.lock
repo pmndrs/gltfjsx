@@ -1573,10 +1573,10 @@ dot-prop@^5.2.0:
   dependencies:
     is-obj "^2.0.0"
 
-draco3dgltf@^1.3.6:
-  version "1.3.6"
-  resolved "https://registry.yarnpkg.com/draco3dgltf/-/draco3dgltf-1.3.6.tgz#bf8fa0a9febd8b7fa3e1ba36258dbc3a2b21ca86"
-  integrity sha512-VVVUDWTEB9FVl0Pz0zsdtxkCBq9hCt1whO2v2RkTMqykoTScazIetOsCk4CTmpnTyW6t4HZ0NqRY3t1zC8cvSA==
+draco3dgltf@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/draco3dgltf/-/draco3dgltf-1.4.0.tgz#34a24e814b9ce3c4a482441a104b03f0f10b448f"
+  integrity sha512-jvxu6L/KHYSdMPDWay+y9KkZlzxR18AkTcKRbyTK1UjJtY9pMsC6I04ibaT9lBs2iJFgIHz0JbOlsiu7/fB51g==
 
 ecc-jsbn@~0.1.1:
   version "0.1.2"
