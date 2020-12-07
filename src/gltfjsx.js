@@ -164,39 +164,8 @@ function print(objects, gltf, obj, parent) {
   return result
 }
 
-function printClips(gltf) {
-  return (
-    '{\n' +
-    gltf.animations
-      .map((clip, i) => `      "${clip.name}": mixer.clipAction(animations[${i}], group.current)`)
-      .join(',\n') +
-    '    }'
-  )
-}
-
 function printAnimations(gltf, animations, options) {
-  let rootNode = ''
-  let useRefText = 'useRef()'
-
-  if (options.types) {
-    useRefText = 'useRef<GLTFActions>()'
-    rootNode = 'null as any'
-    gltf.scene.traverse((child) => {
-      if (child.type === 'SkinnedMesh') {
-        rootNode = `nodes${sanitizeName(child.name)}`
-      }
-    })
-  }
-
-  return animations.length
-    ? `\n\n  const actions = ${useRefText}
-  const [mixer] = useState(() => new THREE.AnimationMixer(${rootNode}))
-  useFrame((state, delta) => mixer.update(delta))
-  useEffect(() => {
-    actions.current = ${printClips(gltf)}
-    return () => animations.forEach(clip => mixer.uncacheClip(clip))
-  }, [])`
-    : ''
+  return animations.length ? `\nconst { actions } = useAnimations(animations, group)` : ''
 }
 
 function parseExtras(extras) {
@@ -256,6 +225,7 @@ ${
     ? `import { OrthographicCamera } from '@react-three/drei/OrthographicCamera'`
     : ''
 }
+${hasAnimations ? 'import { useAnimations } from "@react-three/drei/useAnimations"' : ''}
 ${options.types ? 'import { GLTF } from "three/examples/jsm/loaders/GLTFLoader"' : ''}
 ${options.types ? printTypes(objects, animations) : ''}
 export default function Model(props${options.types ? ": JSX.IntrinsicElements['group']" : ''}) {
