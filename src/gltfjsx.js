@@ -69,7 +69,7 @@ function print(objects, gltf, obj, parent) {
   let children = ''
   let type = obj.type.charAt(0).toLowerCase() + obj.type.slice(1)
   let node = 'nodes' + sanitizeName(obj.name)
-  let hasAnimations = gltf.animations?.length > 0
+  let hasAnimations = gltf.animations && gltf.animations.length > 0
 
   if (options.setLog)
     setTimeout(
