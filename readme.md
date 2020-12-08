@@ -85,22 +85,28 @@ You don't need to do anything if your models are draco compressed, since `useGLT
 
 ### Animation
 
-If your GLTF contains animations it will add a THREE.AnimationMixer to your component and extract the clips:
+If your GLTF contains animations it will add [drei's](https://github.com/pmndrs/drei) useAnimations hook, which extracts all clips and prepares them as actions:
 
 ```jsx
-const actions = useRef()
-const [mixer] = useState(() => new THREE.AnimationMixer())
-useFrame((state, delta) => mixer.update(delta))
-useEffect(() => {
-  actions.current = { storkFly_B_: mixer.clipAction(gltf.animations[0]) }
-  return () => gltf.animations.forEach((clip) => mixer.uncacheClip(clip))
-}, [])
+const { nodes, materials, animations } = useGLTF('/model.gltf')
+const { actions } = useAnimations(animations, group)
 ```
 
 If you want to play an animation you can do so at any time:
 
 ```jsx
-<mesh onClick={(e) => actions.current.storkFly_B_.play()} />
+<mesh onClick={(e) => actions.jump.play()} />
+```
+
+if you want to blend animations:
+
+```jsx
+const [name, setName] = useState("jump")
+...
+useEffect(() => {
+  actions[name].reset().fadeIn(0.5).play()
+  return () => actions[name]].fadeOut(0.5)
+}, [name])
 ```
 
 ### Preload
