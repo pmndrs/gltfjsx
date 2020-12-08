@@ -85,7 +85,7 @@ You don't need to do anything if your models are draco compressed, since `useGLT
 
 ### Animation
 
-If your GLTF contains animations it will add [drei's](https://github.com/pmndrs/drei) useAnimations hook, which extracts all clips and prepares them as actions:
+If your GLTF contains animations it will add [drei's](https://github.com/pmndrs/drei) `useAnimations` hook, which extracts all clips and prepares them as actions:
 
 ```jsx
 const { nodes, materials, animations } = useGLTF('/model.gltf')
