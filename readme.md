@@ -2,9 +2,9 @@
 
 [![Version](https://img.shields.io/npm/v/@react-three/gltfjsx?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@react-three/gltfjsx) [![Discord Shield](https://img.shields.io/discord/740090768164651008?style=flat&colorA=000000&colorB=000000&label=discord&logo=discord&logoColor=ffffff)](https://discord.gg/ZZjjNvJ)
 
-Turns GLTF assets into dynamic, re-usable [react-three-fiber](https://github.com/pmndrs/react-three-fiber) JSX components. See it in action here: https://twitter.com/0xca0a/status/1224335000755146753
+A small command-line tool that turns GLTF assets into declarative and re-usable [react-three-fiber](https://github.com/pmndrs/react-three-fiber) JSX components. See it in action here: https://twitter.com/0xca0a/status/1224335000755146753
 
-The usual GLTF workflow is cumbersome: objects can only be found by traversal, changes are made by mutation, making contents conditional is hard. With gltfjsx the full graph is declarative and immutable. It creates look-up tables of all the objects and materials inside your asset, it will not touch or modify your files in any way.
+The usual GLTF workflow is cumbersome: objects can only be found by traversal, changes are made by mutation, making contents conditional is hard. Gltfjsx creates a nested graph of all the objects and materials inside your asset, it will not touch or modify your files in any way. Now you make easily the data dynamic, alter contents, etc.
 
 ## Usage
 
@@ -23,13 +23,6 @@ Options
 Examples
   npx gltfjsx model.glb -t
 ```
-
-### Requirements
-
-- The GLTF file has to be present in your projects `/public` folder
-- [three](https://github.com/mrdoob/three.js/) (>= 121.x)
-- [react-three-fiber](https://github.com/pmndrs/react-three-fiber) (>= 5.x)
-- [@react-three/drei](https://github.com/pmndrs/drei) (>= 2.x)
 
 ### A typical result will look like this
 
@@ -141,3 +134,11 @@ type GLTFResult = GLTF & {
 export default function Model(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF<GLTFResult>('/model.gltf')
 ```
+
+
+### Requirements
+
+- The GLTF file has to be present in your projects `/public` folder
+- [three](https://github.com/mrdoob/three.js/) (>= 121.x)
+- [react-three-fiber](https://github.com/pmndrs/react-three-fiber) (>= 5.x)
+- [@react-three/drei](https://github.com/pmndrs/drei) (>= 2.x)
