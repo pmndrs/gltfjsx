@@ -49,10 +49,8 @@ export default function Model(props) {
       <group name="Sun" position={[100, 50, 100]} rotation={[-Math.PI / 2, 0, 0]}>
         <primitive object={nodes.Sun_Orientation} />
       </group>
-      <group name="Cube">
-        <mesh material={materials.base} geometry={nodes.Cube_003_0.geometry} />
-        <mesh material={materials.inner} geometry={nodes.Cube_003_1.geometry} />
-      </group>
+      <mesh material={materials.base} geometry={nodes.Cube_003_0.geometry} />
+      <mesh material={materials.inner} geometry={nodes.Cube_003_1.geometry} />
     </group>
   )
 }
