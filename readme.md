@@ -26,7 +26,7 @@ Examples
 
 #### A typical use-case
 
-First you run your model through gltfjsx.
+First you run your model through gltfjsx. `npx` allows you to use npm packages without installing them.
 
 ```bash
 npx gltfjsx model.gltf
@@ -157,6 +157,7 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
 
 ## Requirements
 
+- Nodejs must be installed
 - The GLTF file has to be present in your projects `/public` folder
 - [three](https://github.com/mrdoob/three.js/) (>= 121.x)
 - [react-three-fiber](https://github.com/pmndrs/react-three-fiber) (>= 5.x)
