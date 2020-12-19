@@ -24,7 +24,15 @@ Examples
   npx gltfjsx model.glb -t
 ```
 
-### A typical result will look like this
+### A typical use-case
+
+First you run your model through gltfjsx.
+
+```bash
+npx gltfjsx model.gltf
+```
+
+It creates a javascript file (Model.js) that looks like this:
 
 ```jsx
 /*
@@ -41,7 +49,7 @@ import { useGLTF } from '@react-three/drei/useGLTF'
 import { PerspectiveCamera } from '@react-three/drei/PerspectiveCamera'
 
 export default function Model(props) {
-  const { nodes, materials } = useGLTF('/model.gltf')
+  const { nodes, materials } = useGLTF('model.gltf')
   return (
     <group {...props} dispose={null}>
       <group name="Camera" position={[10, 0, 50]} rotation={[Math.PI / 2, 0, 0]}>
@@ -59,11 +67,12 @@ export default function Model(props) {
 useGLTF.preload('/model.gltf')
 ```
 
-This component can now be dropped into your scene and it will show. It is asynchronous and must be wrapped into `<Suspense>`:
+This component can now be dropped into your scene. It is asynchronous and therefore must be wrapped into `<Suspense>` which gives you full control over intermediary loading-fallbacks and error handling.
 
 ```jsx
 import { Canvas } from 'react-three-fiber'
 import React, { Suspense } from 'react'
+import Model from './Model'
 
 function App() {
   return (
