@@ -58,8 +58,8 @@ export default function Model(props) {
       <group name="Sun" position={[100, 50, 100]} rotation={[-Math.PI / 2, 0, 0]}>
         <pointLight intensity={10} />
       </group>
-      <mesh material={materials.base} geometry={nodes.Cube_003_0.geometry} />
-      <mesh material={materials.inner} geometry={nodes.Cube_003_1.geometry} />
+      <mesh geometry={nodes.Cube_003_0.geometry} material={materials.base} />
+      <mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} />
     </group>
   )
 }
@@ -88,6 +88,15 @@ Now you can make the model dynamic, alter its contents.
 
 ```jsx
 <mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} material-color="green" />
+```
+
+
+##### Exchanging materials
+
+```jsx
+<mesh geometry={nodes.Cube_003_1.geometry}>
+  <meshStandardMaterial color="hotpink" />
+</mesh>
 ```
 
 ##### Making contents conditional
