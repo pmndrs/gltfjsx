@@ -24,7 +24,7 @@ Examples
   npx gltfjsx model.glb -t
 ```
 
-### A typical use-case
+#### A typical use-case
 
 First you run your model through gltfjsx.
 
@@ -82,20 +82,20 @@ function App() {
       </Suspense>
 ```
 
-### Clean output
+## Features
 
-It ...
+#### Clean output
 
-- only writes out an immutable graph, linking up the existing geometries and materials
-- will ommit empty groups or objects that don't serve a purpose, unless you opt into verbose mode (`-v`)
-- tries it's best to represent angles in the shortest way (as fractions of PI)
-- ommits names and userData, unless you opt into it (`-m`)
+- It only writes out an immutable graph, linking up the existing geometries and materials
+- It will ommit empty groups or objects that don't serve a purpose, unless you opt into verbose mode (`-v`)
+- It tries it's best to represent angles in the shortest way (as fractions of PI)
+- It ommits names and userData, unless you opt into it (`-m`)
 
-### Draco compression
+#### Draco compression
 
 You don't need to do anything if your models are draco compressed, since `useGLTF` defaults to a draco CDN (`https://www.gstatic.com/draco/v1/decoders/`). By adding the `--draco` flag you can refer to [local binaries](https://github.com/mrdoob/three.js/tree/dev/examples/js/libs/draco/gltf) which must reside in your /public folder.
 
-### Animation
+#### Animation
 
 If your GLTF contains animations it will add [drei's](https://github.com/pmndrs/drei) `useAnimations` hook, which extracts all clips and prepares them as actions:
 
@@ -121,7 +121,7 @@ useEffect(() => {
 }, [name])
 ```
 
-### Preload
+#### Preload
 
 The asset will be preloaded by default, this makes it quicker to load and reduces time-to-paint. Remove the preloader if you don't need it.
 
@@ -134,7 +134,7 @@ export default function Model(props) {
 useGLTF.preload('/model.gltf')
 ```
 
-### Types
+#### Types
 
 Add the `--types` flag and your GLTF will be typesafe.
 
@@ -155,7 +155,7 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
 ```
 
 
-### Requirements
+## Requirements
 
 - The GLTF file has to be present in your projects `/public` folder
 - [three](https://github.com/mrdoob/three.js/) (>= 121.x)
