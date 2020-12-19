@@ -26,13 +26,13 @@ Examples
 
 ### A typical use-case
 
-First you run your model through gltfjsx. `npx` allows you to use npm packages without installing them.
+1️⃣ First you run your model through gltfjsx. `npx` allows you to use npm packages without installing them.
 
 ```bash
 npx gltfjsx model.gltf
 ```
 
-It creates a javascript file that plots out all of the assets contents. The original gltf must still be be in your /public folder of course.
+2️⃣ It creates a javascript file that plots out all of the assets contents. The original gltf must still be be in your /public folder of course.
 
 ```jsx
 /*
@@ -66,8 +66,7 @@ export default function Model(props) {
 
 useGLTF.preload('/model.gltf')
 ```
-
-This component can now be dropped into your scene. It is asynchronous and therefore must be wrapped into `<Suspense>` which gives you full control over intermediary loading-fallbacks and error handling.
+3️⃣ This component can now be dropped into your scene. It is asynchronous and therefore must be wrapped into `<Suspense>` which gives you full control over intermediary loading-fallbacks and error handling.
 
 ```jsx
 import { Canvas } from 'react-three-fiber'
@@ -82,16 +81,16 @@ function App() {
       </Suspense>
 ```
 
-Now you can make the model dynamic, alter its contents.
+4️⃣ Now you can make the model dynamic.
 
-##### Changing colors
+Change colors for example:
 
 ```jsx
 <mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} material-color="green" />
 ```
 
 
-##### Exchanging materials
+Or exchange materials:
 
 ```jsx
 <mesh geometry={nodes.Cube_003_1.geometry}>
@@ -99,20 +98,17 @@ Now you can make the model dynamic, alter its contents.
 </mesh>
 ```
 
-##### Making contents conditional
-
+Make contents conditional:
 
 ```jsx
 {condition && <mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} />}
 ```
 
-##### Adding events
+Add events:
 
 ```jsx
 <mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} onClick={handleClick} />
 ```
-
-And so on ...
 
 ## Features
 
