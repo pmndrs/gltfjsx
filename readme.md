@@ -72,6 +72,15 @@ function App() {
       </Suspense>
 ```
 
+### Clean output
+
+It ...
+
+- only writes out an immutable graph, linking up the existing geometries and materials
+- will ommit empty groups or objects that don't serve a purpose, unless you opt into verbose mode (`-v`)
+- tries it's best to represent angles in the shortest way (as fractions of PI)
+- ommits names and userData, unless you opt into it (`-m`)
+
 ### Draco compression
 
 You don't need to do anything if your models are draco compressed, since `useGLTF` defaults to a draco CDN (`https://www.gstatic.com/draco/v1/decoders/`). By adding the `--draco` flag you can refer to [local binaries](https://github.com/mrdoob/three.js/tree/dev/examples/js/libs/draco/gltf) which must reside in your /public folder.
