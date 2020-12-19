@@ -24,7 +24,7 @@ Examples
   npx gltfjsx model.glb -t
 ```
 
-#### A typical use-case
+### A typical use-case
 
 First you run your model through gltfjsx. `npx` allows you to use npm packages without installing them.
 
@@ -81,6 +81,29 @@ function App() {
         <Model />
       </Suspense>
 ```
+
+Now you can make the model dynamic, alter its contents.
+
+##### Changing colors
+
+```jsx
+<mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} material-color="green" />
+```
+
+##### Making contents conditional
+
+
+```jsx
+{condition && <mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} />}
+```
+
+##### Adding events
+
+```jsx
+<mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} onClick={handleClick} />
+```
+
+And so on ...
 
 ## Features
 
