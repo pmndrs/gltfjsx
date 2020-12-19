@@ -60,16 +60,18 @@ export default function Model(props) {
 useGLTF.preload('/model.gltf')
 ```
 
-This component is async and must be wrapped into `<Suspense>` for fallbacks:
+This component can now be dropped into your scene and it will show. It is asynchronous and must be wrapped into `<Suspense>`:
 
 ```jsx
+import { Canvas } from 'react-three-fiber'
 import React, { Suspense } from 'react'
 
 function App() {
   return (
-    <Suspense fallback={null}>
-      <Model />
-    </Suspense>
+    <Canvas>
+      <Suspense fallback={null}>
+        <Model />
+      </Suspense>
 ```
 
 ### Draco compression
