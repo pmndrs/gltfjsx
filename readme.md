@@ -32,7 +32,7 @@ First you run your model through gltfjsx.
 npx gltfjsx model.gltf
 ```
 
-It creates a javascript file (Model.js) that looks like this:
+It creates a javascript file that plots out all of the assets contents. The original gltf must still be be in your /public folder of course.
 
 ```jsx
 /*
