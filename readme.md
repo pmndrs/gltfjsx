@@ -1,4 +1,4 @@
-![GLTFSJSX](https://i.imgur.com/ZB4uUaz.png)
+![gltfjsx](logo.jpg)
 
 [![Version](https://img.shields.io/npm/v/@react-three/gltfjsx?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@react-three/gltfjsx) [![Discord Shield](https://img.shields.io/discord/740090768164651008?style=flat&colorA=000000&colorB=000000&label=discord&logo=discord&logoColor=ffffff)](https://discord.gg/ZZjjNvJ)
 

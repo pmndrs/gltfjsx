@@ -115,13 +115,15 @@ function print(objects, gltf, obj, parent) {
     if (obj.fov !== 50) result += `fov={${rNbr(obj.fov)}} `
   }
 
+  // Write out geometry first
+  if (obj.geometry) result += `geometry={${node}.geometry} `
+
   // Write out materials
   if (obj.material) {
     if (obj.material.name) result += `material={materials${sanitizeName(obj.material.name)}} `
     else result += `material={${node}.material} `
   }
 
-  if (obj.geometry) result += `geometry={${node}.geometry} `
   if (obj.skeleton) result += `skeleton={${node}.skeleton} `
   if (obj.visible === false) result += `visible={false} `
   if (obj.castShadow === true) result += `castShadow `
