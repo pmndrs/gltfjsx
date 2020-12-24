@@ -33,6 +33,10 @@
           animation: float-mid ease-in-out 4s infinite alternate;
         }
 
+        svg > g > rect.r1 {
+          animation: float-mid ease-in-out 3s infinite alternate;
+        }
+
         svg > g > line {
           animation: float-mid ease-in-out 4s infinite alternate;
         }
@@ -57,6 +61,10 @@
           animation: float-hi ease-in-out 2s infinite alternate;
         }
 
+        svg > g > circle.f1 {
+          animation: float-hi ease-in-out 2.5s infinite alternate;
+        }
+
         svg > g > path {
           animation: float-mid ease-in-out 5s infinite alternate;
         }
@@ -69,7 +77,7 @@
 			<svg width="100%" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0)">
 <rect width="1920" height="1080" fill="white"/>
-<circle class="faster" cx="1338" cy="109" r="84" stroke="black" stroke-width="6"/>
+<circle class="faster" cx="1338" cy="209" r="84" stroke="black" stroke-width="6"/>
 <circle cx="-43" cy="1272" r="619" stroke="black" stroke-width="6"/>
 <circle cx="-43" cy="1272" r="593" stroke="black" stroke-width="6"/>
 <circle cx="-43" cy="1272" r="568" stroke="black" stroke-width="6"/>
@@ -83,7 +91,7 @@
 <circle cx="-43" cy="1272" r="355" stroke="black" stroke-width="6"/>
 <circle cx="-43" cy="1272" r="329" stroke="black" stroke-width="6"/>
 <circle cx="-43" cy="1272" r="303" stroke="black" stroke-width="6"/>
-<circle cx="474.5" cy="350.5" r="24.5" fill="black"/>
+<circle class="f1" cx="474.5" cy="350.5" r="24.5" fill="black"/>
 <circle cx="907.5" cy="145.5" r="10.5" fill="black"/>
 <circle cx="907.5" cy="230.5" r="10.5" fill="black"/>
 <circle cx="907.5" cy="315.5" r="10.5" fill="black"/>
@@ -105,7 +113,7 @@
 <circle cx="1615.5" cy="145.5" r="10.5" fill="black"/>
 <circle cx="1615.5" cy="230.5" r="10.5" fill="black"/>
 <circle cx="1615.5" cy="315.5" r="10.5" fill="black"/>
-<rect x="640" y="758" width="169" height="169" stroke="black" stroke-width="6"/>
+<rect class="r1" x="640" y="758" width="169" height="169" stroke="black" stroke-width="6"/>
 <line class="l1" x1="1275" y1="780" x2="1393" y2="780" stroke="black" stroke-width="6"/>
 <line class="l2" x1="1095" y1="839" x2="1685" y2="839" stroke="black" stroke-width="6"/>
 <line class="l3" x1="1275" y1="898" x2="1518" y2="898" stroke="black" stroke-width="6"/>
