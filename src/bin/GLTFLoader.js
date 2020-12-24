@@ -1961,10 +1961,12 @@ THREE.GLTFLoader = (function () {
 
   /** When Object3D instances are targeted by animation, they need unique names. */
   GLTFParser.prototype.createUniqueName = function (originalName) {
-    var name = THREE.PropertyBinding.sanitizeNodeName(originalName || '')
+    var sanitizedName = THREE.PropertyBinding.sanitizeNodeName(originalName || '')
+
+    var name = sanitizedName
 
     for (var i = 1; this.nodeNamesUsed[name]; ++i) {
-      name = originalName + '_' + i
+      name = sanitizedName + '_' + i
     }
 
     this.nodeNamesUsed[name] = true
