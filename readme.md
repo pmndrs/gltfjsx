@@ -1,6 +1,4 @@
-<a href="#">
-  <img src="logo.svg">
-</a>
+<img src="logo.svg">
 <br />
 <br/>
 
