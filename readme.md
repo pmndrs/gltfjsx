@@ -1,5 +1,5 @@
 <a href="#">
-  <img src="header.svg">
+  <img src="logo.svg">
 </a>
 <br />
 <br/>
