@@ -1,0 +1,128 @@
+<svg fill="none" viewBox="0 0 800 400" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" style="height: auto">
+	<foreignObject width="100%" height="100%">
+		<div xmlns="http://www.w3.org/1999/xhtml">
+			<style>
+        @keyframes float {
+					0% {
+						transform: translate3d(0,0px,0);
+					}
+					100% {
+						transform: translate3d(0,-20px,0);
+					}
+				}
+
+        @keyframes float-mid {
+					0% {
+						transform: translate3d(0,0px,0);
+					}
+					100% {
+						transform: translate3d(0,-40px,0);
+					}
+				}
+
+        @keyframes float-hi {
+					0% {
+						transform: translate3d(0,0px,0);
+					}
+					100% {
+						transform: translate3d(0,-60px,0);
+					}
+				}				
+
+        svg > g > rect {
+          animation: float-mid ease-in-out 4s infinite alternate;
+        }
+
+        svg > g > line {
+          animation: float-mid ease-in-out 4s infinite alternate;
+        }
+
+        svg > g > line.l1 {
+          animation: float-mid ease-in-out 4.5s infinite alternate;
+        }
+
+        svg > g > line.l2 {
+          animation: float-mid ease-in-out 5s infinite alternate;
+        }
+
+        svg > g > line.l3 {
+          animation: float-mid ease-in-out 5.5s infinite alternate;
+        }
+
+        svg > g > circle {
+          animation: float-hi ease-in-out 3s infinite alternate;
+        }
+
+        svg > g > circle.faster {
+          animation: float-hi ease-in-out 2s infinite alternate;
+        }
+
+        svg > g > path {
+          animation: float-mid ease-in-out 5s infinite alternate;
+        }
+
+        svg > g > path:hover {
+          fill: hotpink;
+        }
+
+			</style>
+			<svg width="100%" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0)">
+<rect width="1920" height="1080" fill="white"/>
+<circle class="faster" cx="1338" cy="109" r="84" stroke="black" stroke-width="6"/>
+<circle cx="-43" cy="1272" r="619" stroke="black" stroke-width="6"/>
+<circle cx="-43" cy="1272" r="593" stroke="black" stroke-width="6"/>
+<circle cx="-43" cy="1272" r="568" stroke="black" stroke-width="6"/>
+<circle cx="-43" cy="1272" r="540" stroke="black" stroke-width="6"/>
+<circle cx="-43" cy="1272" r="514" stroke="black" stroke-width="6"/>
+<circle cx="-43" cy="1272" r="487" stroke="black" stroke-width="6"/>
+<circle cx="-43" cy="1272" r="461" stroke="black" stroke-width="6"/>
+<circle cx="-43" cy="1272" r="435" stroke="black" stroke-width="6"/>
+<circle cx="-43" cy="1272" r="409" stroke="black" stroke-width="6"/>
+<circle cx="-43" cy="1272" r="382" stroke="black" stroke-width="6"/>
+<circle cx="-43" cy="1272" r="355" stroke="black" stroke-width="6"/>
+<circle cx="-43" cy="1272" r="329" stroke="black" stroke-width="6"/>
+<circle cx="-43" cy="1272" r="303" stroke="black" stroke-width="6"/>
+<circle cx="474.5" cy="350.5" r="24.5" fill="black"/>
+<circle cx="907.5" cy="145.5" r="10.5" fill="black"/>
+<circle cx="907.5" cy="230.5" r="10.5" fill="black"/>
+<circle cx="907.5" cy="315.5" r="10.5" fill="black"/>
+<circle cx="1025.5" cy="145.5" r="10.5" fill="black"/>
+<circle cx="1025.5" cy="230.5" r="10.5" fill="black"/>
+<circle cx="1025.5" cy="315.5" r="10.5" fill="black"/>
+<circle cx="1143.5" cy="145.5" r="10.5" fill="black"/>
+<circle cx="1143.5" cy="230.5" r="10.5" fill="black"/>
+<circle cx="1143.5" cy="315.5" r="10.5" fill="black"/>
+<circle cx="1261.5" cy="145.5" r="10.5" fill="black"/>
+<circle cx="1261.5" cy="230.5" r="10.5" fill="black"/>
+<circle cx="1261.5" cy="315.5" r="10.5" fill="black"/>
+<circle cx="1379.5" cy="145.5" r="10.5" fill="black"/>
+<circle cx="1379.5" cy="230.5" r="10.5" fill="black"/>
+<circle cx="1379.5" cy="315.5" r="10.5" fill="black"/>
+<circle cx="1497.5" cy="145.5" r="10.5" fill="black"/>
+<circle cx="1497.5" cy="230.5" r="10.5" fill="black"/>
+<circle cx="1497.5" cy="315.5" r="10.5" fill="black"/>
+<circle cx="1615.5" cy="145.5" r="10.5" fill="black"/>
+<circle cx="1615.5" cy="230.5" r="10.5" fill="black"/>
+<circle cx="1615.5" cy="315.5" r="10.5" fill="black"/>
+<rect x="640" y="758" width="169" height="169" stroke="black" stroke-width="6"/>
+<line class="l1" x1="1275" y1="780" x2="1393" y2="780" stroke="black" stroke-width="6"/>
+<line class="l2" x1="1095" y1="839" x2="1685" y2="839" stroke="black" stroke-width="6"/>
+<line class="l3" x1="1275" y1="898" x2="1518" y2="898" stroke="black" stroke-width="6"/>
+<line x1="101.834" y1="297.925" x2="192.834" y2="202.925" stroke="black" stroke-width="6"/>
+<line x1="299.834" y1="298.925" x2="390.834" y2="203.925" stroke="black" stroke-width="6"/>
+<line x1="301.834" y1="494.925" x2="392.834" y2="399.925" stroke="black" stroke-width="6"/>
+<line x1="104.834" y1="491.925" x2="195.834" y2="396.925" stroke="black" stroke-width="6"/>
+<rect x="103" y="297" width="200" height="197" stroke="black" stroke-width="6"/>
+<rect x="192" y="204" width="200" height="197" stroke="black" stroke-width="6"/>
+<path d="M652.48 714.273C696.692 714.273 729.291 694.031 729.291 652.163V485.864H691.259V512.923H689.128C683.268 501.098 671.017 483.733 642.146 483.733C604.327 483.733 574.604 513.349 574.604 567.149C574.604 620.523 604.327 647.156 642.04 647.156C670.058 647.156 683.162 632.135 689.128 620.097H691.045V651.098C691.045 675.175 675.065 685.082 653.119 685.082C629.895 685.082 619.668 674.109 614.98 664.521L580.25 672.938C587.281 695.842 610.825 714.273 652.48 714.273ZM652.8 616.901C627.338 616.901 613.915 597.085 613.915 566.936C613.915 537.213 627.125 515.374 652.8 515.374C677.622 515.374 691.259 535.935 691.259 566.936C691.259 598.151 677.409 616.901 652.8 616.901ZM789.381 431.318H750.815V649.5H789.381V431.318ZM892.75 485.864H860.47V446.659H821.904V485.864H798.68V515.693H821.904V606.673C821.691 637.462 844.064 652.589 873.041 651.737C884.014 651.418 891.578 649.287 895.733 647.902L889.234 617.753C887.103 618.286 882.735 619.244 877.941 619.244C868.247 619.244 860.47 615.835 860.47 600.281V515.693H892.75V485.864ZM989.886 485.864H955.902V472.973C955.902 460.189 961.229 453.051 975.611 453.051C981.683 453.051 986.797 454.436 989.993 455.395L997.77 425.565C992.763 423.861 981.79 421.091 968.473 421.091C940.028 421.091 917.337 437.391 917.337 470.416V485.864H893.153V515.693H917.337V649.5H955.902V515.693H989.886V485.864ZM1002.09 485.864V658.342C1002.09 672.085 996.229 679.436 981.421 679.436C979.504 679.436 978.012 679.33 975.881 679.223V710.651C978.651 710.864 980.995 710.864 983.765 710.864C1019.88 710.864 1040.65 694.244 1040.65 658.875V485.864H1002.09ZM1021.26 462.639C1033.52 462.639 1043.53 453.264 1043.53 441.759C1043.53 430.146 1033.52 420.771 1021.26 420.771C1008.91 420.771 998.893 430.146 998.893 441.759C998.893 453.264 1008.91 462.639 1021.26 462.639ZM1191.64 529.116C1186.32 501.418 1164.16 483.733 1125.81 483.733C1086.39 483.733 1059.54 503.122 1059.65 533.378C1059.54 557.241 1074.24 573.009 1105.67 579.507L1133.58 585.366C1148.6 588.669 1155.64 594.741 1155.64 604.01C1155.64 615.196 1143.49 623.612 1125.17 623.612C1107.48 623.612 1095.98 615.942 1092.67 601.24L1055.07 604.862C1059.86 634.905 1085.11 652.696 1125.27 652.696C1166.18 652.696 1195.05 631.496 1195.16 600.494C1195.05 577.163 1180.03 562.888 1149.14 556.176L1121.22 550.21C1104.61 546.482 1098 540.729 1098.11 531.247C1098 520.168 1110.25 512.497 1126.34 512.497C1144.13 512.497 1153.5 522.192 1156.49 532.952L1191.64 529.116ZM1240.49 485.864H1199.58L1248.16 567.682L1198.31 649.5H1239.22L1273.52 590.587L1308.14 649.5H1348.73L1298.56 567.682L1347.88 485.864H1307.08L1273.52 546.268L1240.49 485.864Z" fill="black"/>
+</g>
+<defs>
+<clipPath id="clip0">
+<rect width="1920" height="1080" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+		</div>
+	</foreignObject>
+</svg>
