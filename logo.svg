@@ -20,6 +20,15 @@
 					}
 				}
 
+        @keyframes float-rotate-mid {
+					0% {
+						transform: translate3d(0,-150px,0) rotate(0deg);
+					}
+					100% {
+						transform: translate3d(0,-10px,0) rotate(180deg);
+					}
+				}
+
         @keyframes float-hi {
 					0% {
 						transform: translate3d(0,0px,0);
@@ -34,7 +43,8 @@
         }
 
         svg > g > rect.r1 {
-          animation: float-mid ease-in-out 3s infinite alternate;
+          transform-origin: 725px 843px;
+          animation: float-rotate-mid ease-in-out 3s infinite alternate;
         }
 
         svg > g > line {
@@ -42,15 +52,15 @@
         }
 
         svg > g > line.l1 {
-          animation: float-mid ease-in-out 4.5s infinite alternate;
+          animation: float-mid ease-in-out 4.25s infinite alternate;
         }
 
         svg > g > line.l2 {
-          animation: float-mid ease-in-out 5s infinite alternate;
+          animation: float-mid ease-in-out 4.5s infinite alternate;
         }
 
         svg > g > line.l3 {
-          animation: float-mid ease-in-out 5.5s infinite alternate;
+          animation: float-mid ease-in-out 4.75s infinite alternate;
         }
 
         svg > g > circle {
@@ -117,7 +127,7 @@
 <circle cx="1615.5" cy="145.5" r="3" stroke="black" stroke-width="15"/>
 <circle cx="1615.5" cy="230.5" r="3" stroke="black" stroke-width="15"/>
 <circle cx="1615.5" cy="315.5" r="3" stroke="black" stroke-width="15"/>
-<rect class="r1" x="640" y="758" width="169" height="169" stroke="black" stroke-width="6"/>
+<rect class="r1" x="640" y="758" width="170" height="170" stroke="black" stroke-width="6"/>
 <line class="l1" x1="1275" y1="780" x2="1393" y2="780" stroke="black" stroke-width="6"/>
 <line class="l2" x1="1095" y1="839" x2="1685" y2="839" stroke="black" stroke-width="6"/>
 <line class="l3" x1="1275" y1="898" x2="1518" y2="898" stroke="black" stroke-width="6"/>
