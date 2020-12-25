@@ -22,10 +22,10 @@
 
         @keyframes float-rotate-mid {
 					0% {
-						transform: translate3d(0,-150px,0) rotate(0deg);
+						transform: translate3d(0,-50px,0) rotate(0deg);
 					}
 					100% {
-						transform: translate3d(0,-10px,0) rotate(180deg);
+						transform: translate3d(0,0px,0) rotate(180deg);
 					}
 				}
 
@@ -43,7 +43,7 @@
         }
 
         svg > g > rect.r1 {
-          transform-origin: 725px 843px;
+          transform-origin: 700px 800px;
           animation: float-rotate-mid ease-in-out 3s infinite alternate;
         }
 
@@ -127,7 +127,7 @@
 <circle cx="1615.5" cy="145.5" r="3" stroke="black" stroke-width="15"/>
 <circle cx="1615.5" cy="230.5" r="3" stroke="black" stroke-width="15"/>
 <circle cx="1615.5" cy="315.5" r="3" stroke="black" stroke-width="15"/>
-<rect class="r1" x="640" y="758" width="170" height="170" stroke="black" stroke-width="6"/>
+<rect class="r1" x="650" y="750" width="100" height="100" stroke="black" stroke-width="6"/>
 <line class="l1" x1="1275" y1="780" x2="1393" y2="780" stroke="black" stroke-width="6"/>
 <line class="l2" x1="1095" y1="839" x2="1685" y2="839" stroke="black" stroke-width="6"/>
 <line class="l3" x1="1275" y1="898" x2="1518" y2="898" stroke="black" stroke-width="6"/>
