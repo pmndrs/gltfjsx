@@ -167,7 +167,13 @@ function print(objects, gltf, obj, parent) {
 }
 
 function printAnimations(gltf, animations, options) {
-  return animations.length ? `\nconst { actions } = useAnimations(animations, group)` : ''
+  if (animations.length) {
+    return options.types
+      ? `\nconst { actions } = useAnimations(animations, group as React.MutableRefObject<THREE.Object3D>)`
+      : `\nconst { actions } = useAnimations(animations, group)`
+  }
+
+  return ''
 }
 
 function parseExtras(extras) {
