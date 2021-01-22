@@ -226,14 +226,10 @@ ${hasAnimations || options.types ? `\nimport * as THREE from 'three'` : ''}
 import React, { useRef${hasAnimations ? ', useState, useEffect' : ''} } from 'react'${
                 hasAnimations ? `\nimport { useFrame } from 'react-three-fiber'` : ''
               }
-import { useGLTF } from '@react-three/drei/useGLTF'
-${scene.includes('PerspectiveCamera') ? `import { PerspectiveCamera } from '@react-three/drei/PerspectiveCamera'` : ''}
-${
-  scene.includes('OrthographicCamera')
-    ? `import { OrthographicCamera } from '@react-three/drei/OrthographicCamera'`
-    : ''
-}
-${hasAnimations ? 'import { useAnimations } from "@react-three/drei/useAnimations"' : ''}
+import { useGLTF } from '@react-three/drei'
+${scene.includes('PerspectiveCamera') ? `import { PerspectiveCamera } from '@react-three/drei'` : ''}
+${scene.includes('OrthographicCamera') ? `import { OrthographicCamera } from '@react-three/drei'` : ''}
+${hasAnimations ? 'import { useAnimations } from "@react-three/drei"' : ''}
 ${options.types ? 'import { GLTF } from "three/examples/jsm/loaders/GLTFLoader"' : ''}
 ${options.types ? printTypes(objects, animations) : ''}
 export default function Model(props${options.types ? ": JSX.IntrinsicElements['group']" : ''}) {
