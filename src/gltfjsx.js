@@ -10,7 +10,7 @@ const path = require('path')
 
 let options = {}
 
-function toArrayBuffer(buf) {
+function toArrayBuffer (buf) {
   var ab = new ArrayBuffer(buf.length)
   var view = new Uint8Array(ab)
   for (var i = 0; i < buf.length; ++i) view[i] = buf[i]
@@ -20,11 +20,11 @@ function toArrayBuffer(buf) {
 const gltfLoader = new THREE.GLTFLoader()
 gltfLoader.setDRACOLoader(new DracoLoader())
 
-function rNbr(number) {
+function rNbr (number) {
   return parseFloat(number.toFixed(options.precision))
 }
 
-function rDeg(number) {
+function rDeg (number) {
   const abs = Math.abs(Math.round(parseFloat(number) * 100000))
   for (let i = 1; i <= 10; i++) {
     if (abs === Math.round(parseFloat(Math.PI / i) * 100000))
@@ -220,14 +220,9 @@ ${hasAnimations || options.types ? `\nimport * as THREE from 'three'` : ''}
 import React, { useRef${hasAnimations ? ', useState, useEffect' : ''} } from 'react'${
                 hasAnimations ? `\nimport { useFrame } from 'react-three-fiber'` : ''
               }
-import { useGLTF } from '@react-three/drei/useGLTF'
-${scene.includes('PerspectiveCamera') ? `import { PerspectiveCamera } from '@react-three/drei/PerspectiveCamera'` : ''}
-${
-  scene.includes('OrthographicCamera')
-    ? `import { OrthographicCamera } from '@react-three/drei/OrthographicCamera'`
-    : ''
-}
-${hasAnimations ? 'import { useAnimations } from "@react-three/drei/useAnimations"' : ''}
+import { useGLTF, ${scene.includes('PerspectiveCamera') ? 'PerspectiveCamera,' : ''}
+${scene.includes('OrthographicCamera') ? 'OrthographicCamera,' : ''}
+${hasAnimations ? 'useAnimations' : ''} } from '@react-three/drei'
 ${options.types ? 'import { GLTF } from "three/examples/jsm/loaders/GLTFLoader"' : ''}
 ${options.types ? printTypes(objects, animations) : ''}
 export default function Model(props${options.types ? ": JSX.IntrinsicElements['group']" : ''}) {
