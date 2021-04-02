@@ -16,7 +16,7 @@ function Conversion({ file, ...config }) {
   React.useEffect(() => {
     async function run() {
       try {
-        await gltfjsx(file, output, { ...config, setLog, timeout: 0, delay: 40 })
+        await gltfjsx(file, output, { ...config, setLog, timeout: 0, delay: 5 })
         setDone(true)
       } catch (e) {
         setDone(() => {
