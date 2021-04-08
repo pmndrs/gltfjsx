@@ -68,7 +68,10 @@ function parse(fileName, gltf, options = {}) {
       obj.name.length &&
       (options.verbose ||
         obj.morphTargetDictionary ||
-        (hasAnimations && gltf.animations.find((clip) => clip.targetNames.includes(obj.name))))
+        (hasAnimations &&
+          gltf.animations.find(
+            (clip) => clip.name.includes(obj.name) || (clip.targetNames && clip.targetNames.includes(obj.name))
+          )))
     )
       result += `name="${obj.name}" `
 
