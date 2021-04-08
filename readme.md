@@ -184,6 +184,21 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF<GLTFResult>('/model.gltf')
 ```
 
+## Using the parser stand-alone
+
+```jsx
+import parse from 'gltfjsx'
+import { GLTFLoader, DRACOLoader } from 'three-stdlib'
+
+const gltfLoader = new GLTFLoader()
+const dracoloader = new DRACOLoader()
+dracoloader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/')
+gltfLoader.setDRACOLoader(dracoloader)
+
+gltfLoader.load(url, gltf => {
+  const jsx = parse(filename, gltf, config)
+})
+```
 
 ## Requirements
 

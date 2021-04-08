@@ -16,6 +16,8 @@ const cli = meow(
 		--types, -t      Add Typescript definitions
     --verbose, -v    Verbose output w/ names and empty groups
     --meta, -m       Include metadata (as userData)
+    --shadows, s     Let meshes cast and receive shadows
+    --printwidth, w  Prettier printWidth (default: 120)
     --precision, -p  Number of fractional digits (default: 2)
 		--draco, -d      Draco binary path
 		--root, -r       Sets directory from which .gltf file is served
@@ -27,6 +29,8 @@ const cli = meow(
     flags: {
       types: { type: 'boolean', alias: 't' },
       verbose: { type: 'boolean', alias: 'v' },
+      shadows: { type: 'boolean', alias: 's' },
+      printwidth: { type: 'number', alias: 'p', default: 120 },
       meta: { type: 'boolean', alias: 'm' },
       precision: { type: 'number', alias: 'p', default: 2 },
       draco: { type: 'string', alias: 'd' },
