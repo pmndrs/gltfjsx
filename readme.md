@@ -28,6 +28,8 @@ Examples
   npx gltfjsx model.glb -t
 ```
 
+Or as an online-service: https://gltf.pmnd.rs
+
 ### A typical use-case
 
 1️⃣ First you run your model through gltfjsx. `npx` allows you to use npm packages without installing them.
