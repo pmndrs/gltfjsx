@@ -17,6 +17,8 @@ Usage
 Options
   --types, -t      Add Typescript definitions
   --verbose, -v    Verbose output w/ names and empty groups
+  --shadows, s     Let meshes cast and receive shadows
+  --printwidth, w  Prettier printWidth (default: 120)
   --meta, -m       Include metadata (as userData)
   --precision, -p  Number of fractional digits (default: 2)
   --draco, -d      Draco binary path
@@ -68,6 +70,7 @@ export default function Model(props) {
 
 useGLTF.preload('/model.gltf')
 ```
+
 3️⃣ This component can now be dropped into your scene. It is asynchronous and therefore must be wrapped into `<Suspense>` which gives you full control over intermediary loading-fallbacks and error handling.
 
 ```jsx
@@ -91,7 +94,6 @@ Change colors for example:
 <mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} material-color="green" />
 ```
 
-
 Or exchange materials:
 
 ```jsx
@@ -103,7 +105,9 @@ Or exchange materials:
 Make contents conditional:
 
 ```jsx
-{condition && <mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} />}
+{
+  condition && <mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} />
+}
 ```
 
 Add events:
@@ -195,7 +199,7 @@ const dracoloader = new DRACOLoader()
 dracoloader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/')
 gltfLoader.setDRACOLoader(dracoloader)
 
-gltfLoader.load(url, gltf => {
+gltfLoader.load(url, (gltf) => {
   const jsx = parse(filename, gltf, config)
 })
 ```
