@@ -37,6 +37,7 @@ function parse(fileName, gltf, options = {}) {
     let children = ''
     let type = obj.type.charAt(0).toLowerCase() + obj.type.slice(1)
     let node = 'nodes' + sanitizeName(obj.name)
+    let isCamera = type === 'perspectiveCamera' || type === 'orthographicCamera'
     let hasAnimations = gltf.animations && gltf.animations.length > 0
 
     if (options.setLog)
@@ -47,11 +48,11 @@ function parse(fileName, gltf, options = {}) {
 
     // Turn object3d's into groups, it should be faster according to the threejs docs
     if (type === 'object3D') type = 'group'
-    if (obj instanceof THREE.PerspectiveCamera) type = 'PerspectiveCamera'
-    if (obj instanceof THREE.OrthographicCamera) type = 'OrthographicCamera'
+    if (type === 'perspectiveCamera') type = 'PerspectiveCamera'
+    if (type === 'orthographicCamera') type = 'OrthographicCamera'
 
     // Bail out on lights and bones
-    if (obj instanceof THREE.Bone) {
+    if (type === 'bone') {
       return `<primitive object={${node}} />${!parent ? '' : '\n'}`
     }
 
@@ -76,13 +77,13 @@ function parse(fileName, gltf, options = {}) {
       result += `name="${obj.name}" `
 
     // Handle cameras
-    if (obj instanceof THREE.Camera) {
+    if (isCamera) {
       result += `makeDefault={false} `
       if (obj.zoom !== 1) result += `zoom={${rNbr(obj.zoom)}} `
       if (obj.far !== 2000) result += `far={${rNbr(obj.far)}} `
       if (obj.near !== 0.1) result += `near={${rNbr(obj.near)}} `
     }
-    if (obj instanceof THREE.PerspectiveCamera) {
+    if (type === 'PerspectiveCamera') {
       if (obj.fov !== 50) result += `fov={${rNbr(obj.fov)}} `
     }
 
@@ -111,13 +112,13 @@ function parse(fileName, gltf, options = {}) {
     if (obj.decay && obj.decay !== 1) result += `decay={${rNbr(obj.decay)}} `
     if (obj.distance && obj.distance !== 0) result += `distance={${rNbr(obj.distance)}} `
     if (obj.color && obj.color.getHexString() !== 'ffffff') result += `color="#${obj.color.getHexString()}" `
-    if (obj.up instanceof THREE.Vector3 && !obj.up.equals(new THREE.Vector3(0, 1, 0)))
+    if (obj.up && obj.up.isVector3 && !obj.up.equals(new THREE.Vector3(0, 1, 0)))
       result += `up={[${rNbr(obj.up.x)}, ${rNbr(obj.up.y)}, ${rNbr(obj.up.z)},]} `
-    if (obj.position instanceof THREE.Vector3 && obj.position.length())
+    if (obj.position && obj.position.isVector3 && obj.position.length())
       result += `position={[${rNbr(obj.position.x)}, ${rNbr(obj.position.y)}, ${rNbr(obj.position.z)},]} `
-    if (obj.rotation instanceof THREE.Euler && obj.rotation.toVector3().length())
+    if (obj.rotation && obj.rotation.isEuler && obj.rotation.toVector3().length())
       result += `rotation={[${rDeg(obj.rotation.x)}, ${rDeg(obj.rotation.y)}, ${rDeg(obj.rotation.z)},]} `
-    if (obj.scale instanceof THREE.Vector3 && obj.scale.x !== 1 && obj.scale.y !== 1 && obj.scale.z !== 1)
+    if (obj.scale && obj.scale.isVector3 && obj.scale.x !== 1 && obj.scale.y !== 1 && obj.scale.z !== 1)
       result += `scale={[${rNbr(obj.scale.x)}, ${rNbr(obj.scale.y)}, ${rNbr(obj.scale.z)},]} `
     if (options.meta && obj.userData && Object.keys(obj.userData).length)
       result += `userData={${JSON.stringify(obj.userData)}} `
