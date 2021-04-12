@@ -21,6 +21,7 @@ const cli = meow(
     --precision, -p  Number of fractional digits (default: 2)
 		--draco, -d      Draco binary path
 		--root, -r       Sets directory from which .gltf file is served
+    --debug, -D      Debug output
 
 	Examples
 	  $ gltfjsx model.glb
@@ -35,6 +36,7 @@ const cli = meow(
       precision: { type: 'number', alias: 'p', default: 2 },
       draco: { type: 'string', alias: 'd' },
       root: { type: 'string', alias: 'r' },
+      debug: { type: 'boolean', alias: 'D' },
     },
   }
 )

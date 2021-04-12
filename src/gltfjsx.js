@@ -35,21 +35,17 @@ module.exports = function (file, output, options) {
         const filePath = getRelativeFilePath(file)
         const data = fs.readFileSync(file)
         const arrayBuffer = toArrayBuffer(data)
-        try {
-          gltfLoader.parse(
-            arrayBuffer,
-            '',
-            (gltf) => {
-              stream.write(parse(filePath, gltf, options))
-              stream.end()
-              if (options.setLog) setTimeout(() => resolve(), (options.timeout = options.timeout + options.delay))
-              else resolve()
-            },
-            reject
-          )
-        } catch (e) {
-          reject(e)
-        }
+        gltfLoader.parse(
+          arrayBuffer,
+          '',
+          (gltf) => {
+            stream.write(parse(filePath, gltf, options))
+            stream.end()
+            if (options.setLog) setTimeout(() => resolve(), (options.timeout = options.timeout + options.delay))
+            else resolve()
+          },
+          reject
+        )
       }
     })
   })

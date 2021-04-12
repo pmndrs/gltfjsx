@@ -111,7 +111,8 @@ function parse(fileName, gltf, options = {}) {
 
     // Write out materials
     if (obj.material) {
-      if (obj.material.name) result += `material={materials${sanitizeName(obj.material.name)}} `
+      if (obj.material.name && duplicates[obj.material.name] === 1)
+        result += `material={materials${sanitizeName(obj.material.name)}} `
       else result += `material={${node}.material} `
     }
 
@@ -171,8 +172,38 @@ function parse(fileName, gltf, options = {}) {
     } else return ''
   }
 
+  function p(obj, line) {
+    console.log(
+      [...new Array(line * 2)].map(() => ' ').join(''),
+      obj.type,
+      obj.name,
+      'pos:',
+      obj.position.toArray().map(rNbr),
+      'scale:',
+      obj.scale.toArray().map(rNbr),
+      'rot:',
+      [obj.rotation.x, obj.rotation.y, obj.rotation.z].map(rNbr),
+      'mat:',
+      obj.material ? `${obj.material.name}-${obj.material.uuid.substring(0, 8)}` : ''
+    )
+    obj.children.forEach((o) => p(o, line + 1))
+  }
+
+  if (options.debug) p(gltf.scene, 0)
+
+  const duplicates = {}
   const objects = []
-  gltf.scene.traverse((child) => objects.push(child))
+  gltf.scene.traverse((child) => {
+    objects.push(child)
+    if (child.isMesh && child.material) {
+      if (!duplicates[child.material.name]) {
+        duplicates[child.material.name] = 1
+      } else {
+        duplicates[child.material.name]++
+      }
+    }
+  })
+
   const animations = gltf.animations
   const hasAnimations = animations.length > 0
   const scene = print(objects, gltf, gltf.scene)
