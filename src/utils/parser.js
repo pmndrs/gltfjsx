@@ -12,7 +12,7 @@ function parse(fileName, gltf, options = {}) {
     return parseFloat(number.toFixed(Math.round(options.precision || 2)))
   }
 
-  const rDeg = (number, precision) => {
+  const rDeg = (number) => {
     const abs = Math.abs(Math.round(parseFloat(number) * 100000))
     for (let i = 1; i <= 10; i++) {
       if (abs === Math.round(parseFloat(Math.PI / i) * 100000))
@@ -159,7 +159,9 @@ function parse(fileName, gltf, options = {}) {
   }
 
   function printAnimations(animations) {
-    return animations.length ? `\nconst { actions } = useAnimations(animations, group)` : ''
+    return animations.length
+      ? `\nconst { actions } = useAnimations${options.types ? '<GLTFActions>' : ''}(animations, group)`
+      : ''
   }
 
   function parseExtras(extras) {
