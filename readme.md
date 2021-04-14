@@ -107,9 +107,7 @@ Or exchange materials:
 Make contents conditional:
 
 ```jsx
-{
-  condition && <mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} />
-}
+{condition && <mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} />}
 ```
 
 Add events:
