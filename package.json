@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/pmndrs/gltfjsx#readme",
   "bin": "cli.js",
-  "main": "src/utils/parser.js",
+  "main": "src/utils/main.js",
   "engines": {
     "node": ">=10"
   },

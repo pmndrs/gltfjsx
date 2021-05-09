@@ -191,7 +191,7 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
 ## Using the parser stand-alone
 
 ```jsx
-import parse from '@react-three/gltfjsx'
+import { parse } from '@react-three/gltfjsx'
 import { GLTFLoader, DRACOLoader } from 'three-stdlib'
 
 const gltfLoader = new GLTFLoader()
