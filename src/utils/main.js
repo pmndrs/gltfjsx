@@ -1,5 +1,7 @@
 const parse = require('./parser')
+const GLTFLoader = require('./glftLoader')
 
 module.exports = {
-  parse: parse
+  parse,
+  GLTFStructureLoader: GLTFLoader
 }
