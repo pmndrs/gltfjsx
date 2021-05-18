@@ -204,6 +204,30 @@ gltfLoader.load(url, (gltf) => {
 })
 ```
 
+## Using GLTFStructureLoader stand-alone
+
+The GLTFStructureLoader can come in handy while testing gltf components.
+It allows you to extract the gltf file structure without the actual binaries and textures making it possible to run under a testing environment.
+Avoid using it inside the actual components because it can cause conflicts with the original THREE library methods.
+
+```jsx
+import { GLTFStructureLoader } from '@react-three/gltfjsx'
+import fs from 'fs'
+
+const loadGltf = (gltfFilePath) => {
+	const loader = new GLTFStructureLoader()
+
+	return new Promise((resolve, reject) => {
+		fs.readFile(gltfFilePath, (err, data) => {
+			if (err) reject(err)
+			loader.parse(data, '', res => resolve(res))
+		})
+	})
+}
+...
+
+```
+
 ## Requirements
 
 - Nodejs must be installed
