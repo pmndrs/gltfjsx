@@ -50,7 +50,7 @@ title: Model
 */
 
 import React from 'react'
-import { useLoader } from 'react-three-fiber'
+import { useLoader } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei/useGLTF'
 import { PerspectiveCamera } from '@react-three/drei/PerspectiveCamera'
 
@@ -76,7 +76,7 @@ useGLTF.preload('/model.gltf')
 3️⃣ This component can now be dropped into your scene. It is asynchronous and therefore must be wrapped into `<Suspense>` which gives you full control over intermediary loading-fallbacks and error handling.
 
 ```jsx
-import { Canvas } from 'react-three-fiber'
+import { Canvas } from '@react-three/fiber'
 import React, { Suspense } from 'react'
 import Model from './Model'
 
@@ -209,5 +209,5 @@ gltfLoader.load(url, (gltf) => {
 - Nodejs must be installed
 - The GLTF file has to be present in your projects `/public` folder
 - [three](https://github.com/mrdoob/three.js/) (>= 121.x)
-- [react-three-fiber](https://github.com/pmndrs/react-three-fiber) (>= 5.x)
+- [@react-three/fiber](https://github.com/pmndrs/react-three-fiber) (>= 5.x)
 - [@react-three/drei](https://github.com/pmndrs/drei) (>= 2.x)
