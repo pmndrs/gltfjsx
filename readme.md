@@ -107,7 +107,9 @@ Or exchange materials:
 Make contents conditional:
 
 ```jsx
-{condition && <mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} />}
+{
+  condition && <mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} />
+}
 ```
 
 Add events:
@@ -206,26 +208,19 @@ gltfLoader.load(url, (gltf) => {
 
 ## Using GLTFStructureLoader stand-alone
 
-The GLTFStructureLoader can come in handy while testing gltf components.
-It allows you to extract the gltf file structure without the actual binaries and textures making it possible to run under a testing environment.
-Avoid using it inside the actual components because it can cause conflicts with the original THREE library methods.
+The GLTFStructureLoader can come in handy while testing gltf assets. It allows you to extract the structure without the actual binaries and textures making it possible to run in a testing environment.
 
 ```jsx
 import { GLTFStructureLoader } from '@react-three/gltfjsx'
-import fs from 'fs'
+import fs from 'fs/promises'
 
-const loadGltf = (gltfFilePath) => {
-	const loader = new GLTFStructureLoader()
-
-	return new Promise((resolve, reject) => {
-		fs.readFile(gltfFilePath, (err, data) => {
-			if (err) reject(err)
-			loader.parse(data, '', res => resolve(res))
-		})
-	})
-}
-...
-
+it('should have a scene with a blue mesh', async () => {
+  const data = await fs.readFile('./model.glb')
+  const { scene } = await new Promise(res => loader.parse(data, '', res))
+  expect(() => scene.children.length).toEqual(1)
+  expect(() => scene.children[0].type).toEqual("mesh")
+  expect(() => scene.children[0].material.color).toEqual("blur")
+})
 ```
 
 ## Requirements
