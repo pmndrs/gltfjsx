@@ -74,7 +74,7 @@ useGLTF.preload('/model.gltf')
 
 ```jsx
 import { Canvas } from '@react-three/fiber'
-import React, { Suspense } from 'react'
+import { Suspense } from 'react'
 import Model from './Model'
 
 function App() {
