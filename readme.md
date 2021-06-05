@@ -219,7 +219,7 @@ it('should have a scene with a blue mesh', async () => {
   const { scene } = await new Promise(res => loader.parse(data, '', res))
   expect(() => scene.children.length).toEqual(1)
   expect(() => scene.children[0].type).toEqual("mesh")
-  expect(() => scene.children[0].material.color).toEqual("blur")
+  expect(() => scene.children[0].material.color).toEqual("blue")
 })
 ```
 
