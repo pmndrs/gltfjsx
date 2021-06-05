@@ -211,6 +211,7 @@ function parse(fileName, gltf, options = {}) {
     }
   })
 
+  const url = (fileName.toLowerCase().startsWith('http') ? '' : '/') + fileName
   const animations = gltf.animations
   const hasAnimations = animations.length > 0
   const scene = print(objects, gltf, gltf.scene)
@@ -226,7 +227,7 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
         ${options.types ? printTypes(objects, animations) : ''}
         export default function Model(props${options.types ? ": JSX.IntrinsicElements['group']" : ''}) {
           const group = ${options.types ? 'useRef<THREE.Group>()' : 'useRef()'}
-          const { nodes, materials${hasAnimations ? ', animations' : ''} } = useGLTF('/${fileName}'${
+          const { nodes, materials${hasAnimations ? ', animations' : ''} } = useGLTF('${url}'${
     options.draco ? `, ${JSON.stringify(options.draco)}` : ''
   })${options.types ? ' as GLTFResult' : ''}${printAnimations(animations)}
           return (
@@ -236,7 +237,7 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
           )
         }
 
-useGLTF.preload('${fileName.toLowerCase().startsWith('http') ? ':' : '/'}${fileName}')`
+useGLTF.preload('${url}')`
   return prettier.format(result, {
     semi: false,
     printWidth: options.printwidth || 120,
