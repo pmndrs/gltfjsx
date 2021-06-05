@@ -236,7 +236,7 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
           )
         }
 
-useGLTF.preload('/${fileName}')`
+useGLTF.preload('${fileName.toLowerCase().startsWith('http') ? ':' : '/'}${fileName}')`
   return prettier.format(result, {
     semi: false,
     printWidth: options.printwidth || 120,
