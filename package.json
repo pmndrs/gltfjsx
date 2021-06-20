@@ -42,7 +42,6 @@
     "use-error-boundary": "^2.0.4"
   },
   "devDependencies": {
-    "glTF-Sample-Models": "https://github.com/KhronosGroup/glTF-Sample-Models",
     "@ava/babel": "^1.0.1",
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",

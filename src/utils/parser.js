@@ -135,8 +135,9 @@ function parse(fileName, gltf, options = {}) {
       result += `position={[${rNbr(obj.position.x)}, ${rNbr(obj.position.y)}, ${rNbr(obj.position.z)},]} `
     if (obj.rotation && obj.rotation.isEuler && obj.rotation.toVector3().length())
       result += `rotation={[${rDeg(obj.rotation.x)}, ${rDeg(obj.rotation.y)}, ${rDeg(obj.rotation.z)},]} `
-    if (obj.scale && obj.scale.isVector3 && obj.scale.x !== 1 && obj.scale.y !== 1 && obj.scale.z !== 1) {
-      if ((obj.scale.x === obj.scale.y) === obj.scale.z) {
+
+    if (obj.scale && obj.scale.isVector3 && !(obj.scale.x === 1 && obj.scale.y === 1 && obj.scale.z === 1)) {
+      if (obj.scale.x === obj.scale.y && obj.scale.x === obj.scale.z) {
         result += `scale={${rNbr(obj.scale.x)}} `
       } else {
         result += `scale={[${rNbr(obj.scale.x)}, ${rNbr(obj.scale.y)}, ${rNbr(obj.scale.z)},]} `
