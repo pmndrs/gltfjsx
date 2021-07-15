@@ -150,7 +150,7 @@ const [name, setName] = useState("jump")
 ...
 useEffect(() => {
   actions[name].reset().fadeIn(0.5).play()
-  return () => actions[name]].fadeOut(0.5)
+  return () => actions[name].fadeOut(0.5)
 }, [name])
 ```
 
