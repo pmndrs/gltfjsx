@@ -43,6 +43,7 @@ function Conversion({ file, ...config }) {
             {' Done: '}
           </Text>
           <Text> {output}</Text>
+          {config.process && <Text>, {name}-processed.glb</Text>}
         </Box>
       )}
     </>

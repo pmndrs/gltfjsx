@@ -11,21 +11,20 @@ The usual GLTF workflow is cumbersome: objects can only be found by traversal, c
 ## Usage
 
 ```bash
-Usage
-  npx gltfjsx [path/to/model.gltf] [options]
+  Usage
+    $ npx gltfjsx [Model.js] [options]
 
-Options
-  --types, -t      Add Typescript definitions
-  --verbose, -v    Verbose output w/ names and empty groups
-  --shadows, s     Let meshes cast and receive shadows
-  --printwidth, w  Prettier printWidth (default: 120)
-  --meta, -m       Include metadata (as userData)
-  --precision, -p  Number of fractional digits (default: 2)
-  --draco, -d      Draco binary path
-  --root, -r       Sets directory from which .gltf file is served
-
-Examples
-  npx gltfjsx model.glb -t
+  Options
+     --types, -t      Add Typescript definitions
+     --verbose, -v    Verbose output w/ names and empty groups
+     --meta, -m       Include metadata (as userData)
+     --shadows, s     Let meshes cast and receive shadows
+     --printwidth, w  Prettier printWidth (default: 120)
+     --precision, -p  Number of fractional digits (default: 2)
+     --draco, -d      Draco binary path
+     --root, -r       Sets directory from which .gltf file is served
+     --transform, -T  Transform the asset for the web (draco, prune, resize)
+     --debug, -D      Debug output
 ```
 
 Or as an online-service: https://gltf.pmnd.rs

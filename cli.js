@@ -10,21 +10,19 @@ const App = importJsx('./src/components/App')
 const cli = meow(
   `
 	Usage
-	  $ gltfjsx [Model.js] [options]
+	  $ npx gltfjsx [Model.js] [options]
 
 	Options
-		--types, -t      Add Typescript definitions
+    --types, -t      Add Typescript definitions
     --verbose, -v    Verbose output w/ names and empty groups
     --meta, -m       Include metadata (as userData)
     --shadows, s     Let meshes cast and receive shadows
     --printwidth, w  Prettier printWidth (default: 120)
     --precision, -p  Number of fractional digits (default: 2)
-		--draco, -d      Draco binary path
-		--root, -r       Sets directory from which .gltf file is served
+    --draco, -d      Draco binary path
+    --root, -r       Sets directory from which .gltf file is served
+    --transform, -T  Transform the asset for the web (draco, prune, resize)
     --debug, -D      Debug output
-
-	Examples
-	  $ gltfjsx model.glb
 `,
   {
     flags: {
@@ -36,6 +34,7 @@ const cli = meow(
       precision: { type: 'number', alias: 'p', default: 2 },
       draco: { type: 'string', alias: 'd' },
       root: { type: 'string', alias: 'r' },
+      transform: { type: 'boolean', alias: 'T' },
       debug: { type: 'boolean', alias: 'D' },
     },
   }

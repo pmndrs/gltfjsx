@@ -1,11 +1,12 @@
 const fs = require('fs')
+const path = require('path')
 require('jsdom-global')()
 const THREE = (global.THREE = require('three'))
 require('./bin/GLTFLoader')
 const DracoLoader = require('./bin/DRACOLoader')
 THREE.DRACOLoader.getDecoderModule = () => {}
-const path = require('path')
 const parse = require('./utils/parser')
+const transform = require('./utils/transform')
 
 function toArrayBuffer(buf) {
   var ab = new ArrayBuffer(buf.length)
@@ -28,10 +29,19 @@ module.exports = function (file, output, options) {
 
   return new Promise((resolve, reject) => {
     const stream = fs.createWriteStream(output)
-    stream.once('open', (fd) => {
+    stream.once('open', async (fd) => {
       if (!fs.existsSync(file)) {
         reject(file + ' does not exist.')
       } else {
+        // Process GLTF
+        if (options.transform) {
+          const { name } = path.parse(file)
+          const transformOut = path.join(name + '-transformed.glb')
+          if (options.setLog) options.setLog((state) => [...state, 'transforming ' + transformOut])
+          await transform(file, transformOut, {})
+          file = transformOut
+        }
+
         const filePath = getRelativeFilePath(file)
         const data = fs.readFileSync(file)
         const arrayBuffer = toArrayBuffer(data)

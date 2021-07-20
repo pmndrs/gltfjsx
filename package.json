@@ -1,7 +1,7 @@
 {
-  "name": "@react-three/gltfjsx",
+  "name": "gltfjsx",
   "version": "4.2.3",
-  "description": "gltf to jsx",
+  "description": "GLTF to JSX converter",
   "scripts": {
     "test": "node src/test"
   },
@@ -29,7 +29,11 @@
     "node": ">=10"
   },
   "dependencies": {
-    "draco3dgltf": "^1.4.0",
+    "@gltf-transform/core": "^0.12.4",
+    "@gltf-transform/functions": "^0.12.4",
+    "@react-spring/core": "^9.2.3",
+    "@react-spring/web": "^9.2.3",
+    "draco3dgltf": "^1.4.1",
     "import-jsx": "^4.0.0",
     "ink": "^3.0.7",
     "is-var-name": "^2.0.0",
