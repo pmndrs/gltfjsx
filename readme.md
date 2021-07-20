@@ -93,14 +93,14 @@ function App() {
       </Suspense>
 ```
 
-You could re-use it:
+Now you could re-use it:
 
 ```jsx
 <Model position={[0, 0, 0]} />
 <Model position={[10, 0, -10]} />
 ```
 
-You could make the model dynamic. Change its colors for example:
+Or make the model dynamic. Change its colors for example:
 
 ```jsx
 <mesh geometry={nodes.robot.geometry} material={materials.metal} material-color="green" />
