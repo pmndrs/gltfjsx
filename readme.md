@@ -45,7 +45,7 @@ First you run your model through gltfjsx. `npx` allows you to use npm packages w
 npx gltfjsx model.gltf
 ```
 
-It creates a javascript file that plots out all of the assets contents. The original gltf must still be be in your `/public folder of course.
+It creates a javascript file that plots out all of the assets contents. The original gltf must still be be in your `/public` folder of course.
 
 ```jsx
 /*
