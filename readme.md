@@ -59,7 +59,7 @@ title: Model
 import { useGLTF, PerspectiveCamera } from '@react-three/drei'
 
 export default function Model(props) {
-  const { nodes, materials } = useGLTF('model.gltf')
+  const { nodes, materials } = useGLTF('/model.gltf')
   return (
     <group {...props} dispose={null}>
       <group name="camera" position={[10, 0, 50]} rotation={[Math.PI / 2, 0, 0]}>
@@ -164,8 +164,8 @@ Add the `--types` flag and your GLTF will be typesafe.
 
 ```tsx
 type GLTFResult = GLTF & {
-  nodes: { cube1: THREE.Mesh; cube2: THREE.Mesh }
-  materials: { base: THREE.MeshStandardMaterial; inner: THREE.MeshStandardMaterial }
+  nodes: { robot: THREE.Mesh; rocket: THREE.Mesh }
+  materials: { metal: THREE.MeshStandardMaterial; wood: THREE.MeshStandardMaterial }
 }
 
 export default function Model(props: JSX.IntrinsicElements['group']) {
