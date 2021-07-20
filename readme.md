@@ -8,9 +8,15 @@ https://user-images.githubusercontent.com/2223602/126318148-99da7ed6-a578-48dd-b
 
 [![Version](https://img.shields.io/npm/v/@react-three/gltfjsx?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@react-three/gltfjsx) [![Discord Shield](https://img.shields.io/discord/740090768164651008?style=flat&colorA=000000&colorB=000000&label=discord&logo=discord&logoColor=ffffff)](https://discord.gg/ZZjjNvJ)
 
-A small command-line tool that turns GLTF assets into declarative and re-usable [react-three-fiber](https://github.com/pmndrs/react-three-fiber) JSX components. See it in action here: https://twitter.com/0xca0a/status/1341811710081044483
+A small command-line tool that turns GLTF assets into declarative and re-usable [react-three-fiber](https://github.com/pmndrs/react-three-fiber) JSX components.
 
-The usual GLTF workflow is cumbersome: objects can only be found by traversal, changes are made by mutation, making contents conditional is hard. Gltfjsx creates a nested graph of all the objects and materials inside your asset, it will not touch or modify your files in any way. Now you can easily make the data dynamic, alter contents, add events, etc.
+### Why? Because GLTF's are blackboxes ...
+
+- Contents can only be found by traversal which is cumbersome and slow
+- Changes are made by mutation, which alters the source data and prevents re-use
+- Making contents conditional or adding/removing nodes is hard
+
+Gltfjsx creates a virtual, nested graph of all the objects and materials inside your asset. It will not touch or modify your files in any way. Now you can easily make the data dynamic, alter contents, add events, or re-use the asset.
 
 ## Usage
 
@@ -36,13 +42,13 @@ Or as an online-service: https://gltf.pmnd.rs
 
 ### A typical use-case
 
-1️⃣ First you run your model through gltfjsx. `npx` allows you to use npm packages without installing them.
+First you run your model through gltfjsx. `npx` allows you to use npm packages without installing them.
 
 ```bash
 npx gltfjsx model.gltf
 ```
 
-2️⃣ It creates a javascript file that plots out all of the assets contents. The original gltf must still be be in your /public folder of course.
+It creates a javascript file that plots out all of the assets contents. The original gltf must still be be in your /public folder of course.
 
 ```jsx
 /*
@@ -74,7 +80,7 @@ export default function Model(props) {
 useGLTF.preload('/model.gltf')
 ```
 
-3️⃣ This component can now be dropped into your scene. It is asynchronous and therefore must be wrapped into `<Suspense>` which gives you full control over intermediary loading-fallbacks and error handling.
+This component can now be dropped into your scene. It is asynchronous and therefore must be wrapped into `<Suspense>` which gives you full control over intermediary loading-fallbacks and error handling.
 
 ```jsx
 import { Canvas } from '@react-three/fiber'
@@ -89,9 +95,7 @@ function App() {
       </Suspense>
 ```
 
-4️⃣ Now you can make the model dynamic.
-
-Change colors for example:
+Now you can make the model dynamic. Change its colors for example:
 
 ```jsx
 <mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} material-color="green" />
@@ -108,9 +112,7 @@ Or exchange materials:
 Make contents conditional:
 
 ```jsx
-{
-  condition && <mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} />
-}
+{condition && <mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} />}
 ```
 
 Add events:
@@ -121,16 +123,9 @@ Add events:
 
 ## Features
 
-#### Clean output
-
-- It only writes out an immutable graph, linking up the existing geometries and materials
-- It will ommit empty groups or objects that don't serve a purpose, unless you opt into verbose mode (`-v`)
-- It tries it's best to represent angles in the shortest way (as fractions of PI)
-- It ommits names and userData, unless you opt into it (`-m`)
-
 #### Draco compression
 
-You don't need to do anything if your models are draco compressed, since `useGLTF` defaults to a draco CDN (`https://www.gstatic.com/draco/v1/decoders/`). By adding the `--draco` flag you can refer to [local binaries](https://github.com/mrdoob/three.js/tree/dev/examples/js/libs/draco/gltf) which must reside in your /public folder.
+You don't need to do anything if your models are draco compressed, since `useGLTF` defaults to a [draco CDN](https://www.gstatic.com/draco/v1/decoders/). By adding the `--draco` flag you can refer to [local binaries](https://github.com/mrdoob/three.js/tree/dev/examples/js/libs/draco/gltf) which must reside in your /public folder.
 
 #### Animation
 
@@ -147,7 +142,7 @@ If you want to play an animation you can do so at any time:
 <mesh onClick={(e) => actions.jump.play()} />
 ```
 
-if you want to blend animations:
+If you want to blend animations:
 
 ```jsx
 const [name, setName] = useState("jump")
@@ -163,11 +158,6 @@ useEffect(() => {
 The asset will be preloaded by default, this makes it quicker to load and reduces time-to-paint. Remove the preloader if you don't need it.
 
 ```jsx
-export default function Model(props) {
-  const { nodes, materials } = useGLTF('/model.gltf')
-  ...
-}
-
 useGLTF.preload('/model.gltf')
 ```
 
@@ -177,14 +167,8 @@ Add the `--types` flag and your GLTF will be typesafe.
 
 ```tsx
 type GLTFResult = GLTF & {
-  nodes: {
-    cube1: THREE.Mesh
-    cube2: THREE.Mesh
-  }
-  materials: {
-    base: THREE.MeshStandardMaterial
-    inner: THREE.MeshStandardMaterial
-  }
+  nodes: { cube1: THREE.Mesh; cube2: THREE.Mesh }
+  materials: { base: THREE.MeshStandardMaterial; inner: THREE.MeshStandardMaterial }
 }
 
 export default function Model(props: JSX.IntrinsicElements['group']) {
