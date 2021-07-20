@@ -122,11 +122,11 @@ Add events:
 
 ## Features
 
-#### Draco compression
+#### ⚡️ Draco compression ootb
 
 You don't need to do anything if your models are draco compressed, since `useGLTF` defaults to a [draco CDN](https://www.gstatic.com/draco/v1/decoders/). By adding the `--draco` flag you can refer to [local binaries](https://github.com/mrdoob/three.js/tree/dev/examples/js/libs/draco/gltf) which must reside in your /public folder.
 
-#### Animation
+#### ⚡️ Easier access to animations
 
 If your GLTF contains animations it will add [drei's](https://github.com/pmndrs/drei) `useAnimations` hook, which extracts all clips and prepares them as actions:
 
@@ -152,7 +152,7 @@ useEffect(() => {
 }, [name])
 ```
 
-#### Preload
+#### ⚡️ Preload your assets for faster response
 
 The asset will be preloaded by default, this makes it quicker to load and reduces time-to-paint. Remove the preloader if you don't need it.
 
@@ -160,7 +160,7 @@ The asset will be preloaded by default, this makes it quicker to load and reduce
 useGLTF.preload('/model.gltf')
 ```
 
-#### Types
+#### ⚡️ Type-safety
 
 Add the `--types` flag and your GLTF will be typesafe.
 
@@ -174,9 +174,9 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF<GLTFResult>('/model.gltf')
 ```
 
-#### Transform
+#### ⚡️ Auto-transform (compression, resize)
 
-Preparing models for the web is not that easy. Gltfjsx has a `--transform` flag which creates a draco-compressed, 1024x1024-texture-resized, deduped and pruned GLTF ready to be consumed on a  web site. It uses [glTF-Transform](https://github.com/donmccurdy/glTF-Transform). It will not alter the original but create a copy and append `-transformed.glb`.
+With the `--transform` flag it creates a draco-compressed, 1024x1024-texture-resized, deduped and pruned GLTF ready to be consumed on a  web site. It uses [glTF-Transform](https://github.com/donmccurdy/glTF-Transform). It will not alter the original but create a copy and append `[modelname]-transformed.glb`.
 
 ## Using the parser stand-alone
 
