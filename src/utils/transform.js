@@ -1,10 +1,10 @@
 const { NodeIO } = require('@gltf-transform/core')
 const { dedup, resample, prune, textureResize } = require('@gltf-transform/functions')
-const { DracoMeshCompression } = require('@gltf-transform/extensions')
+const { DracoMeshCompression, KHRONOS_EXTENSIONS } = require('@gltf-transform/extensions')
 const draco3d = require('draco3dgltf')
 
 async function transform(file, output, config = {}) {
-  const io = new NodeIO().registerExtensions([DracoMeshCompression]).registerDependencies({
+  const io = new NodeIO().registerExtensions([DracoMeshCompression, ...KHRONOS_EXTENSIONS]).registerDependencies({
     'draco3d.decoder': await draco3d.createDecoderModule(),
     'draco3d.encoder': await draco3d.createEncoderModule(),
   })

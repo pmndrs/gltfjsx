@@ -1,5 +1,5 @@
 {
-  "name": "gltfjsx",
+  "name": "@react-three/gltfjsx",
   "version": "4.3.0",
   "description": "GLTF to JSX converter",
   "scripts": {
@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@gltf-transform/core": "^0.12.4",
+    "@gltf-transform/extensions": "^0.12.4",
     "@gltf-transform/functions": "^0.12.4",
     "@react-spring/core": "^9.2.3",
     "@react-spring/web": "^9.2.3",
