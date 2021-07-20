@@ -12,8 +12,9 @@ A small command-line tool that turns GLTF assets into declarative and re-usable 
 
 ### Why? Because GLTF's are blackboxes ...
 
+- They're dumped wholesale into the scene which prevents re-use
 - Contents can only be found by traversal which is cumbersome and slow
-- Changes are made by mutation, which alters the source data and prevents re-use
+- Changes are made by mutation, which alters the source data and, again, prevents re-use
 - Making contents conditional or adding/removing nodes is hard
 
 Gltfjsx creates a virtual, nested graph of all the objects and materials inside your asset. It will not touch or modify your files in any way. Now you can easily make the data dynamic, alter contents, add events, or re-use the asset.
@@ -37,8 +38,6 @@ Gltfjsx creates a virtual, nested graph of all the objects and materials inside 
      --debug, -D      Debug output
 ```
 
-Or as an online-service: https://gltf.pmnd.rs
-
 ### A typical use-case
 
 First you run your model through gltfjsx. `npx` allows you to use npm packages without installing them.
@@ -47,7 +46,7 @@ First you run your model through gltfjsx. `npx` allows you to use npm packages w
 npx gltfjsx model.gltf
 ```
 
-It creates a javascript file that plots out all of the assets contents. The original gltf must still be be in your /public folder of course.
+It creates a javascript file that plots out all of the assets contents. The original gltf must still be be in your `/public` folder of course.
 
 ```jsx
 /*
@@ -61,17 +60,17 @@ title: Model
 import { useGLTF, PerspectiveCamera } from '@react-three/drei'
 
 export default function Model(props) {
-  const { nodes, materials } = useGLTF('model.gltf')
+  const { nodes, materials } = useGLTF('/model.gltf')
   return (
     <group {...props} dispose={null}>
-      <group name="Camera" position={[10, 0, 50]} rotation={[Math.PI / 2, 0, 0]}>
+      <group name="camera" position={[10, 0, 50]} rotation={[Math.PI / 2, 0, 0]}>
         <PerspectiveCamera fov={40} near={10} far={1000} />
       </group>
-      <group name="Sun" position={[100, 50, 100]} rotation={[-Math.PI / 2, 0, 0]}>
+      <group name="sun" position={[100, 50, 100]} rotation={[-Math.PI / 2, 0, 0]}>
         <pointLight intensity={10} />
       </group>
-      <mesh geometry={nodes.Cube_003_0.geometry} material={materials.base} />
-      <mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} />
+      <mesh geometry={nodes.robot.geometry} material={materials.metal} />
+      <mesh geometry={nodes.rocket.geometry} material={materials.wood} />
     </group>
   )
 }
@@ -94,16 +93,23 @@ function App() {
       </Suspense>
 ```
 
-Now you can make the model dynamic. Change its colors for example:
+Now you could re-use it:
 
 ```jsx
-<mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} material-color="green" />
+<Model position={[0, 0, 0]} />
+<Model position={[10, 0, -10]} />
+```
+
+Or make the model dynamic. Change its colors for example:
+
+```jsx
+<mesh geometry={nodes.robot.geometry} material={materials.metal} material-color="green" />
 ```
 
 Or exchange materials:
 
 ```jsx
-<mesh geometry={nodes.Cube_003_1.geometry}>
+<mesh geometry={nodes.robot.geometry}>
   <meshStandardMaterial color="hotpink" />
 </mesh>
 ```
@@ -111,22 +117,22 @@ Or exchange materials:
 Make contents conditional:
 
 ```jsx
-{condition && <mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} />}
+{condition && <mesh geometry={nodes.robot.geometry} material={materials.metal} />}
 ```
 
 Add events:
 
 ```jsx
-<mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} onClick={handleClick} />
+<mesh geometry={nodes.robot.geometry} material={materials.metal} onClick={handleClick} />
 ```
 
 ## Features
 
-#### Draco compression
+#### ⚡️ Draco compression ootb
 
 You don't need to do anything if your models are draco compressed, since `useGLTF` defaults to a [draco CDN](https://www.gstatic.com/draco/v1/decoders/). By adding the `--draco` flag you can refer to [local binaries](https://github.com/mrdoob/three.js/tree/dev/examples/js/libs/draco/gltf) which must reside in your /public folder.
 
-#### Animation
+#### ⚡️ Easier access to animations
 
 If your GLTF contains animations it will add [drei's](https://github.com/pmndrs/drei) `useAnimations` hook, which extracts all clips and prepares them as actions:
 
@@ -152,7 +158,7 @@ useEffect(() => {
 }, [name])
 ```
 
-#### Preload
+#### ⚡️ Preload your assets for faster response
 
 The asset will be preloaded by default, this makes it quicker to load and reduces time-to-paint. Remove the preloader if you don't need it.
 
@@ -160,19 +166,23 @@ The asset will be preloaded by default, this makes it quicker to load and reduce
 useGLTF.preload('/model.gltf')
 ```
 
-#### Types
+#### ⚡️ Type-safety
 
 Add the `--types` flag and your GLTF will be typesafe.
 
 ```tsx
 type GLTFResult = GLTF & {
-  nodes: { cube1: THREE.Mesh; cube2: THREE.Mesh }
-  materials: { base: THREE.MeshStandardMaterial; inner: THREE.MeshStandardMaterial }
+  nodes: { robot: THREE.Mesh; rocket: THREE.Mesh }
+  materials: { metal: THREE.MeshStandardMaterial; wood: THREE.MeshStandardMaterial }
 }
 
 export default function Model(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF<GLTFResult>('/model.gltf')
 ```
+
+#### ⚡️ Auto-transform (compression, resize)
+
+With the `--transform` flag it creates a binary-packed, draco-compressed, texture-resized (1024x1024), deduped and pruned GLTF ready to be consumed on a  web site. It uses [glTF-Transform](https://github.com/donmccurdy/glTF-Transform). It will not alter the original but create a copy and append `[modelname]-transformed.glb`.
 
 ## Using the parser stand-alone
 
