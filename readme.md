@@ -174,7 +174,7 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
 
 #### ⚡️ Auto-transform (compression, resize)
 
-With the `--transform` flag it creates a draco-compressed, 1024x1024-texture-resized, deduped and pruned GLTF ready to be consumed on a  web site. It uses [glTF-Transform](https://github.com/donmccurdy/glTF-Transform). It will not alter the original but create a copy and append `[modelname]-transformed.glb`.
+With the `--transform` flag it creates a binary-packed, draco-compressed, texture-resized (1024x1024), deduped and pruned GLTF ready to be consumed on a  web site. It uses [glTF-Transform](https://github.com/donmccurdy/glTF-Transform). It will not alter the original but create a copy and append `[modelname]-transformed.glb`.
 
 ## Using the parser stand-alone
 
