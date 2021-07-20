@@ -37,8 +37,6 @@ Gltfjsx creates a virtual, nested graph of all the objects and materials inside 
      --debug, -D      Debug output
 ```
 
-Or as an online-service: https://gltf.pmnd.rs
-
 ### A typical use-case
 
 First you run your model through gltfjsx. `npx` allows you to use npm packages without installing them.
