@@ -68,8 +68,8 @@ export default function Model(props) {
       <group name="Sun" position={[100, 50, 100]} rotation={[-Math.PI / 2, 0, 0]}>
         <pointLight intensity={10} />
       </group>
-      <mesh geometry={nodes.Cube_003_0.geometry} material={materials.base} />
-      <mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} />
+      <mesh geometry={nodes.robot.geometry} material={materials.metal} />
+      <mesh geometry={nodes.rocket.geometry} material={materials.wood} />
     </group>
   )
 }
@@ -95,13 +95,13 @@ function App() {
 Now you can make the model dynamic. Change its colors for example:
 
 ```jsx
-<mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} material-color="green" />
+<mesh geometry={nodes.robot.geometry} material={materials.metal} material-color="green" />
 ```
 
 Or exchange materials:
 
 ```jsx
-<mesh geometry={nodes.Cube_003_1.geometry}>
+<mesh geometry={nodes.robot.geometry}>
   <meshStandardMaterial color="hotpink" />
 </mesh>
 ```
@@ -109,13 +109,13 @@ Or exchange materials:
 Make contents conditional:
 
 ```jsx
-{condition && <mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} />}
+{condition && <mesh geometry={nodes.robot.geometry} material={materials.metal} />}
 ```
 
 Add events:
 
 ```jsx
-<mesh geometry={nodes.Cube_003_1.geometry} material={materials.inner} onClick={handleClick} />
+<mesh geometry={nodes.robot.geometry} material={materials.metal} onClick={handleClick} />
 ```
 
 ## Features
