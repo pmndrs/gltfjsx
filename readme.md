@@ -174,6 +174,10 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF<GLTFResult>('/model.gltf')
 ```
 
+#### Transform
+
+Preparing models for the web is not that easy. Gltfjsx has a `--transform` flag which creates a draco-compressed, 1024x1024-texture-resized, deduped and pruned GLTF ready to be consumed on a  web site. It uses [glTF-Transform](https://github.com/donmccurdy/glTF-Transform). It will not alter the original but create a copy and append `-transformed.glb`.
+
 ## Using the parser stand-alone
 
 ```jsx
