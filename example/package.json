@@ -29,7 +29,7 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
     "react-three-fiber": "^5.0.1",
-    "three": "^0.120.1"
+    "three": "^0.125.0"
   },
   "devDependencies": {
     "customize-cra": "^1.0.0",
