@@ -1,5 +1,7 @@
 const fs = require('fs')
 const path = require('path')
+const prettier = require('prettier')
+const parserBabel = require('prettier/parser-babel')
 require('jsdom-global')()
 const THREE = (global.THREE = require('three'))
 require('./bin/GLTFLoader')
@@ -49,7 +51,16 @@ module.exports = function (file, output, options) {
           arrayBuffer,
           '',
           (gltf) => {
-            stream.write(parse(filePath, gltf, options))
+            stream.write(
+              prettier.format(parse(filePath, gltf, options), {
+                semi: false,
+                printWidth: options.printwidth || 120,
+                singleQuote: true,
+                jsxBracketSameLine: true,
+                parser: options.types ? 'babel-ts' : 'babel',
+                plugins: [parserBabel],
+              })
+            )
             stream.end()
             if (options.setLog) setTimeout(() => resolve(), (options.timeout = options.timeout + options.delay))
             else resolve()
