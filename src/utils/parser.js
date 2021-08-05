@@ -120,21 +120,24 @@ function parse(fileName, gltf, options = {}) {
     if (obj.receiveShadow === true) result += `receiveShadow `
     if (obj.morphTargetDictionary) result += `morphTargetDictionary={${node}.morphTargetDictionary} `
     if (obj.morphTargetInfluences) result += `morphTargetInfluences={${node}.morphTargetInfluences} `
-    if (obj.intensity) result += `intensity={${rNbr(obj.intensity)}} `
+    if (obj.intensity && rNbr(obj.intensity)) result += `intensity={${rNbr(obj.intensity)}} `
     //if (obj.power && obj.power !== 4 * Math.PI) result += `power={${rNbr(obj.power)}} `
     if (obj.angle && obj.angle !== Math.PI / 3) result += `angle={${rDeg(obj.angle)}} `
-    if (obj.penumbra && obj.penumbra !== 0) result += `penumbra={${rNbr(obj.penumbra)}} `
-    if (obj.decay && obj.decay !== 1) result += `decay={${rNbr(obj.decay)}} `
-    if (obj.distance && obj.distance !== 0) result += `distance={${rNbr(obj.distance)}} `
+    if (obj.penumbra && rNbr(obj.penumbra) !== 0) result += `penumbra={${rNbr(obj.penumbra)}} `
+    if (obj.decay && rNbr(obj.decay) !== 1) result += `decay={${rNbr(obj.decay)}} `
+    if (obj.distance && rNbr(obj.distance) !== 0) result += `distance={${rNbr(obj.distance)}} `
     if (obj.color && obj.color.getHexString() !== 'ffffff') result += `color="#${obj.color.getHexString()}" `
     if (obj.up && obj.up.isVector3 && !obj.up.equals(new THREE.Vector3(0, 1, 0)))
       result += `up={[${rNbr(obj.up.x)}, ${rNbr(obj.up.y)}, ${rNbr(obj.up.z)},]} `
-    if (obj.position && obj.position.isVector3 && obj.position.length())
+    if (obj.position && obj.position.isVector3 && rNbr(obj.position.length()))
       result += `position={[${rNbr(obj.position.x)}, ${rNbr(obj.position.y)}, ${rNbr(obj.position.z)},]} `
-    if (obj.rotation && obj.rotation.isEuler && obj.rotation.toVector3().length())
+    if (obj.rotation && obj.rotation.isEuler && rNbr(obj.rotation.toVector3().length()))
       result += `rotation={[${rDeg(obj.rotation.x)}, ${rDeg(obj.rotation.y)}, ${rDeg(obj.rotation.z)},]} `
-
-    if (obj.scale && obj.scale.isVector3 && !(obj.scale.x === 1 && obj.scale.y === 1 && obj.scale.z === 1)) {
+    if (
+      obj.scale &&
+      obj.scale.isVector3 &&
+      !(rNbr(obj.scale.x) === 1 && rNbr(obj.scale.y) === 1 && rNbr(obj.scale.z) === 1)
+    ) {
       if (obj.scale.x === obj.scale.y && obj.scale.x === obj.scale.z) {
         result += `scale={${rNbr(obj.scale.x)}} `
       } else {

@@ -1,5 +1,5 @@
 {
-  "name": "gltfjsx",
+  "name": "@react-three/gltfjsx",
   "version": "4.3.3",
   "description": "GLTF to JSX converter",
   "scripts": {
