@@ -27,7 +27,7 @@ Gltfjsx creates a virtual, nested graph of all the objects and materials inside 
 
   Options
      --types, -t      Add Typescript definitions
-     --verbose, -v    Verbose output w/ names and empty groups
+     --verbose, -v    Verbose output w/ names and empty/irrelevant groups
      --meta, -m       Include metadata (as userData)
      --shadows, s     Let meshes cast and receive shadows
      --printwidth, w  Prettier printWidth (default: 120)
