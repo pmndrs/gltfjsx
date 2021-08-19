@@ -110,7 +110,7 @@ Or exchange materials:
 
 ```jsx
 <mesh geometry={nodes.robot.geometry}>
-  <meshStandardMaterial color="hotpink" />
+  <meshPhysicalMaterial color="hotpink" />
 </mesh>
 ```
 
