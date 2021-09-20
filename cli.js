@@ -13,16 +13,18 @@ const cli = meow(
 	  $ npx gltfjsx [Model.js] [options]
 
 	Options
-    --types, -t      Add Typescript definitions
-    --verbose, -v    Verbose output w/ names and empty groups
-    --meta, -m       Include metadata (as userData)
-    --shadows, s     Let meshes cast and receive shadows
-    --printwidth, w  Prettier printWidth (default: 120)
-    --precision, -p  Number of fractional digits (default: 2)
-    --draco, -d      Draco binary path
-    --root, -r       Sets directory from which .gltf file is served
-    --transform, -T  Transform the asset for the web (draco, prune, resize)
-    --debug, -D      Debug output
+    --types, -t       Add Typescript definitions
+    --verbose, -v     Verbose output w/ names and empty groups
+    --meta, -m        Include metadata (as userData)
+    --shadows, s      Let meshes cast and receive shadows
+    --printwidth, w   Prettier printWidth (default: 120)
+    --precision, -p   Number of fractional digits (default: 2)
+    --draco, -d       Draco binary path
+    --root, -r        Sets directory from which .gltf file is served
+    --instance, -i    Instance re-occuring geometry
+    --instanceall, -I Instance every geometry (for cheaper re-use)
+    --transform, -T   Transform the asset for the web (draco, prune, resize)
+    --debug, -D       Debug output
 `,
   {
     flags: {
@@ -34,6 +36,8 @@ const cli = meow(
       precision: { type: 'number', alias: 'p', default: 2 },
       draco: { type: 'string', alias: 'd' },
       root: { type: 'string', alias: 'r' },
+      instance: { type: 'boolean', alias: 'i' },
+      instanceall: { type: 'boolean', alias: 'I' },
       transform: { type: 'boolean', alias: 'T' },
       debug: { type: 'boolean', alias: 'D' },
     },
