@@ -22,22 +22,23 @@ Gltfjsx creates a virtual, nested graph of all the objects and materials inside 
 ## Usage
 
 ```bash
-  Usage
-    $ npx gltfjsx [Model.js] [options]
+	Usage
+	  $ npx gltfjsx [Model.js] [options]
 
-  Options
-     --types, -t        Add Typescript definitions
-     --verbose, -v      Verbose output w/ names and empty/irrelevant groups
-     --meta, -m         Include metadata (as userData)
-     --shadows, s       Let meshes cast and receive shadows
-     --printwidth, w    Prettier printWidth (default: 120)
-     --precision, -p    Number of fractional digits (default: 2)
-     --draco, -d        Draco binary path
-     --root, -r         Sets directory from which .gltf file is served
-     --instance, -i     Instance re-occuring geometry
-     --instanceall, -I  Instance every geometry (for cheaper re-use)
-     --transform, -T    Transform the asset for the web (draco, prune, resize)
-     --debug, -D        Debug output
+	Options
+    --types, -t         Add Typescript definitions
+    --keepnames, -k     Keep original names
+    --keepgroups, -K    Keep (empty) groups
+    --meta, -m          Include metadata (as userData)
+    --shadows, s        Let meshes cast and receive shadows
+    --printwidth, w     Prettier printWidth (default: 120)
+    --precision, -p     Number of fractional digits (default: 2)
+    --draco, -d         Draco binary path
+    --root, -r          Sets directory from which .gltf file is served
+    --instance, -i      Instance re-occuring geometry
+    --instanceall, -I   Instance every geometry (for cheaper re-use)
+    --transform, -T     Transform the asset for the web (draco, prune, resize)
+    --debug, -D         Debug output
 ```
 
 ### A typical use-case

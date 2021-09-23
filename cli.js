@@ -14,8 +14,8 @@ const cli = meow(
 
 	Options
     --types, -t         Add Typescript definitions
-    --verbose, -v       Verbose output w/ names and empty groups
-    --verbosenames, -V  Verbose output w/ names
+    --keepnames, -k     Keep original names
+    --keepgroups, -K    Keep (empty) groups
     --meta, -m          Include metadata (as userData)
     --shadows, s        Let meshes cast and receive shadows
     --printwidth, w     Prettier printWidth (default: 120)
@@ -30,8 +30,8 @@ const cli = meow(
   {
     flags: {
       types: { type: 'boolean', alias: 't' },
-      verbose: { type: 'boolean', alias: 'v' },
-      verbosenames: { type: 'boolean', alias: 'V' },
+      keepnames: { type: 'boolean', alias: 'k' },
+      keepgroups: { type: 'boolean', alias: 'K' },
       shadows: { type: 'boolean', alias: 's' },
       printwidth: { type: 'number', alias: 'p', default: 120 },
       meta: { type: 'boolean', alias: 'm' },

@@ -6,6 +6,8 @@ function parse(fileName, gltf, options = {}) {
   const animations = gltf.animations
   const hasAnimations = animations.length > 0
 
+  console.log(options)
+
   // Collect all objects
   const objects = []
   gltf.scene.traverse((child) => objects.push(child))
@@ -144,8 +146,7 @@ function parse(fileName, gltf, options = {}) {
     // Include names when output is uncompressed or morphTargetDictionaries are present
     if (
       obj.name.length &&
-      (options.verbosenames ||
-        options.verbose ||
+      (options.keepnames ||
         obj.morphTargetDictionary ||
         (hasAnimations &&
           gltf.animations.find(
@@ -220,7 +221,7 @@ function parse(fileName, gltf, options = {}) {
 
     // Remove empty groups
     if (
-      !options.verbose &&
+      !options.keepgroups &&
       (type === 'group' || type === 'scene') &&
       (result === oldResult || obj.children.length === 0)
     ) {
