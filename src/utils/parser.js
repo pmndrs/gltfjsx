@@ -141,12 +141,11 @@ function parse(fileName, gltf, options = {}) {
       result = `<${type} `
     }
 
-    const oldResult = result
-
     // Include names when output is uncompressed or morphTargetDictionaries are present
     if (
       obj.name.length &&
-      (options.verbose ||
+      (options.verbosenames ||
+        options.verbose ||
         obj.morphTargetDictionary ||
         (hasAnimations &&
           gltf.animations.find(
@@ -154,6 +153,8 @@ function parse(fileName, gltf, options = {}) {
           )))
     )
       result += `name="${obj.name}" `
+
+    const oldResult = result
 
     // Handle cameras
     if (isCamera) {
