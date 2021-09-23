@@ -1,7 +1,4 @@
-
-
 https://user-images.githubusercontent.com/2223602/126318148-99da7ed6-a578-48dd-bdd2-21056dbad003.mp4
-
 
 <br />
 <br/>
@@ -22,23 +19,23 @@ Gltfjsx creates a virtual, nested graph of all the objects and materials inside 
 ## Usage
 
 ```bash
-	Usage
-	  $ npx gltfjsx [Model.js] [options]
+Usage
+  $ npx gltfjsx [Model.js] [options]
 
-	Options
-    --types, -t         Add Typescript definitions
-    --keepnames, -k     Keep original names
-    --keepgroups, -K    Keep (empty) groups
-    --meta, -m          Include metadata (as userData)
-    --shadows, s        Let meshes cast and receive shadows
-    --printwidth, w     Prettier printWidth (default: 120)
-    --precision, -p     Number of fractional digits (default: 2)
-    --draco, -d         Draco binary path
-    --root, -r          Sets directory from which .gltf file is served
-    --instance, -i      Instance re-occuring geometry
-    --instanceall, -I   Instance every geometry (for cheaper re-use)
-    --transform, -T     Transform the asset for the web (draco, prune, resize)
-    --debug, -D         Debug output
+Options
+  --types, -t         Add Typescript definitions
+  --keepnames, -k     Keep original names
+  --keepgroups, -K    Keep (empty) groups
+  --meta, -m          Include metadata (as userData)
+  --shadows, s        Let meshes cast and receive shadows
+  --printwidth, w     Prettier printWidth (default: 120)
+  --precision, -p     Number of fractional digits (default: 2)
+  --draco, -d         Draco binary path
+  --root, -r          Sets directory from which .gltf file is served
+  --instance, -i      Instance re-occuring geometry
+  --instanceall, -I   Instance every geometry (for cheaper re-use)
+  --transform, -T     Transform the asset for the web (draco, prune, resize)
+  --debug, -D         Debug output
 ```
 
 ### A typical use-case
@@ -120,7 +117,9 @@ Or exchange materials:
 Make contents conditional:
 
 ```jsx
-{condition && <mesh geometry={nodes.robot.geometry} material={materials.metal} />}
+{
+  condition && <mesh geometry={nodes.robot.geometry} material={materials.metal} />
+}
 ```
 
 Add events:
@@ -185,7 +184,7 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
 
 #### ⚡️ Auto-transform (compression, resize)
 
-With the `--transform` flag it creates a binary-packed, draco-compressed, texture-resized (1024x1024), deduped and pruned GLTF ready to be consumed on a  web site. It uses [glTF-Transform](https://github.com/donmccurdy/glTF-Transform). It will not alter the original but create a copy and append `[modelname]-transformed.glb`.
+With the `--transform` flag it creates a binary-packed, draco-compressed, texture-resized (1024x1024), deduped and pruned GLTF ready to be consumed on a web site. It uses [glTF-Transform](https://github.com/donmccurdy/glTF-Transform). It will not alter the original but create a copy and append `[modelname]-transformed.glb`.
 
 ## Using the parser stand-alone
 
@@ -213,10 +212,10 @@ import fs from 'fs/promises'
 
 it('should have a scene with a blue mesh', async () => {
   const data = await fs.readFile('./model.glb')
-  const { scene } = await new Promise(res => loader.parse(data, '', res))
+  const { scene } = await new Promise((res) => loader.parse(data, '', res))
   expect(() => scene.children.length).toEqual(1)
-  expect(() => scene.children[0].type).toEqual("mesh")
-  expect(() => scene.children[0].material.color).toEqual("blue")
+  expect(() => scene.children[0].type).toEqual('mesh')
+  expect(() => scene.children[0].material.color).toEqual('blue')
 })
 ```
 
