@@ -288,10 +288,10 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
 
         ${
           hasInstances
-            ? `        
+            ? `
         export default function InstancedModel(props) {
           const { nodes } = useGLTF('${url}'${options.draco ? `, ${JSON.stringify(options.draco)}` : ''})${
-                options.types ? ' as GLTFResult' : ''
+                options.types ? ' as unknown as GLTFResult' : ''
               }
           const instances = useMemo(() => ({
             ${Object.values(duplicates.geometries)
@@ -314,13 +314,13 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
           const group = ${options.types ? 'useRef<THREE.Group>()' : 'useRef()'}
           const { nodes, materials${hasAnimations ? ', animations' : ''} } = useGLTF('${url}'${
     options.draco ? `, ${JSON.stringify(options.draco)}` : ''
-  })${options.types ? ' as GLTFResult' : ''}${printAnimations(animations)}
+  })${options.types ? ' as unknown as GLTFResult' : ''}${printAnimations(animations)}
           return (
             <group ref={group} {...props} dispose={null}>
         ${scene}
             </group>
           )
-        }      
+        }
 
 useGLTF.preload('${url}')`
 }
