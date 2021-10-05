@@ -6,8 +6,6 @@ function parse(fileName, gltf, options = {}) {
   const animations = gltf.animations
   const hasAnimations = animations.length > 0
 
-  console.log(options)
-
   // Collect all objects
   const objects = []
   gltf.scene.traverse((child) => objects.push(child))
