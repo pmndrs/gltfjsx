@@ -283,7 +283,7 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
   }
         ${scene.includes('OrthographicCamera') ? 'OrthographicCamera,' : ''}
         ${hasAnimations ? 'useAnimations' : ''} } from '@react-three/drei'
-        ${options.types ? 'import { GLTF } from "three/examples/jsm/loaders/GLTFLoader"' : ''}
+        ${options.types ? 'import { GLTF } from "three-stdlib"' : ''}
         ${options.types ? printTypes(objects, animations) : ''}
 
         ${
@@ -291,7 +291,7 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
             ? `
         export default function InstancedModel(props) {
           const { nodes } = useGLTF('${url}'${options.draco ? `, ${JSON.stringify(options.draco)}` : ''})${
-                options.types ? ' as unknown as GLTFResult' : ''
+                options.types ? ' as GLTFResult' : ''
               }
           const instances = useMemo(() => ({
             ${Object.values(duplicates.geometries)
@@ -314,7 +314,7 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
           const group = ${options.types ? 'useRef<THREE.Group>()' : 'useRef()'}
           const { nodes, materials${hasAnimations ? ', animations' : ''} } = useGLTF('${url}'${
     options.draco ? `, ${JSON.stringify(options.draco)}` : ''
-  })${options.types ? ' as unknown as GLTFResult' : ''}${printAnimations(animations)}
+  })${options.types ? ' as GLTFResult' : ''}${printAnimations(animations)}
           return (
             <group ref={group} {...props} dispose={null}>
         ${scene}
