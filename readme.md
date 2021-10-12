@@ -130,7 +130,7 @@ Add events:
 
 ## Features
 
-#### ⚡️ Draco compression ootb
+#### ⚡️ Draco and meshopt compression ootb
 
 You don't need to do anything if your models are draco compressed, since `useGLTF` defaults to a [draco CDN](https://www.gstatic.com/draco/v1/decoders/). By adding the `--draco` flag you can refer to [local binaries](https://github.com/mrdoob/three.js/tree/dev/examples/js/libs/draco/gltf) which must reside in your /public folder.
 
