@@ -14,7 +14,7 @@ A small command-line tool that turns GLTF assets into declarative and re-usable 
 - Changes to queried nodes are made by mutation, which alters the source data and, again, prevents re-use
 - Re-structuring content, making nodes conditional or adding/removing them is cumbersome
 
-Gltfjsx creates a virtual, nested graph of all the objects and materials inside your asset. It will not touch or modify your files in any way. Now you can easily make the data dynamic, alter contents, add events, or re-use the asset.
+Gltfjsx creates a virtual, nested graph of all the objects and materials inside your asset. It will not touch or modify your files in any way. Now you can easily make the data dynamic, alter contents, add events, or re-use the asset without having to re-parse and clone, as it is usually done.
 
 ## Usage
 
