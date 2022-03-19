@@ -238,9 +238,13 @@ function parse(fileName, gltf, options = {}) {
 
     result += handleProps(obj)
 
-    // Remove empty groups
+    // Prune ...
     if (!options.keepgroups && !animated && (type === 'group' || type === 'scene')) {
-      // Remove groups without children or properties
+      /** Empty or no-property groups
+       *
+       * <group>
+       *   <mesh geometry={nodes.foo} material={materials.bar} />
+       */
       if (result === oldResult || obj.children.length === 0) {
         console.log('group removed (empty)')
         obj.__removed = true
@@ -259,11 +263,16 @@ function parse(fileName, gltf, options = {}) {
         const keys1 = [...result.matchAll(regex)].map(([, match]) => match)
         const values1 = [...result.matchAll(regex)].map(([, , match]) => match)
         const keys2 = [...firstProps.matchAll(regex)].map(([, match]) => match)
-        //const values2 = [...firstProps.matchAll(regex)].map(([, , match]) => match)
 
+        /** Double negative transforms
+         *
+         * <group rotation={[-Math.PI / 2, 0, 0]}>
+         *   <group rotation={[Math.PI / 2, 0, 0]}>
+         *     <mesh geometry={nodes.foo} material={materials.bar} />
+         */
         if (obj.children.length === 1 && getType(first) === type && equalOrNegated(obj.rotation, first.rotation)) {
           if (keys1.length === 1 && keys2.length === 1 && keys1[0] === 'rotation' && keys2[0] === 'rotation') {
-            console.log('group removed (double rotation)')
+            console.log('group removed (double negative rotation)')
             obj.__removed = first.__removed = true
             children = ''
             if (first.children) first.children.forEach((child) => (children += print(objects, gltf, child)))
@@ -271,19 +280,29 @@ function parse(fileName, gltf, options = {}) {
           }
         }
 
+        /** Transform overlap
+         *
+         * <group position={[10, 0, 0]} scale={2} rotation={[-Math.PI / 2, 0, 0]}>
+         *   <mesh geometry={nodes.foo} material={materials.bar} />
+         */
         const isChildTransformed = keys2.includes('position') || keys2.includes('rotation') || keys2.includes('scale')
         const hasOtherProps = keys1.some((key) => !['position', 'scale', 'rotation'].includes(key))
-
         if (obj.children.length === 1 && !isChildTransformed && !hasOtherProps) {
           console.log(`group removed (${keys1.join(' ')} overlap)`)
-          children = print(objects, gltf, obj.children[0], keys1.map((key, i) => `${key}={${values1[i]}}`).join(' '))
+          children = print(objects, gltf, first, keys1.map((key, i) => `${key}={${values1[i]}}`).join(' '))
           obj.__removed = true
           return children
         }
 
+        /** Lack of content
+         *
+         * <group position={[10, 0, 0]} scale={2} rotation={[-Math.PI / 2, 0, 0]}>
+         *   <group position={[10, 0, 0]} scale={2} rotation={[-Math.PI / 2, 0, 0]}>
+         *     <group position={[10, 0, 0]} scale={2} rotation={[-Math.PI / 2, 0, 0]} />
+         */
         const empty = []
         obj.traverse((o) => {
-          console.log('group removed (no nested content)')
+          console.log('group removed (lack of content)')
           const type = getType(o)
           if (type !== 'group' && type !== 'object3D') empty.push(o)
         })
