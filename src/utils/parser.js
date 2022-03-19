@@ -169,10 +169,13 @@ function parse(fileName, gltf, options = {}) {
       obj.scale.isVector3 &&
       !(rNbr(obj.scale.x) === 1 && rNbr(obj.scale.y) === 1 && rNbr(obj.scale.z) === 1)
     ) {
-      if (obj.scale.x === obj.scale.y && obj.scale.x === obj.scale.z) {
-        result += `scale={${rNbr(obj.scale.x)}} `
+      const rX = rNbr(obj.scale.x)
+      const rY = rNbr(obj.scale.y)
+      const rZ = rNbr(obj.scale.z)
+      if (rX === rY && rX === rZ) {
+        result += `scale={${rX}} `
       } else {
-        result += `scale={[${rNbr(obj.scale.x)}, ${rNbr(obj.scale.y)}, ${rNbr(obj.scale.z)},]} `
+        result += `scale={[${rX}, ${rY}, ${rZ},]} `
       }
     }
     if (options.meta && obj.userData && Object.keys(obj.userData).length)
