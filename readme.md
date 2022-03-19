@@ -35,6 +35,7 @@ Options
   --instance, -i      Instance re-occuring geometry
   --instanceall, -I   Instance every geometry (for cheaper re-use)
   --transform, -T     Transform the asset for the web (draco, prune, resize)
+  --aggressive, -a    Aggressively prune the graph (empty groups, transform overlap) 
   --debug, -D         Debug output
 ```
 
