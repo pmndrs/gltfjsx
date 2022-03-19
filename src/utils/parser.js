@@ -280,17 +280,17 @@ function parse(fileName, gltf, options = {}) {
           obj.__removed = true
           return children
         }
-      }
 
-      const empty = []
-      obj.traverse((o) => {
-        console.log('group removed (no nested content)')
-        const type = getType(o)
-        if (type !== 'group' && type !== 'object3D') empty.push(o)
-      })
-      if (!empty.length) {
-        empty.forEach((o) => (o__removed = true))
-        return ''
+        const empty = []
+        obj.traverse((o) => {
+          console.log('group removed (no nested content)')
+          const type = getType(o)
+          if (type !== 'group' && type !== 'object3D') empty.push(o)
+        })
+        if (!empty.length) {
+          empty.forEach((o) => (o__removed = true))
+          return ''
+        }
       }
     }
 
