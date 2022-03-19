@@ -102,59 +102,20 @@ function parse(fileName, gltf, options = {}) {
   }\n${animationTypes}`
   }
 
-  function print(objects, gltf, obj, parent) {
-    let result = ''
-    let children = ''
+  function getType(obj) {
     let type = obj.type.charAt(0).toLowerCase() + obj.type.slice(1)
-    let node = 'nodes' + sanitizeName(obj.name)
-    let isCamera = type === 'perspectiveCamera' || type === 'orthographicCamera'
-    let isInstanced =
-      (options.instance || options.instanceall) &&
-      obj.geometry &&
-      duplicates.geometries[obj.geometry.uuid] &&
-      duplicates.geometries[obj.geometry.uuid].count > (options.instanceall ? 0 : 1)
-    let hasAnimations = gltf.animations && gltf.animations.length > 0
-
-    if (options.setLog)
-      setTimeout(
-        () => options.setLog((state) => [...state, obj.name]),
-        (options.timeout = options.timeout + options.delay)
-      )
-
     // Turn object3d's into groups, it should be faster according to the threejs docs
     if (type === 'object3D') type = 'group'
     if (type === 'perspectiveCamera') type = 'PerspectiveCamera'
     if (type === 'orthographicCamera') type = 'OrthographicCamera'
+    return type
+  }
 
-    // Bail out on lights and bones
-    if (type === 'bone') {
-      return `<primitive object={${node}} />${!parent ? '' : '\n'}`
-    }
+  function handleProps(obj) {
+    let { type, node, instanced, animated } = getInfo(obj)
 
-    // Collect children
-    if (obj.children) obj.children.forEach((child) => (children += print(objects, gltf, child, obj)))
-
-    if (isInstanced) {
-      result = `<instances.${duplicates.geometries[obj.geometry.uuid].name} `
-    } else {
-      // Form the object in JSX syntax
-      result = `<${type} `
-    }
-
-    // Include names when output is uncompressed or morphTargetDictionaries are present
-    if (
-      obj.name.length &&
-      (options.keepnames ||
-        obj.morphTargetDictionary ||
-        (hasAnimations &&
-          gltf.animations.find(
-            (clip) => clip.name.includes(obj.name) || (clip.targetNames && clip.targetNames.includes(obj.name))
-          )))
-    )
-      result += `name="${obj.name}" `
-
-    const oldResult = result
-
+    let result = ''
+    let isCamera = type === 'PerspectiveCamera' || type === 'OrthographicCamera'
     // Handle cameras
     if (isCamera) {
       result += `makeDefault={false} `
@@ -166,7 +127,7 @@ function parse(fileName, gltf, options = {}) {
       if (obj.fov !== 50) result += `fov={${rNbr(obj.fov)}} `
     }
 
-    if (!isInstanced) {
+    if (!instanced) {
       // Shadows
       if (type === 'mesh' && options.shadows) result += `castShadow receiveShadow `
 
@@ -217,21 +178,127 @@ function parse(fileName, gltf, options = {}) {
     if (options.meta && obj.userData && Object.keys(obj.userData).length)
       result += `userData={${JSON.stringify(obj.userData)}} `
 
-    // Remove empty groups
-    if (
-      !options.keepgroups &&
-      (type === 'group' || type === 'scene') &&
-      (result === oldResult || obj.children.length === 0)
-    ) {
-      obj.__removed = true
-      return children
+    return result
+  }
+
+  function getInfo(obj) {
+    let type = getType(obj)
+    let node = 'nodes' + sanitizeName(obj.name)
+    let instanced =
+      (options.instance || options.instanceall) &&
+      obj.geometry &&
+      duplicates.geometries[obj.geometry.uuid] &&
+      duplicates.geometries[obj.geometry.uuid].count > (options.instanceall ? 0 : 1)
+    let animated = gltf.animations && gltf.animations.length > 0
+    return { type, node, instanced, animated }
+  }
+
+  function print(objects, gltf, obj, inject = '') {
+    let result = ''
+    let children = ''
+    let { type, node, instanced, animated } = getInfo(obj)
+
+    if (options.setLog)
+      setTimeout(
+        () => options.setLog((state) => [...state, obj.name]),
+        (options.timeout = options.timeout + options.delay)
+      )
+
+    // Bail out on lights and bones
+    if (type === 'bone') {
+      return `<primitive object={${node}} />`
     }
+
+    // Collect children
+    if (obj.children) obj.children.forEach((child) => (children += print(objects, gltf, child)))
+
+    if (instanced) {
+      result = `<instances.${duplicates.geometries[obj.geometry.uuid].name} `
+    } else {
+      // Form the object in JSX syntax
+      result = `<${type} `
+    }
+
+    // Include names when output is uncompressed or morphTargetDictionaries are present
+    if (
+      obj.name.length &&
+      (options.keepnames ||
+        obj.morphTargetDictionary ||
+        (animated &&
+          gltf.animations.find(
+            (clip) => clip.name.includes(obj.name) || (clip.targetNames && clip.targetNames.includes(obj.name))
+          )))
+    )
+      result += `name="${obj.name}" `
+
+    const oldResult = result
+
+    result += handleProps(obj)
+
+    // Remove empty groups
+    if (!options.keepgroups && !animated && (type === 'group' || type === 'scene')) {
+      // Remove groups without children or properties
+      if (result === oldResult || obj.children.length === 0) {
+        console.log('group removed (empty)')
+        obj.__removed = true
+        return children
+      }
+
+      if (options.aggressive) {
+        function equalOrNegated(a, b) {
+          return (a.x === b.x || a.x === -b.x) && (a.y === b.y || a.y === -b.y) && (a.z === b.z || a.z === -b.z)
+        }
+
+        // More aggressive removal strategies ...
+        const first = obj.children[0]
+        const firstProps = handleProps(first)
+        const regex = /([a-z-A-Z]*)={([a-zA-Z0-9\.\[\]\-\,\ \/]*)}/g
+        const keys1 = [...result.matchAll(regex)].map(([, match]) => match)
+        const values1 = [...result.matchAll(regex)].map(([, , match]) => match)
+        const keys2 = [...firstProps.matchAll(regex)].map(([, match]) => match)
+        //const values2 = [...firstProps.matchAll(regex)].map(([, , match]) => match)
+
+        if (obj.children.length === 1 && getType(first) === type && equalOrNegated(obj.rotation, first.rotation)) {
+          if (keys1.length === 1 && keys2.length === 1 && keys1[0] === 'rotation' && keys2[0] === 'rotation') {
+            console.log('group removed (double rotation)')
+            obj.__removed = first.__removed = true
+            children = ''
+            if (first.children) first.children.forEach((child) => (children += print(objects, gltf, child)))
+            return children
+          }
+        }
+
+        const isChildTransformed = keys2.includes('position') || keys2.includes('rotation') || keys2.includes('scale')
+        const hasOtherProps = keys1.some((key) => !['position', 'scale', 'rotation'].includes(key))
+
+        if (obj.children.length === 1 && !isChildTransformed && !hasOtherProps) {
+          console.log(`group removed (${keys1.join(' ')} overlap)`)
+          children = print(objects, gltf, obj.children[0], keys1.map((key, i) => `${key}={${values1[i]}}`).join(' '))
+          obj.__removed = true
+          return children
+        }
+      }
+
+      const empty = []
+      obj.traverse((o) => {
+        console.log('group removed (no nested content)')
+        const type = getType(o)
+        if (type !== 'group' && type !== 'object3D') empty.push(o)
+      })
+      if (!empty.length) {
+        empty.forEach((o) => (o__removed = true))
+        return ''
+      }
+    }
+
+    // Inject properties
+    result += ' ' + inject + ' '
 
     // Close tag
     result += `${children.length ? '>' : '/>'}\n`
 
     // Add children and return
-    if (children.length) result += children + `</${type}>${!parent ? '' : '\n'}`
+    if (children.length) result += children + `</${type}>`
     return result
   }
 

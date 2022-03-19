@@ -54,7 +54,7 @@ module.exports = function (file, output, options) {
             stream.write(
               prettier.format(parse(filePath, gltf, options), {
                 semi: false,
-                printWidth: options.printwidth || 120,
+                printWidth: options.printwidth || 1000,
                 singleQuote: true,
                 jsxBracketSameLine: true,
                 parser: options.types ? 'babel-ts' : 'babel',
