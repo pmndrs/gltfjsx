@@ -138,8 +138,7 @@ function parse(fileName, gltf, options = {}) {
 
       // Write out materials
       if (obj.material) {
-        if (obj.material.name && duplicates.materials[obj.material.name] === 1)
-          result += `material={materials${sanitizeName(obj.material.name)}} `
+        if (obj.material.name) result += `material={materials${sanitizeName(obj.material.name)}} `
         else result += `material={${node}.material} `
       }
 
