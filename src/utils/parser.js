@@ -222,16 +222,7 @@ function parse(fileName, gltf, options = {}) {
     }
 
     // Include names when output is uncompressed or morphTargetDictionaries are present
-    if (
-      obj.name.length &&
-      (options.keepnames ||
-        obj.morphTargetDictionary ||
-        (animated &&
-          gltf.animations.find(
-            (clip) => clip.name.includes(obj.name) || (clip.targetNames && clip.targetNames.includes(obj.name))
-          )))
-    )
-      result += `name="${obj.name}" `
+    if (obj.name.length && (options.keepnames || obj.morphTargetDictionary || animated)) result += `name="${obj.name}" `
 
     const oldResult = result
 
