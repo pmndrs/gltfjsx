@@ -36,7 +36,7 @@ module.exports = function (file, output, options) {
         reject(file + ' does not exist.')
       } else {
         // Process GLTF
-        if (options.transform) {
+        if (options.transform || options.instance || options.instanceall) {
           const { name } = path.parse(file)
           const transformOut = path.join(name + '-transformed.glb')
           if (options.setLog) options.setLog((state) => [...state, 'transforming ' + transformOut])

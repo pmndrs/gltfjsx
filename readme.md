@@ -35,7 +35,7 @@ Options
   --instance, -i      Instance re-occuring geometry
   --instanceall, -I   Instance every geometry (for cheaper re-use)
   --transform, -T     Transform the asset for the web (draco, prune, resize)
-  --aggressive, -a    Aggressively prune the graph (empty groups, transform overlap) 
+  --aggressive, -a    Aggressively prune the graph (empty groups, transform overlap)
   --debug, -D         Debug output
 ```
 
@@ -60,7 +60,7 @@ title: Model
 
 import { useGLTF, PerspectiveCamera } from '@react-three/drei'
 
-export default function Model(props) {
+export function Model(props) {
   const { nodes, materials } = useGLTF('/model.gltf')
   return (
     <group {...props} dispose={null}>
@@ -186,6 +186,49 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
 #### ⚡️ Auto-transform (compression, resize)
 
 With the `--transform` flag it creates a binary-packed, draco-compressed, texture-resized (1024x1024), deduped and pruned GLTF ready to be consumed on a web site. It uses [glTF-Transform](https://github.com/donmccurdy/glTF-Transform). It will not alter the original but create a copy and append `[modelname]-transformed.glb`. `--aggressive' will start to cut down on empty or unneccessary groups.
+
+#### ⚡️ Auto-instancing
+
+Use the `--instance` flag and it will look for similar geometry and create instances of them. Look into [drei/Instance and drei/Merged](https://github.com/pmndrs/drei#instances) to understand how it works.
+
+It does not matter if you instanced the model previously in Blender. It creates instances for each mesh that has a speicific geometry and/or material. `instanceall` will create instances of all the geometry. This allows you to re-use the model with the smallest amount of drawcalls. Say your model has 10 specific meshes, if you display it a 1000 times you will still just have 10 drawcalls!
+
+Your export will look like something like this:
+
+```jsx
+const context = createContext()
+export function Instances({ children, ...props }) {
+  const { nodes } = useGLTF('/model.glb')
+  const instances = useMemo(() => ({ Screw1: nodes['Screw1'], Screw2: nodes['Screw2'] }), [nodes])
+  return (
+    <Merged meshes={instances} {...props}>
+      {(instances) => <context.Provider value={instances} children={children} />}
+    </Merged>
+  )
+}
+
+export function Model(props) {
+  const instances = useContext(context)
+  return (
+    <group {...props} dispose={null}>
+      <instances.Screw1 position={[-0.42, 0.04, -0.08]} rotation={[-Math.PI / 2, 0, 0]} />
+      <instances.Screw2 position={[-0.42, 0.04, -0.08]} rotation={[-Math.PI / 2, 0, 0]} />
+    </group>
+  )
+}
+```
+
+In order to use and re-use it import both the `Instances` and `Model` components. The following will show the model three times, but you will only have 2 drawcalls tops.
+
+```jsx
+import { Instances, Model } from './Model'
+
+<Instances>
+  <Model position={[10,0,0]}>
+  <Model position={[-10,0,0]}>
+  <Model position={[-10,10,0]}>
+</Instance>
+```
 
 ## Using the parser stand-alone
 
