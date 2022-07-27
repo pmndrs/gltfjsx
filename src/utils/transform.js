@@ -9,7 +9,7 @@ async function transform(file, output, config = {}) {
     'draco3d.encoder': await draco3d.createEncoderModule(),
   })
 
-  const document = io.read(file)
+  const document = await io.read(file)
 
   await document.transform(
     // Remove duplicate vertex or texture data, if any.
@@ -27,7 +27,7 @@ async function transform(file, output, config = {}) {
     method: DracoMeshCompression.EncoderMethod.EDGEBREAKER,
   })
 
-  io.write(output, document)
+  await io.write(output, document)
 }
 
 module.exports = transform

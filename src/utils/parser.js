@@ -32,17 +32,23 @@ function parse(fileName, gltf, options = {}) {
           duplicates.materials[child.material.name]++
         }
       }
+    }
+  })
+
+  gltf.scene.traverse((child) => {
+    if (child.isMesh) {
       if (child.geometry) {
-        if (!duplicates.geometries[child.geometry.uuid]) {
+        const key = child.geometry.uuid + child.material?.name ?? ''
+        if (!duplicates.geometries[key]) {
           let name = (child.name || 'Part').replace(/[^a-zA-Z]/g, '')
           name = name.charAt(0).toUpperCase() + name.slice(1)
-          duplicates.geometries[child.geometry.uuid] = {
+          duplicates.geometries[key] = {
             count: 1,
             name: uniqueName(name),
             node: 'nodes' + sanitizeName(child.name),
           }
         } else {
-          duplicates.geometries[child.geometry.uuid].count++
+          duplicates.geometries[key].count++
         }
       }
     }
@@ -189,8 +195,9 @@ function parse(fileName, gltf, options = {}) {
     let instanced =
       (options.instance || options.instanceall) &&
       obj.geometry &&
-      duplicates.geometries[obj.geometry.uuid] &&
-      duplicates.geometries[obj.geometry.uuid].count > (options.instanceall ? 0 : 1)
+      obj.material &&
+      duplicates.geometries[obj.geometry.uuid + obj.material.name] &&
+      duplicates.geometries[obj.geometry.uuid + obj.material.name].count > (options.instanceall ? 0 : 1)
     let animated = gltf.animations && gltf.animations.length > 0
     return { type, node, instanced, animated }
   }
@@ -215,7 +222,7 @@ function parse(fileName, gltf, options = {}) {
     if (obj.children) obj.children.forEach((child) => (children += print(objects, gltf, child)))
 
     if (instanced) {
-      result = `<instances.${duplicates.geometries[obj.geometry.uuid].name} `
+      result = `<instances.${duplicates.geometries[obj.geometry.uuid + obj.material.name].name} `
     } else {
       // Form the object in JSX syntax
       result = `<${type} `

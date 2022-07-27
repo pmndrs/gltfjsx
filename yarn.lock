@@ -963,29 +963,30 @@
     "@babel/helper-validator-identifier" "^7.14.8"
     to-fast-properties "^2.0.0"
 
-"@gltf-transform/core@^0.12.16":
-  version "0.12.16"
-  resolved "https://registry.yarnpkg.com/@gltf-transform/core/-/core-0.12.16.tgz#6736185dfac20cecc6ea535b11c6967bb6c1c3b9"
-  integrity sha512-InPsteALt1rXFzL9MyHywEhZ5pXEOGDrJbhRqzse8AxoFHbXG5/euQKFedXadFs01ZkkiEAXHvFAasae2Lplzg==
+"@gltf-transform/core@^2.2.3":
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/@gltf-transform/core/-/core-2.2.3.tgz#2c6610e6658344f6eacdd031663724e08292c0da"
+  integrity sha512-Gt1d9IrM07DjyhbeP0NAULZ9DHwpSEcm5UxBrQk9IhYE3P0cUSmhMeBVmh6QB7JqdE7okBGQFLPlQtQm3EcYBg==
   dependencies:
-    gl-matrix "~3.3.0"
+    gl-matrix "~3.4.3"
+    property-graph "^0.2.6"
 
-"@gltf-transform/extensions@^0.12.16":
-  version "0.12.16"
-  resolved "https://registry.yarnpkg.com/@gltf-transform/extensions/-/extensions-0.12.16.tgz#e568930ab2ca25b20233c5d98f1ad43bc201b0e5"
-  integrity sha512-phftmyXd8qSPHVqQjQVrECxdNTRORumI9Of7bLHTZ0gXcQSkCKMTYBnmVL0fHi6ZhsayoccCPgzQiK0LpkzMYQ==
+"@gltf-transform/extensions@^2.2.3":
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/@gltf-transform/extensions/-/extensions-2.2.3.tgz#4efd11d4f4c9d821ca3388d03d28038671f3a83c"
+  integrity sha512-72kOHisjFvKsdbQxWp6SiauCKwBFWWiY5vq/zXn/lKxcMneGhvoW27Z8vkZfCue+GQ6PCX+bIBoXJWpJGXGgkA==
   dependencies:
-    "@gltf-transform/core" "^0.12.16"
-    ktx-parse "^0.2.1"
+    "@gltf-transform/core" "^2.2.3"
+    ktx-parse "^0.4.5"
 
-"@gltf-transform/functions@^0.12.16":
-  version "0.12.16"
-  resolved "https://registry.yarnpkg.com/@gltf-transform/functions/-/functions-0.12.16.tgz#5dbe2d28f7bd7d44ba87fcd70c82f53208196842"
-  integrity sha512-381ADaTU+XlwJDVPLiIDK2MHC2CEUoeu4hyY3WC6KemdKroy1Vx76v+JX7D8yHZHmMMuMPGzyU3p7kL1m3tmOg==
+"@gltf-transform/functions@^2.2.3":
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/@gltf-transform/functions/-/functions-2.2.3.tgz#80132d2a03d51706d6606fdffb66db767a2e9492"
+  integrity sha512-FTfN3rExUPyzWrADEb8DEzsMGib7jpNqPNSVZB7Fq20juW0wF8KslhRIys4vfz4TkC6emXqb5nPC8/KgWHOf1w==
   dependencies:
-    "@gltf-transform/core" "^0.12.16"
-    "@gltf-transform/extensions" "^0.12.16"
-    gl-matrix "~3.3.0"
+    "@gltf-transform/core" "^2.2.3"
+    "@gltf-transform/extensions" "^2.2.3"
+    gl-matrix "~3.4.3"
     ndarray "^1.0.19"
     ndarray-lanczos "^0.1.2"
     ndarray-pixels "^1.0.0"
@@ -2134,10 +2135,10 @@ gif-encoder@~0.4.1:
   dependencies:
     readable-stream "~1.1.9"
 
-gl-matrix@~3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/gl-matrix/-/gl-matrix-3.3.0.tgz#232eef60b1c8b30a28cbbe75b2caf6c48fd6358b"
-  integrity sha512-COb7LDz+SXaHtl/h4LeaFcNdJdAQSDeVqjiIihSXNrkWObZLhDI4hIkZC11Aeqp7bcE72clzB0BnDXr2SmslRA==
+gl-matrix@~3.4.3:
+  version "3.4.3"
+  resolved "https://registry.yarnpkg.com/gl-matrix/-/gl-matrix-3.4.3.tgz#fc1191e8320009fd4d20e9339595c6041ddc22c9"
+  integrity sha512-wcCp8vu8FT22BnvKVPjXa/ICBWRq/zjFfdofZy1WSpQZpphblv12/bOQLBC1rMM7SGOFS9ltVmKOHil5+Ml7gA==
 
 glob-parent@^5.1.2:
   version "5.1.2"
@@ -2705,10 +2706,10 @@ kind-of@^6.0.2, kind-of@^6.0.3:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
-ktx-parse@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/ktx-parse/-/ktx-parse-0.2.1.tgz#6805c0929eae0a1f571ab3ce789e860e9135b432"
-  integrity sha512-I+2mYJ6nQdWGmOlE3m9d9idKfhn2MCw04zaVpgtzyuc19uQ8OwRmmYLf/TP5ueVFfYmHbdpM8mPmId2X5PBLEw==
+ktx-parse@^0.4.5:
+  version "0.4.5"
+  resolved "https://registry.yarnpkg.com/ktx-parse/-/ktx-parse-0.4.5.tgz#79905e22281a9d3e602b2ff522df1ee7d1813aa6"
+  integrity sha512-MK3FOody4TXbFf8Yqv7EBbySw7aPvEcPX++Ipt6Sox+/YMFvR5xaTyhfNSk1AEmMy+RYIw81ctN4IMxCB8OAlg==
 
 levn@~0.3.0:
   version "0.3.0"
@@ -3373,6 +3374,11 @@ prop-types@^15.6.2, prop-types@^15.7.2:
     loose-envify "^1.4.0"
     object-assign "^4.1.1"
     react-is "^16.8.1"
+
+property-graph@^0.2.6:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/property-graph/-/property-graph-0.2.6.tgz#add988a436745936d4b2ae19f747f2556296c828"
+  integrity sha512-QiBHxNZlwIarbkxsqCY688aP1ANbwtoQFBYgTZopQ0Bvku6/EYp3H4KH0ygxkhWQbJv5DEONspLy1rHi5xIycg==
 
 psl@^1.1.28, psl@^1.1.33:
   version "1.8.0"

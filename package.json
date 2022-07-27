@@ -29,9 +29,9 @@
     "node": ">=10"
   },
   "dependencies": {
-    "@gltf-transform/core": "^0.12.16",
-    "@gltf-transform/extensions": "^0.12.16",
-    "@gltf-transform/functions": "^0.12.16",
+    "@gltf-transform/core": "^2.2.3",
+    "@gltf-transform/extensions": "^2.2.3",
+    "@gltf-transform/functions": "^2.2.3",
     "@react-spring/core": "^9.2.4",
     "@react-spring/web": "^9.2.4",
     "draco3dgltf": "1.4.1",
