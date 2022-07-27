@@ -185,13 +185,15 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
 
 #### ⚡️ Auto-transform (compression, resize)
 
-With the `--transform` flag it creates a binary-packed, draco-compressed, texture-resized (1024x1024), deduped and pruned GLTF ready to be consumed on a web site. It uses [glTF-Transform](https://github.com/donmccurdy/glTF-Transform). It will not alter the original but create a copy and append `[modelname]-transformed.glb`. `--aggressive' will start to cut down on empty or unneccessary groups.
+With the `--transform` flag it creates a binary-packed, draco-compressed, texture-resized (1024x1024), deduped and pruned GLTF ready to be consumed on a web site. It uses [glTF-Transform](https://github.com/donmccurdy/glTF-Transform). It will not alter the original but create a copy and append `[modelname]-transformed.glb`.
+
+JSX compression is enabled with the `--aggressive` flag, this will start to cut down on empty or unneccessary groups.
 
 #### ⚡️ Auto-instancing
 
-Use the `--instance` flag and it will look for similar geometry and create instances of them. Look into [drei/Instance and drei/Merged](https://github.com/pmndrs/drei#instances) to understand how it works.
+Use the `--instance` flag and it will look for similar geometry and create instances of them. Look into [drei/Instance and drei/Merged](https://github.com/pmndrs/drei#instances) to understand how it works. Instancing requires the GLTF to be transformed, so it prepends the `--transform` flag.
 
-It does not matter if you instanced the model previously in Blender. It creates instances for each mesh that has a speicific geometry and/or material. `instanceall` will create instances of all the geometry. This allows you to re-use the model with the smallest amount of drawcalls. Say your model has 10 specific meshes, if you display it a 1000 times you will still just have 10 drawcalls!
+It does not matter if you instanced the model previously in Blender. It creates instances for each mesh that has a speicific geometry and/or material. `--instanceall` will create instances of all the geometry. This allows you to re-use the model with the smallest amount of drawcalls. Say your model has 10 specific meshes, if you display it a 1000 times you will still just have 10 drawcalls!
 
 Your export will look like something like this:
 
