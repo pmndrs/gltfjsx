@@ -191,16 +191,16 @@ JSX compression is enabled with the `--aggressive` flag, this will start to cut 
 
 #### ⚡️ Auto-instancing
 
-Use the `--instance` flag and it will look for similar geometry and create instances of them. Look into [drei/Instance and drei/Merged](https://github.com/pmndrs/drei#instances) to understand how it works. Instancing requires the GLTF to be transformed, so it prepends the `--transform` flag.
+Use the `--instance` flag and it will look for similar geometry and create instances of them. Look into [drei/Merged](https://github.com/pmndrs/drei#instances) to understand how it works. It does not matter if you instanced the model previously in Blender, it creates instances for each mesh that has a specific geometry and/or material. 
 
-It does not matter if you instanced the model previously in Blender. It creates instances for each mesh that has a speicific geometry and/or material. `--instanceall` will create instances of all the geometry. This allows you to re-use the model with the smallest amount of drawcalls. Say your model has 10 specific meshes, if you display it a 1000 times you will still just have 10 drawcalls!
+`--instanceall` will create instances of all the geometry. This allows you to re-use the model with the smallest amount of drawcalls.
 
 Your export will look like something like this:
 
 ```jsx
 const context = createContext()
 export function Instances({ children, ...props }) {
-  const { nodes } = useGLTF('/model.glb')
+  const { nodes } = useGLTF('/model-transformed.glb')
   const instances = useMemo(() => ({ Screw1: nodes['Screw1'], Screw2: nodes['Screw2'] }), [nodes])
   return (
     <Merged meshes={instances} {...props}>
@@ -220,7 +220,9 @@ export function Model(props) {
 }
 ```
 
-In order to use and re-use it import both the `Instances` and `Model` components. The following will show the model three times, but you will only have 2 drawcalls tops.
+Note that similar to `--transform` it also has to transform the model. In order to use and re-use the model import both `Instances` and `Model`. Put all your models into the `Instances` component (you can nest).
+
+The following will show the model three times, but you will only have 2 drawcalls tops.
 
 ```jsx
 import { Instances, Model } from './Model'
