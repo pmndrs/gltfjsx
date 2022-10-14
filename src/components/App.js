@@ -8,7 +8,7 @@ const ErrorBoundary = importJsx('./ErrorBoundary')
 function Conversion({ file, ...config }) {
   let nameExt = file.match(/[-_\w]+[.][\w]+$/i)[0]
   let name = nameExt.split('.').slice(0, -1).join('.')
-  let output = name.charAt(0).toUpperCase() + name.slice(1) + (config.types ? '.tsx' : '.js')
+  let output = config.output ?? name.charAt(0).toUpperCase() + name.slice(1) + (config.types ? '.tsx' : '.js')
 
   const [done, setDone] = React.useState(false)
   const [log, setLog] = React.useState([])
