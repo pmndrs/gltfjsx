@@ -1,6 +1,6 @@
 {
   "name": "gltfjsx-webp",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "GLTF to JSX converter with WebP compression for textures",
   "scripts": {
     "test": "node src/test"
