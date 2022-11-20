@@ -31,6 +31,7 @@ const cli = meow(
     --debug, -D         Debug output
 `,
   {
+    importMeta: import.meta,
     flags: {
       types: { type: 'boolean', alias: 't' },
       keepnames: { type: 'boolean', alias: 'k' },
