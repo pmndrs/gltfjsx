@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 'use strict'
-const React = require('react')
-const importJsx = require('import-jsx')
-const { render } = require('ink')
-const meow = require('meow')
+import meow from 'meow'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+import gltfjsx from './src/gltfjsx.js'
 
-const App = importJsx('./src/components/App')
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const cli = meow(
   `
@@ -51,5 +53,18 @@ const cli = meow(
 if (cli.input.length === 0) {
   console.log(cli.help)
 } else {
-  render(React.createElement(App, { file: cli.input[0], ...cli.flags }))
+  const config = { ...cli.flags }
+  const file = cli.input[0]
+  const filePath = path.resolve(__dirname, file)
+  let nameExt = file.match(/[-_\w]+[.][\w]+$/i)[0]
+  let name = nameExt.split('.').slice(0, -1).join('.')
+  const output = name.charAt(0).toUpperCase() + name.slice(1) + (config.types ? '.tsx' : '.js')
+  const showLog = (log) => {
+    console.info('log:', log)
+  }
+  try {
+    const response = await gltfjsx(filePath, output, { ...config, showLog, timeout: 0, delay: 1 })
+  } catch (e) {
+    console.error(e)
+  }
 }

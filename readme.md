@@ -1,9 +1,12 @@
-https://user-images.githubusercontent.com/2223602/126318148-99da7ed6-a578-48dd-bdd2-21056dbad003.mp4
+### Fork Update
 
-<br />
-<br/>
+A fork of [gltfjsx](https://github.com/pmndrs/gltfjsx) with support for **WebP compression for textures** and a small fix to the parser to fix for nested meshes when using `--instancesall` flag.
 
-[![Version](https://img.shields.io/npm/v/@react-three/gltfjsx?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@react-three/gltfjsx) [![Discord Shield](https://img.shields.io/discord/740090768164651008?style=flat&colorA=000000&colorB=000000&label=discord&logo=discord&logoColor=ffffff)](https://discord.gg/ZZjjNvJ)
+It was necessary to **convert the cli tool to ESM** as it was the only way to use the WebP compression library ([libSquoosh](https://www.npmjs.com/package/@squoosh/lib)), which is used internally by [gLTF-Transform](https://gltf-transform.donmccurdy.com/index.html). Check out more info on the `webp` function [here](https://gltf-transform.donmccurdy.com/functions.html).
+
+WebP compression for textures can reduce the size of the GLTF/GLB file to 70%-90%, so try it out with your assets!
+
+### Original README from [gltfjsx](https://github.com/pmndrs/gltfjsx)
 
 A small command-line tool that turns GLTF assets into declarative and re-usable [react-three-fiber](https://github.com/pmndrs/react-three-fiber) JSX components.
 
@@ -20,7 +23,7 @@ Gltfjsx creates a virtual, nested graph of all the objects and materials inside 
 
 ```bash
 Usage
-  $ npx gltfjsx model.gltf [options]
+  $ npx gltfjsx-webp model.gltf [options]
 
 Options
   --types, -t         Add Typescript definitions
@@ -44,7 +47,7 @@ Options
 First you run your model through gltfjsx. `npx` allows you to use npm packages without installing them.
 
 ```bash
-npx gltfjsx model.gltf
+npx gltfjsx-webp model.gltf
 ```
 
 It creates a javascript file that plots out all of the assets contents. The original gltf must still be be in your `/public` folder of course.

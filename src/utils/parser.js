@@ -1,5 +1,5 @@
-const THREE = require('three')
-const isVarName = require('./isVarName')
+import THREE from 'three'
+import isVarName from './isVarName.js'
 
 function parse(fileName, gltf, options = {}) {
   const url = (fileName.toLowerCase().startsWith('http') ? '' : '/') + fileName
@@ -223,6 +223,7 @@ function parse(fileName, gltf, options = {}) {
 
     if (instanced) {
       result = `<instances.${duplicates.geometries[obj.geometry.uuid + obj.material.name].name} `
+      type = `instances.${duplicates.geometries[obj.geometry.uuid + obj.material.name].name}`
     } else {
       // Form the object in JSX syntax
       result = `<${type} `
@@ -317,7 +318,10 @@ function parse(fileName, gltf, options = {}) {
     result += `${children.length ? '>' : '/>'}\n`
 
     // Add children and return
+    // console.info('children.length:', children.length);
+    // console.info('type:', type);
     if (children.length) result += children + `</${type}>`
+    // console.info('result:', result);
     return result
   }
 
@@ -413,4 +417,4 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
 useGLTF.preload('${url}')`
 }
 
-module.exports = parse
+export default parse

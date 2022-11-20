@@ -7,4 +7,4 @@ const isVarName = (str) => {
   return regex.test(str)
 }
 
-module.exports = isVarName
+export default isVarName

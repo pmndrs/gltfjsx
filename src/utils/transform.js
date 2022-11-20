@@ -1,7 +1,9 @@
-const { NodeIO } = require('@gltf-transform/core')
-const { dedup, resample, prune, textureResize } = require('@gltf-transform/functions')
-const { DracoMeshCompression, KHRONOS_EXTENSIONS } = require('@gltf-transform/extensions')
-const draco3d = require('draco3dgltf')
+import { cpus } from 'os'
+import { NodeIO } from '@gltf-transform/core'
+import { dedup, resample, prune, textureResize, webp } from '@gltf-transform/functions'
+import squoosh from '@squoosh/lib'
+import { DracoMeshCompression, KHRONOS_EXTENSIONS } from '@gltf-transform/extensions'
+import draco3d from 'draco3dgltf'
 
 async function transform(file, output, config = {}) {
   const io = new NodeIO().registerExtensions([DracoMeshCompression, ...KHRONOS_EXTENSIONS]).registerDependencies({
@@ -19,7 +21,9 @@ async function transform(file, output, config = {}) {
     // Remove unused nodes, textures, or other data.
     prune(),
     // Resize all textures to ≤1K.
-    textureResize({ size: [1024, 1024] })
+    textureResize({ size: [1024, 1024] }),
+    // Convert textures to WebP
+    webp({ squoosh, jobs: cpus().length })
   )
 
   // Add Draco compression.
@@ -30,4 +34,4 @@ async function transform(file, output, config = {}) {
   await io.write(output, document)
 }
 
-module.exports = transform
+export default transform

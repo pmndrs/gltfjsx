@@ -1,45 +1,48 @@
 {
-  "name": "gltfjsx",
-  "version": "5.0.2",
-  "description": "GLTF to JSX converter",
+  "name": "gltfjsx-webp",
+  "version": "1.0.0",
+  "description": "GLTF to JSX converter with WebP compression for textures",
   "scripts": {
     "test": "node src/test"
   },
+  "type": "module",
   "keywords": [
     "gltf",
     "jsx",
     "react",
     "fiber",
     "three",
-    "threejs"
+    "threejs",
+    "webp"
   ],
-  "author": "Paul Henschel",
+  "author": "Max Rusan & Paul Henschel",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pmndrs/gltfjsx.git"
+    "url": "git+https://github.com/reflektor-digital-inc/gltfjsx-webp.git"
   },
   "bugs": {
     "url": "https://github.com/pmndrs/gltfjsx/issues"
   },
   "homepage": "https://github.com/pmndrs/gltfjsx#readme",
   "bin": "cli.js",
-  "main": "src/utils/main.js",
+  "main": "cli.js",
   "engines": {
-    "node": ">=10"
+    "node": ">=16"
   },
   "dependencies": {
-    "@gltf-transform/core": "^2.2.3",
-    "@gltf-transform/extensions": "^2.2.3",
-    "@gltf-transform/functions": "^2.2.3",
+    "@babel/core": "^7.20.2",
+    "@gltf-transform/core": "^2.4.6",
+    "@gltf-transform/extensions": "^2.4.6",
+    "@gltf-transform/functions": "^2.4.6",
+    "@node-loader/babel": "^2.0.1",
     "@react-spring/core": "^9.2.4",
     "@react-spring/web": "^9.2.4",
+    "@squoosh/lib": "^0.4.0",
     "draco3dgltf": "1.4.1",
-    "import-jsx": "^4.0.0",
-    "ink": "^3.0.9",
     "is-var-name": "^2.0.0",
-    "jsdom": "16.6.0",
-    "jsdom-global": "3.0.2",
+    "jsdom": "^20.0.3",
+    "jsdom-global": "^3.0.2",
     "meow": "7.1.1",
     "prettier": "^2.3.2",
     "react": "^17.0.0",
@@ -49,7 +52,7 @@
   "devDependencies": {
     "@ava/babel": "^1.0.1",
     "@babel/preset-env": "^7.11.5",
-    "@babel/preset-react": "^7.10.4",
+    "@babel/preset-react": "^7.18.6",
     "@babel/register": "^7.11.5",
     "chalk": "^4.1.1",
     "eslint-config-xo-react": "^0.23.0",
