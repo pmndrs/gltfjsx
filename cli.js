@@ -63,7 +63,7 @@ if (cli.input.length === 0) {
     console.info('log:', log)
   }
   try {
-    const response = await gltfjsx(filePath, output, { ...config, showLog, timeout: 0, delay: 1 })
+    const response = await gltfjsx(file, output, { ...config, showLog, timeout: 0, delay: 1 })
   } catch (e) {
     console.error(e)
   }

@@ -32,7 +32,6 @@ export default function (file, output, options) {
   }
 
   return new Promise((resolve, reject) => {
-    console.info('output:', output)
     const stream = fs.createWriteStream(output)
     stream.once('open', async (fd) => {
       if (!fs.existsSync(file)) {
