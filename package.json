@@ -34,7 +34,7 @@
     "@gltf-transform/functions": "^2.2.3",
     "@react-spring/core": "^9.2.4",
     "@react-spring/web": "^9.2.4",
-    "draco3dgltf": "1.4.1",
+    "draco3dgltf": "^1.5.5",
     "import-jsx": "^4.0.0",
     "ink": "^3.0.9",
     "is-var-name": "^2.0.0",
