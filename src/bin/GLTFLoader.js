@@ -1,4 +1,6 @@
-THREE.GLTFLoader = (function () {
+import THREE from 'three'
+
+const GLTFLoader = (THREE.GLTFLoader = (function () {
   function GLTFLoader(manager) {
     THREE.Loader.call(this, manager)
 
@@ -2727,4 +2729,6 @@ THREE.GLTFLoader = (function () {
   })()
 
   return GLTFLoader
-})()
+})())
+
+export default GLTFLoader

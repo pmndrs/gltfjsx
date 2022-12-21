@@ -1,10 +1,3 @@
-https://user-images.githubusercontent.com/2223602/126318148-99da7ed6-a578-48dd-bdd2-21056dbad003.mp4
-
-<br />
-<br/>
-
-[![Version](https://img.shields.io/npm/v/@react-three/gltfjsx?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@react-three/gltfjsx) [![Discord Shield](https://img.shields.io/discord/740090768164651008?style=flat&colorA=000000&colorB=000000&label=discord&logo=discord&logoColor=ffffff)](https://discord.gg/ZZjjNvJ)
-
 A small command-line tool that turns GLTF assets into declarative and re-usable [react-three-fiber](https://github.com/pmndrs/react-three-fiber) JSX components.
 
 ### Why? Because the GLTF workflow on the web is not ideal ...
@@ -20,12 +13,12 @@ Gltfjsx creates a virtual, nested graph of all the objects and materials inside 
 
 ```bash
 Usage
-  $ npx gltfjsx model.gltf [options]
+  $ npx gltfjsx-webp model.gltf [options]
 
 Options
   --types, -t         Add Typescript definitions
   --keepnames, -k     Keep original names
-  --keepgroups, -K    Keep (empty) groups
+  --keepgroups, -K    Keep (empty) groups, disable pruning
   --meta, -m          Include metadata (as userData)
   --shadows, s        Let meshes cast and receive shadows
   --printwidth, w     Prettier printWidth (default: 120)
@@ -35,7 +28,6 @@ Options
   --instance, -i      Instance re-occuring geometry
   --instanceall, -I   Instance every geometry (for cheaper re-use)
   --transform, -T     Transform the asset for the web (draco, prune, resize)
-  --aggressive, -a    Aggressively prune the graph (empty groups, transform overlap)
   --debug, -D         Debug output
 ```
 
@@ -185,9 +177,9 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
 
 #### ⚡️ Auto-transform (compression, resize)
 
-With the `--transform` flag it creates a binary-packed, draco-compressed, texture-resized (1024x1024), deduped and pruned GLTF ready to be consumed on a web site. It uses [glTF-Transform](https://github.com/donmccurdy/glTF-Transform). It will not alter the original but create a copy and append `[modelname]-transformed.glb`.
+With the `--transform` flag it creates a binary-packed, draco-compressed, texture-resized (1024x1024), [webp squooshed](https://www.npmjs.com/package/@squoosh/lib), deduped, instanced and pruned GLTF ready to be consumed on a web site. It uses [glTF-Transform](https://github.com/donmccurdy/glTF-Transform). Draco + webp compression can reduce the size of a GLTF/GLB file to 70%-90%.
 
-JSX compression is enabled with the `--aggressive` flag, this will start to cut down on empty or unneccessary groups.
+It will not alter the original but create a copy and append `[modelname]-transformed.glb`.
 
 #### ⚡️ Auto-instancing
 

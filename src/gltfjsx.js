@@ -1,14 +1,19 @@
-const fs = require('fs')
-const path = require('path')
-const prettier = require('prettier')
-const parserBabel = require('prettier/parser-babel')
-require('jsdom-global')()
-const THREE = (global.THREE = require('three'))
-require('./bin/GLTFLoader')
-const DracoLoader = require('./bin/DRACOLoader')
+import 'jsdom-global'
+import fs from 'fs'
+import path from 'path'
+import transform from './utils/transform.js'
+
+import prettier from 'prettier'
+import THREE from 'three'
+global.THREE = THREE
+
+import './bin/GLTFLoader.js'
+import DracoLoader from './bin/DRACOLoader.js'
 THREE.DRACOLoader.getDecoderModule = () => {}
-const parse = require('./utils/parser')
-const transform = require('./utils/transform')
+import parse from './utils/parser.js'
+
+const gltfLoader = new THREE.GLTFLoader()
+gltfLoader.setDRACOLoader(new DracoLoader())
 
 function toArrayBuffer(buf) {
   var ab = new ArrayBuffer(buf.length)
@@ -17,10 +22,7 @@ function toArrayBuffer(buf) {
   return ab
 }
 
-const gltfLoader = new THREE.GLTFLoader()
-gltfLoader.setDRACOLoader(new DracoLoader())
-
-module.exports = function (file, output, options) {
+export default function (file, output, options) {
   function getRelativeFilePath(file) {
     const filePath = path.resolve(file)
     const rootPath = options.root ? path.resolve(options.root) : path.dirname(file)
@@ -43,6 +45,7 @@ module.exports = function (file, output, options) {
           await transform(file, transformOut, {})
           file = transformOut
         }
+        resolve()
 
         const filePath = getRelativeFilePath(file)
         const data = fs.readFileSync(file)
@@ -58,7 +61,7 @@ module.exports = function (file, output, options) {
                 singleQuote: true,
                 jsxBracketSameLine: true,
                 parser: options.types ? 'babel-ts' : 'babel',
-                plugins: [parserBabel],
+                //plugins: [parserBabel],
               })
             )
             stream.end()

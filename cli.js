@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 'use strict'
-const React = require('react')
-const importJsx = require('import-jsx')
-const { render } = require('ink')
-const meow = require('meow')
+import meow from 'meow'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+import gltfjsx from './src/gltfjsx.js'
 
-const App = importJsx('./src/components/App')
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const cli = meow(
   `
@@ -26,10 +28,10 @@ const cli = meow(
     --instance, -i      Instance re-occuring geometry
     --instanceall, -I   Instance every geometry (for cheaper re-use)
     --transform, -T     Transform the asset for the web (draco, prune, resize)
-    --aggressive, -a    Aggressively prune the graph (empty groups, transform overlap) 
     --debug, -D         Debug output
 `,
   {
+    importMeta: import.meta,
     flags: {
       output: { type: 'string', alias: 'o' },
       types: { type: 'boolean', alias: 't' },
@@ -44,7 +46,6 @@ const cli = meow(
       instance: { type: 'boolean', alias: 'i' },
       instanceall: { type: 'boolean', alias: 'I' },
       transform: { type: 'boolean', alias: 'T' },
-      aggressive: { type: 'boolean', alias: 'a' },
       debug: { type: 'boolean', alias: 'D' },
     },
   }
@@ -53,5 +54,18 @@ const cli = meow(
 if (cli.input.length === 0) {
   console.log(cli.help)
 } else {
-  render(React.createElement(App, { file: cli.input[0], ...cli.flags }))
+  const config = { ...cli.flags }
+  const file = cli.input[0]
+  const filePath = path.resolve(__dirname, file)
+  let nameExt = file.match(/[-_\w]+[.][\w]+$/i)[0]
+  let name = nameExt.split('.').slice(0, -1).join('.')
+  const output = name.charAt(0).toUpperCase() + name.slice(1) + (config.types ? '.tsx' : '.js')
+  const showLog = (log) => {
+    console.info('log:', log)
+  }
+  try {
+    const response = await gltfjsx(file, output, { ...config, showLog, timeout: 0, delay: 1 })
+  } catch (e) {
+    console.error(e)
+  }
 }

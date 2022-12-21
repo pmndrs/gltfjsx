@@ -1,5 +1,5 @@
-const THREE = require('three')
-const isVarName = require('./isVarName')
+import THREE from 'three'
+import isVarName from './isVarName.js'
 
 function parse(fileName, gltf, options = {}) {
   const url = (fileName.toLowerCase().startsWith('http') ? '' : '/') + fileName
@@ -223,6 +223,7 @@ function parse(fileName, gltf, options = {}) {
 
     if (instanced) {
       result = `<instances.${duplicates.geometries[obj.geometry.uuid + obj.material.name].name} `
+      type = `instances.${duplicates.geometries[obj.geometry.uuid + obj.material.name].name}`
     } else {
       // Form the object in JSX syntax
       result = `<${type} `
@@ -248,65 +249,63 @@ function parse(fileName, gltf, options = {}) {
         return children
       }
 
-      if (options.aggressive) {
-        function equalOrNegated(a, b) {
-          return (a.x === b.x || a.x === -b.x) && (a.y === b.y || a.y === -b.y) && (a.z === b.z || a.z === -b.z)
-        }
+      function equalOrNegated(a, b) {
+        return (a.x === b.x || a.x === -b.x) && (a.y === b.y || a.y === -b.y) && (a.z === b.z || a.z === -b.z)
+      }
 
-        // More aggressive removal strategies ...
-        const first = obj.children[0]
-        const firstProps = handleProps(first)
-        const regex = /([a-z-A-Z]*)={([a-zA-Z0-9\.\[\]\-\,\ \/]*)}/g
-        const keys1 = [...result.matchAll(regex)].map(([, match]) => match)
-        const values1 = [...result.matchAll(regex)].map(([, , match]) => match)
-        const keys2 = [...firstProps.matchAll(regex)].map(([, match]) => match)
+      // More aggressive removal strategies ...
+      const first = obj.children[0]
+      const firstProps = handleProps(first)
+      const regex = /([a-z-A-Z]*)={([a-zA-Z0-9\.\[\]\-\,\ \/]*)}/g
+      const keys1 = [...result.matchAll(regex)].map(([, match]) => match)
+      const values1 = [...result.matchAll(regex)].map(([, , match]) => match)
+      const keys2 = [...firstProps.matchAll(regex)].map(([, match]) => match)
 
-        /** Double negative transforms
-         *
-         * <group rotation={[-Math.PI / 2, 0, 0]}>
-         *   <group rotation={[Math.PI / 2, 0, 0]}>
-         *     <mesh geometry={nodes.foo} material={materials.bar} />
-         */
-        if (obj.children.length === 1 && getType(first) === type && equalOrNegated(obj.rotation, first.rotation)) {
-          if (keys1.length === 1 && keys2.length === 1 && keys1[0] === 'rotation' && keys2[0] === 'rotation') {
-            if (!inject) console.log('group removed (aggressive: double negative rotation)')
-            obj.__removed = first.__removed = true
-            children = ''
-            if (first.children) first.children.forEach((child) => (children += print(objects, gltf, child)))
-            return children
-          }
-        }
-
-        /** Transform overlap
-         *
-         * <group position={[10, 0, 0]} scale={2} rotation={[-Math.PI / 2, 0, 0]}>
-         *   <mesh geometry={nodes.foo} material={materials.bar} />
-         */
-        const isChildTransformed = keys2.includes('position') || keys2.includes('rotation') || keys2.includes('scale')
-        const hasOtherProps = keys1.some((key) => !['position', 'scale', 'rotation'].includes(key))
-        if (obj.children.length === 1 && !first.__removed && !isChildTransformed && !hasOtherProps) {
-          if (!inject) console.log(`group removed (aggressive: ${keys1.join(' ')} overlap)`)
-          children = print(objects, gltf, first, keys1.map((key, i) => `${key}={${values1[i]}}`).join(' '))
-          obj.__removed = true
+      /** Double negative transforms
+       *
+       * <group rotation={[-Math.PI / 2, 0, 0]}>
+       *   <group rotation={[Math.PI / 2, 0, 0]}>
+       *     <mesh geometry={nodes.foo} material={materials.bar} />
+       */
+      if (obj.children.length === 1 && getType(first) === type && equalOrNegated(obj.rotation, first.rotation)) {
+        if (keys1.length === 1 && keys2.length === 1 && keys1[0] === 'rotation' && keys2[0] === 'rotation') {
+          if (!inject) console.log('group removed (aggressive: double negative rotation)')
+          obj.__removed = first.__removed = true
+          children = ''
+          if (first.children) first.children.forEach((child) => (children += print(objects, gltf, child)))
           return children
         }
+      }
 
-        /** Lack of content
-         *
-         * <group position={[10, 0, 0]} scale={2} rotation={[-Math.PI / 2, 0, 0]}>
-         *   <group position={[10, 0, 0]} scale={2} rotation={[-Math.PI / 2, 0, 0]}>
-         *     <group position={[10, 0, 0]} scale={2} rotation={[-Math.PI / 2, 0, 0]} />
-         */
-        const empty = []
-        obj.traverse((o) => {
-          const type = getType(o)
-          if (type !== 'group' && type !== 'object3D') empty.push(o)
-        })
-        if (!empty.length) {
-          if (!inject) console.log('group removed (aggressive: lack of content)')
-          empty.forEach((o) => (o__removed = true))
-          return ''
-        }
+      /** Transform overlap
+       *
+       * <group position={[10, 0, 0]} scale={2} rotation={[-Math.PI / 2, 0, 0]}>
+       *   <mesh geometry={nodes.foo} material={materials.bar} />
+       */
+      const isChildTransformed = keys2.includes('position') || keys2.includes('rotation') || keys2.includes('scale')
+      const hasOtherProps = keys1.some((key) => !['position', 'scale', 'rotation'].includes(key))
+      if (obj.children.length === 1 && !first.__removed && !isChildTransformed && !hasOtherProps) {
+        if (!inject) console.log(`group removed (aggressive: ${keys1.join(' ')} overlap)`)
+        children = print(objects, gltf, first, keys1.map((key, i) => `${key}={${values1[i]}}`).join(' '))
+        obj.__removed = true
+        return children
+      }
+
+      /** Lack of content
+       *
+       * <group position={[10, 0, 0]} scale={2} rotation={[-Math.PI / 2, 0, 0]}>
+       *   <group position={[10, 0, 0]} scale={2} rotation={[-Math.PI / 2, 0, 0]}>
+       *     <group position={[10, 0, 0]} scale={2} rotation={[-Math.PI / 2, 0, 0]} />
+       */
+      const empty = []
+      obj.traverse((o) => {
+        const type = getType(o)
+        if (type !== 'group' && type !== 'object3D') empty.push(o)
+      })
+      if (!empty.length) {
+        if (!inject) console.log('group removed (aggressive: lack of content)')
+        empty.forEach((o) => (o__removed = true))
+        return ''
       }
     }
 
@@ -317,7 +316,10 @@ function parse(fileName, gltf, options = {}) {
     result += `${children.length ? '>' : '/>'}\n`
 
     // Add children and return
+    // console.info('children.length:', children.length);
+    // console.info('type:', type);
     if (children.length) result += children + `</${type}>`
+    // console.info('result:', result);
     return result
   }
 
@@ -397,7 +399,7 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
           ${hasInstances ? 'const instances = useContext(context);' : ''} ${
     hasAnimations ? `const group = ${options.types ? 'useRef<THREE.Group>()' : 'useRef()'};` : ''
   } ${
-    !hasInstances
+    !options.instanceall
       ? `const { nodes, materials${hasAnimations ? ', animations' : ''} } = useGLTF('${url}'${
           options.draco ? `, ${JSON.stringify(options.draco)}` : ''
         })${options.types ? ' as GLTFResult' : ''}`
@@ -413,4 +415,4 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
 useGLTF.preload('${url}')`
 }
 
-module.exports = parse
+export default parse
