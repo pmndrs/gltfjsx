@@ -13,7 +13,7 @@ Gltfjsx creates a virtual, nested graph of all the objects and materials inside 
 
 ```bash
 Usage
-  $ npx gltfjsx-webp model.gltf [options]
+  $ npx gltfjsx model.gltf [options]
 
 Options
   --types, -t         Add Typescript definitions
