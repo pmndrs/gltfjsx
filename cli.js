@@ -10,9 +10,10 @@ const App = importJsx('./src/components/App')
 const cli = meow(
   `
 	Usage
-	  $ npx gltfjsx [Model.js] [options]
+	  $ npx gltfjsx [Model.glb] [options]
 
 	Options
+    --output, -o        Output file name/path
     --types, -t         Add Typescript definitions
     --keepnames, -k     Keep original names
     --keepgroups, -K    Keep (empty) groups
@@ -30,6 +31,7 @@ const cli = meow(
 `,
   {
     flags: {
+      output: { type: 'string', alias: 'o' },
       types: { type: 'boolean', alias: 't' },
       keepnames: { type: 'boolean', alias: 'k' },
       keepgroups: { type: 'boolean', alias: 'K' },
