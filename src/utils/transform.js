@@ -22,6 +22,7 @@ async function transform(file, output, config = {}) {
     resample(),
     // Remove unused nodes, textures, or other data.
     prune(),
+    // Instance meshes.
     instance(),
     // Resize all textures to ≤1K.
     textureResize({ size: [1024, 1024] }),

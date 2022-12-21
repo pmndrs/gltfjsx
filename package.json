@@ -15,7 +15,10 @@
     "threejs",
     "webp"
   ],
-  "author": "Max Rusan & Paul Henschel",
+  "author": "Paul Henschel",
+  "maintainers": [
+    "Max Rusan"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -33,7 +36,6 @@
     "node": ">=16"
   },
   "dependencies": {
-    "@babel/core": "^7.20.2",
     "@gltf-transform/core": "^2.4.6",
     "@gltf-transform/extensions": "^2.4.6",
     "@gltf-transform/functions": "^2.4.6",
@@ -45,24 +47,14 @@
     "jsdom-global": "^3.0.2",
     "meow": "^11.0.0",
     "prettier": "^2.3.2",
-    "three": "0.122.0",
-    "use-error-boundary": "2.0.6"
+    "three": "0.122.0"
   },
   "devDependencies": {
-    "@ava/babel": "^1.0.1",
-    "@babel/preset-env": "^7.11.5",
-    "@babel/register": "^7.11.5",
     "chalk": "^4.1.1",
     "fast-glob": "^3.2.7",
     "fs-extra": "^9.0.1",
     "husky": "^4.3.0",
-    "ink-testing-library": "^2.1.0",
     "lint-staged": "^10.4.0"
-  },
-  "babel": {
-    "presets": [
-      "@babel/preset-env"
-    ]
   },
   "husky": {
     "hooks": {

@@ -28,7 +28,6 @@ const cli = meow(
     --instance, -i      Instance re-occuring geometry
     --instanceall, -I   Instance every geometry (for cheaper re-use)
     --transform, -T     Transform the asset for the web (draco, prune, resize)
-    --aggressive, -a    Aggressively prune the graph (empty groups, transform overlap) 
     --debug, -D         Debug output
 `,
   {
@@ -47,7 +46,6 @@ const cli = meow(
       instance: { type: 'boolean', alias: 'i' },
       instanceall: { type: 'boolean', alias: 'I' },
       transform: { type: 'boolean', alias: 'T' },
-      aggressive: { type: 'boolean', alias: 'a' },
       debug: { type: 'boolean', alias: 'D' },
     },
   }
