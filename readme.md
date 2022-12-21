@@ -1,3 +1,10 @@
+https://user-images.githubusercontent.com/2223602/126318148-99da7ed6-a578-48dd-bdd2-21056dbad003.mp4
+
+<br />
+<br/>
+
+[![Version](https://img.shields.io/npm/v/@react-three/gltfjsx?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@react-three/gltfjsx) [![Discord Shield](https://img.shields.io/discord/740090768164651008?style=flat&colorA=000000&colorB=000000&label=discord&logo=discord&logoColor=ffffff)](https://discord.gg/ZZjjNvJ)
+
 A small command-line tool that turns GLTF assets into declarative and re-usable [react-three-fiber](https://github.com/pmndrs/react-three-fiber) JSX components.
 
 ### Why? Because the GLTF workflow on the web is not ideal ...
