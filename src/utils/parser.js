@@ -118,7 +118,7 @@ function parse(fileName, gltf, options = {}) {
   }
 
   function handleProps(obj) {
-    let { type, node, instanced, animated } = getInfo(obj)
+    let { type, node, instanced } = getInfo(obj)
 
     let result = ''
     let isCamera = type === 'PerspectiveCamera' || type === 'OrthographicCamera'
@@ -202,16 +202,94 @@ function parse(fileName, gltf, options = {}) {
     return { type, node, instanced, animated }
   }
 
-  function print(objects, gltf, obj, inject = '') {
+  function equalOrNegated(a, b) {
+    return (a.x === b.x || a.x === -b.x) && (a.y === b.y || a.y === -b.y) && (a.z === b.z || a.z === -b.z)
+  }
+
+  function prune(obj, children, result, oldResult, silent) {
+    let { type, animated } = getInfo(obj)
+    // Prune ...
+    if (!options.keepgroups && !animated && (type === 'group' || type === 'scene')) {
+      /** Empty or no-property groups
+       *    <group>
+       *      <mesh geometry={nodes.foo} material={materials.bar} />
+       *  Solution:
+       *    <mesh geometry={nodes.foo} material={materials.bar} />
+       */
+      if (result === oldResult || obj.children.length === 0) {
+        if (!silent) console.log('group removed (empty)')
+        obj.__removed = true
+        return children
+      }
+
+      // More aggressive removal strategies ...
+      const first = obj.children[0]
+      const firstProps = handleProps(first)
+      const regex = /([a-z-A-Z]*)={([a-zA-Z0-9\.\[\]\-\,\ \/]*)}/g
+      const keys1 = [...result.matchAll(regex)].map(([, match]) => match)
+      const values1 = [...result.matchAll(regex)].map(([, , match]) => match)
+      const keys2 = [...firstProps.matchAll(regex)].map(([, match]) => match)
+
+      /** Double negative transforms
+       *    <group rotation={[-Math.PI / 2, 0, 0]}>
+       *      <group rotation={[Math.PI / 2, 0, 0]}>
+       *        <mesh geometry={nodes.foo} material={materials.bar} />
+       *  Solution:
+       *    <mesh geometry={nodes.foo} material={materials.bar} />
+       */
+      if (obj.children.length === 1 && getType(first) === type && equalOrNegated(obj.rotation, first.rotation)) {
+        if (keys1.length === 1 && keys2.length === 1 && keys1[0] === 'rotation' && keys2[0] === 'rotation') {
+          if (!silent) console.log('group removed (aggressive: double negative rotation)')
+          obj.__removed = first.__removed = true
+          children = ''
+          if (first.children) first.children.forEach((child) => (children += print(child, true)))
+          return children
+        }
+      }
+
+      /** Transform overlap
+       *    <group position={[10, 0, 0]} scale={2} rotation={[-Math.PI / 2, 0, 0]}>
+       *      <mesh geometry={nodes.foo} material={materials.bar} />
+       *  Solution:
+       *    <mesh geometry={nodes.foo} material={materials.bar} position={[10, 0, 0]} scale={2} rotation={[-Math.PI / 2, 0, 0]} />
+       */
+      const isChildTransformed = keys2.includes('position') || keys2.includes('rotation') || keys2.includes('scale')
+      const hasOtherProps = keys1.some((key) => !['position', 'scale', 'rotation'].includes(key))
+      if (obj.children.length === 1 && !first.__removed && !isChildTransformed && !hasOtherProps) {
+        if (!silent) console.log(`group removed (aggressive: ${keys1.join(' ')} overlap)`)
+        // Move props over from the to-be-deleted object to the child
+        // This ensures that the child will have the correct transform when pruning is being repeated
+        keys1.forEach((key) => obj.children[0][key].copy(obj[key]))
+        // Insert the props into the result string
+        children = print(first, true)
+        obj.__removed = true
+        return children
+      }
+
+      /** Lack of content
+       *    <group position={[10, 0, 0]} scale={2} rotation={[-Math.PI / 2, 0, 0]}>
+       *      <group position={[10, 0, 0]} scale={2} rotation={[-Math.PI / 2, 0, 0]}>
+       *        <group position={[10, 0, 0]} scale={2} rotation={[-Math.PI / 2, 0, 0]} />
+       * Solution:
+       *   (delete the whole sub graph)
+       */
+      const empty = []
+      obj.traverse((o) => {
+        const type = getType(o)
+        if (type !== 'group' && type !== 'object3D') empty.push(o)
+      })
+      if (!empty.length) {
+        if (!silent) console.log('group removed (aggressive: lack of content)')
+        empty.forEach((child) => (child.__removed = true))
+        return ''
+      }
+    }
+  }
+
+  function print(obj, silent = false) {
     let result = ''
     let children = ''
     let { type, node, instanced, animated } = getInfo(obj)
-
-    if (options.setLog)
-      setTimeout(
-        () => options.setLog((state) => [...state, obj.name]),
-        (options.timeout = options.timeout + options.delay)
-      )
 
     // Bail out on lights and bones
     if (type === 'bone') {
@@ -219,7 +297,7 @@ function parse(fileName, gltf, options = {}) {
     }
 
     // Collect children
-    if (obj.children) obj.children.forEach((child) => (children += print(objects, gltf, child)))
+    if (obj.children) obj.children.forEach((child) => (children += print(child)))
 
     if (instanced) {
       result = `<instances.${duplicates.geometries[obj.geometry.uuid + obj.material.name].name} `
@@ -233,93 +311,17 @@ function parse(fileName, gltf, options = {}) {
     if (obj.name.length && (options.keepnames || obj.morphTargetDictionary || animated)) result += `name="${obj.name}" `
 
     const oldResult = result
-
     result += handleProps(obj)
 
-    // Prune ...
-    if (!options.keepgroups && !animated && (type === 'group' || type === 'scene')) {
-      /** Empty or no-property groups
-       *
-       * <group>
-       *   <mesh geometry={nodes.foo} material={materials.bar} />
-       */
-      if (result === oldResult || obj.children.length === 0) {
-        if (!inject) console.log('group removed (empty)')
-        obj.__removed = true
-        return children
-      }
-
-      function equalOrNegated(a, b) {
-        return (a.x === b.x || a.x === -b.x) && (a.y === b.y || a.y === -b.y) && (a.z === b.z || a.z === -b.z)
-      }
-
-      // More aggressive removal strategies ...
-      const first = obj.children[0]
-      const firstProps = handleProps(first)
-      const regex = /([a-z-A-Z]*)={([a-zA-Z0-9\.\[\]\-\,\ \/]*)}/g
-      const keys1 = [...result.matchAll(regex)].map(([, match]) => match)
-      const values1 = [...result.matchAll(regex)].map(([, , match]) => match)
-      const keys2 = [...firstProps.matchAll(regex)].map(([, match]) => match)
-
-      /** Double negative transforms
-       *
-       * <group rotation={[-Math.PI / 2, 0, 0]}>
-       *   <group rotation={[Math.PI / 2, 0, 0]}>
-       *     <mesh geometry={nodes.foo} material={materials.bar} />
-       */
-      if (obj.children.length === 1 && getType(first) === type && equalOrNegated(obj.rotation, first.rotation)) {
-        if (keys1.length === 1 && keys2.length === 1 && keys1[0] === 'rotation' && keys2[0] === 'rotation') {
-          if (!inject) console.log('group removed (aggressive: double negative rotation)')
-          obj.__removed = first.__removed = true
-          children = ''
-          if (first.children) first.children.forEach((child) => (children += print(objects, gltf, child)))
-          return children
-        }
-      }
-
-      /** Transform overlap
-       *
-       * <group position={[10, 0, 0]} scale={2} rotation={[-Math.PI / 2, 0, 0]}>
-       *   <mesh geometry={nodes.foo} material={materials.bar} />
-       */
-      const isChildTransformed = keys2.includes('position') || keys2.includes('rotation') || keys2.includes('scale')
-      const hasOtherProps = keys1.some((key) => !['position', 'scale', 'rotation'].includes(key))
-      if (obj.children.length === 1 && !first.__removed && !isChildTransformed && !hasOtherProps) {
-        if (!inject) console.log(`group removed (aggressive: ${keys1.join(' ')} overlap)`)
-        children = print(objects, gltf, first, keys1.map((key, i) => `${key}={${values1[i]}}`).join(' '))
-        obj.__removed = true
-        return children
-      }
-
-      /** Lack of content
-       *
-       * <group position={[10, 0, 0]} scale={2} rotation={[-Math.PI / 2, 0, 0]}>
-       *   <group position={[10, 0, 0]} scale={2} rotation={[-Math.PI / 2, 0, 0]}>
-       *     <group position={[10, 0, 0]} scale={2} rotation={[-Math.PI / 2, 0, 0]} />
-       */
-      const empty = []
-      obj.traverse((o) => {
-        const type = getType(o)
-        if (type !== 'group' && type !== 'object3D') empty.push(o)
-      })
-      if (!empty.length) {
-        if (!inject) console.log('group removed (aggressive: lack of content)')
-        empty.forEach((o) => (o__removed = true))
-        return ''
-      }
-    }
-
-    // Inject properties
-    result += ' ' + inject + ' '
+    const pruned = prune(obj, children, result, oldResult, silent)
+    // Bail out if the object was pruned
+    if (pruned !== undefined) return pruned
 
     // Close tag
     result += `${children.length ? '>' : '/>'}\n`
 
     // Add children and return
-    // console.info('children.length:', children.length);
-    // console.info('type:', type);
     if (children.length) result += children + `</${type}>`
-    // console.info('result:', result);
     return result
   }
 
@@ -358,7 +360,20 @@ function parse(fileName, gltf, options = {}) {
 
   if (options.debug) p(gltf.scene, 0)
 
-  const scene = print(objects, gltf, gltf.scene)
+  // Dry run to prune graph
+  print(gltf.scene)
+  objects.forEach((o, index) => {
+    if (o.__removed) {
+      const parent = o.parent
+      if (parent) {
+        o.children.forEach((child) => parent.add(child))
+        o.parent.remove(o)
+      }
+    }
+  })
+  // 2nd pass to eliminate hard to swat left-overs
+  const scene = print(gltf.scene)
+
   return `/*
 Auto-generated by: https://github.com/pmndrs/gltfjsx
 ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/

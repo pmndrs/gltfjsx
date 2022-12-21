@@ -41,7 +41,6 @@ export default function (file, output, options) {
         if (options.transform || options.instance || options.instanceall) {
           const { name } = path.parse(file)
           const transformOut = path.join(name + '-transformed.glb')
-          if (options.setLog) options.setLog((state) => [...state, 'transforming ' + transformOut])
           await transform(file, transformOut, {})
           file = transformOut
         }
@@ -65,8 +64,7 @@ export default function (file, output, options) {
               })
             )
             stream.end()
-            if (options.setLog) setTimeout(() => resolve(), (options.timeout = options.timeout + options.delay))
-            else resolve()
+            resolve()
           },
           reject
         )
