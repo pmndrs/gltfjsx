@@ -23,7 +23,7 @@ async function transform(file, output, config = {}) {
     // Remove unused nodes, textures, or other data.
     prune(),
     // Instance meshes.
-    instance(),
+    // instance(),
     // Resize all textures to ≤1K.
     textureResize({ size: [1024, 1024] }),
     // Convert textures to WebP
