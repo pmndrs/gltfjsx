@@ -401,7 +401,7 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
           ${hasInstances ? 'const instances = useContext(context);' : ''} ${
     hasAnimations ? `const group = ${options.types ? 'useRef<THREE.Group>()' : 'useRef()'};` : ''
   } ${
-    !hasInstances
+    !options.instanceall
       ? `const { nodes, materials${hasAnimations ? ', animations' : ''} } = useGLTF('${url}'${
           options.draco ? `, ${JSON.stringify(options.draco)}` : ''
         })${options.types ? ' as GLTFResult' : ''}`
