@@ -29,6 +29,7 @@ Usage
   $ npx gltfjsx model.gltf [options]
 
 Options
+  --output, -o        Output file name/path
   --types, -t         Add Typescript definitions
   --keepnames, -k     Keep original names
   --keepgroups, -K    Keep (empty) groups, disable pruning

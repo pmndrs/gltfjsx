@@ -18,7 +18,7 @@ const cli = meow(
     --output, -o        Output file name/path
     --types, -t         Add Typescript definitions
     --keepnames, -k     Keep original names
-    --keepgroups, -K    Keep (empty) groups
+    --keepgroups, -K    Keep (empty) groups, disable pruning
     --meta, -m          Include metadata (as userData)
     --shadows, s        Let meshes cast and receive shadows
     --printwidth, w     Prettier printWidth (default: 120)
