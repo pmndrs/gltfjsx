@@ -267,7 +267,7 @@ it('should have a scene with a blue mesh', async () => {
 
 ## Requirements
 
-- Nodejs must be installed
+- Nodejs must be installed (atm Node > 16 is not supported due to squoosh)
 - The GLTF file has to be present in your projects `/public` folder
 - [three](https://github.com/mrdoob/three.js/) (>= 121.x)
 - [@react-three/fiber](https://github.com/pmndrs/react-three-fiber) (>= 5.x)
