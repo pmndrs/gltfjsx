@@ -364,7 +364,9 @@ function parse(fileName, gltf, options = {}) {
   print(gltf.scene)
   objects.forEach((o, index) => {
     if (o.__removed) {
-      const parent = o.parent
+      let parent = o.parent
+      // Making sure we don't add to a removed parent
+      while (parent && parent.__removed) parent = parent.parent
       if (parent) {
         o.children.forEach((child) => parent.add(child))
         o.parent.remove(o)
