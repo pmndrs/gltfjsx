@@ -49,10 +49,10 @@ Options
 First you run your model through gltfjsx. `npx` allows you to use npm packages without installing them.
 
 ```bash
-npx gltfjsx model.gltf
+npx gltfjsx model.gltf --transform
 ```
 
-It creates a javascript file that plots out all of the assets contents. The original gltf must still be be in your `/public` folder of course.
+It creates a javascript file that plots out all of the assets contents.
 
 ```jsx
 /*
@@ -66,7 +66,7 @@ title: Model
 import { useGLTF, PerspectiveCamera } from '@react-three/drei'
 
 export function Model(props) {
-  const { nodes, materials } = useGLTF('/model.gltf')
+  const { nodes, materials } = useGLTF('/model-transformed.glb')
   return (
     <group {...props} dispose={null}>
       <PerspectiveCamera name="camera" fov={40} near={10} far={1000} position={[10, 0, 50]} />      
@@ -82,7 +82,14 @@ export function Model(props) {
 useGLTF.preload('/model.gltf')
 ```
 
-This component can now be dropped into your scene.
+Add the model to your `/public` folder as always.
+
+```text
+/public
+  model-transformed.glb
+```
+
+The component can now be dropped into your scene.
 
 ```jsx
 import { Canvas } from '@react-three/fiber'
