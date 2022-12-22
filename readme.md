@@ -94,7 +94,7 @@ function App() {
       <Model />      
 ```
 
-Now you can re-use it, it will re-use geometries and materials ootb:
+You can re-use it, it will re-use geometries and materials out of the box:
 
 ```jsx
 <Model position={[0, 0, 0]} />
