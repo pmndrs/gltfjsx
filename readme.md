@@ -14,7 +14,7 @@ A small command-line tool that turns GLTF assets into declarative and re-usable 
 - Changes to queried nodes are made by mutation, which alters the source data and prevents re-use
 - Re-structuring content, making nodes conditional or adding/removing is cumbersome
 - Model compression is complex and not easily achieved
-- Models often have unnecessary groups that cause extra work and matrix updates
+- Models often have unnecessary nodes that cause extra work and matrix updates
 
 ### GLTFJSX fixes that
 
