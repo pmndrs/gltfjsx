@@ -69,14 +69,12 @@ export function Model(props) {
   const { nodes, materials } = useGLTF('/model.gltf')
   return (
     <group {...props} dispose={null}>
-      <group name="camera" position={[10, 0, 50]} rotation={[Math.PI / 2, 0, 0]}>
-        <PerspectiveCamera fov={40} near={10} far={1000} />
+      <PerspectiveCamera name="camera" fov={40} near={10} far={1000} position={[10, 0, 50]} />      
+      <pointLight intensity={10} position={[100, 50, 100]} rotation={[-Math.PI / 2, 0, 0]} />
+      <group position={[10, -5, 0]}>
+        <mesh geometry={nodes.robot.geometry} material={materials.metal} />
+        <mesh geometry={nodes.rocket.geometry} material={materials.wood} />
       </group>
-      <group name="sun" position={[100, 50, 100]} rotation={[-Math.PI / 2, 0, 0]}>
-        <pointLight intensity={10} />
-      </group>
-      <mesh geometry={nodes.robot.geometry} material={materials.metal} />
-      <mesh geometry={nodes.rocket.geometry} material={materials.wood} />
     </group>
   )
 }
@@ -84,22 +82,19 @@ export function Model(props) {
 useGLTF.preload('/model.gltf')
 ```
 
-This component can now be dropped into your scene. It is asynchronous and therefore must be wrapped into `<Suspense>` which gives you full control over intermediary loading-fallbacks and error handling.
+This component can now be dropped into your scene.
 
 ```jsx
 import { Canvas } from '@react-three/fiber'
-import { Suspense } from 'react'
 import Model from './Model'
 
 function App() {
   return (
     <Canvas>
-      <Suspense fallback={null}>
-        <Model />
-      </Suspense>
+      <Model />      
 ```
 
-Now you could re-use it:
+Now you can re-use it, it will re-use geometries and materials ootb:
 
 ```jsx
 <Model position={[0, 0, 0]} />
@@ -123,9 +118,7 @@ Or exchange materials:
 Make contents conditional:
 
 ```jsx
-{
-  condition && <mesh geometry={nodes.robot.geometry} material={materials.metal} />
-}
+{condition && <mesh geometry={nodes.robot.geometry} material={materials.metal} />}
 ```
 
 Add events:
@@ -139,6 +132,34 @@ Add events:
 #### ⚡️ Draco and meshopt compression ootb
 
 You don't need to do anything if your models are draco compressed, since `useGLTF` defaults to a [draco CDN](https://www.gstatic.com/draco/v1/decoders/). By adding the `--draco` flag you can refer to [local binaries](https://github.com/mrdoob/three.js/tree/dev/examples/js/libs/draco/gltf) which must reside in your /public folder.
+
+#### ⚡️ Preload your assets for faster response
+
+The asset will be preloaded by default, this makes it quicker to load and reduces time-to-paint. Remove the preloader if you don't need it.
+
+```jsx
+useGLTF.preload('/model.gltf')
+```
+
+#### ⚡️ Auto-transform (compression, resize)
+
+With the `--transform` flag it creates a binary-packed, draco-compressed, texture-resized (1024x1024), [webp squooshed](https://www.npmjs.com/package/@squoosh/lib), deduped, instanced and pruned GLTF ready to be consumed on a web site. It uses [glTF-Transform](https://github.com/donmccurdy/glTF-Transform). Draco + webp compression can reduce the size of a GLTF/GLB file to 70%-90%.
+
+It will not alter the original but create a copy and append `[modelname]-transformed.glb`.
+
+#### ⚡️ Type-safety
+
+Add the `--types` flag and your GLTF will be typesafe.
+
+```tsx
+type GLTFResult = GLTF & {
+  nodes: { robot: THREE.Mesh; rocket: THREE.Mesh }
+  materials: { metal: THREE.MeshStandardMaterial; wood: THREE.MeshStandardMaterial }
+}
+
+export default function Model(props: JSX.IntrinsicElements['group']) {
+  const { nodes, materials } = useGLTF<GLTFResult>('/model.gltf')
+```
 
 #### ⚡️ Easier access to animations
 
@@ -165,34 +186,6 @@ useEffect(() => {
   return () => actions[name].fadeOut(0.5)
 }, [name])
 ```
-
-#### ⚡️ Preload your assets for faster response
-
-The asset will be preloaded by default, this makes it quicker to load and reduces time-to-paint. Remove the preloader if you don't need it.
-
-```jsx
-useGLTF.preload('/model.gltf')
-```
-
-#### ⚡️ Type-safety
-
-Add the `--types` flag and your GLTF will be typesafe.
-
-```tsx
-type GLTFResult = GLTF & {
-  nodes: { robot: THREE.Mesh; rocket: THREE.Mesh }
-  materials: { metal: THREE.MeshStandardMaterial; wood: THREE.MeshStandardMaterial }
-}
-
-export default function Model(props: JSX.IntrinsicElements['group']) {
-  const { nodes, materials } = useGLTF<GLTFResult>('/model.gltf')
-```
-
-#### ⚡️ Auto-transform (compression, resize)
-
-With the `--transform` flag it creates a binary-packed, draco-compressed, texture-resized (1024x1024), [webp squooshed](https://www.npmjs.com/package/@squoosh/lib), deduped, instanced and pruned GLTF ready to be consumed on a web site. It uses [glTF-Transform](https://github.com/donmccurdy/glTF-Transform). Draco + webp compression can reduce the size of a GLTF/GLB file to 70%-90%.
-
-It will not alter the original but create a copy and append `[modelname]-transformed.glb`.
 
 #### ⚡️ Auto-instancing
 
