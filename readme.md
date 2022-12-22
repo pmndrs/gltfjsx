@@ -86,7 +86,7 @@ This component can now be dropped into your scene.
 
 ```jsx
 import { Canvas } from '@react-three/fiber'
-import Model from './Model'
+import { Model } from './Model'
 
 function App() {
   return (
