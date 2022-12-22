@@ -7,7 +7,7 @@ https://user-images.githubusercontent.com/2223602/126318148-99da7ed6-a578-48dd-b
 
 A small command-line tool that turns GLTF assets into declarative and re-usable [react-three-fiber](https://github.com/pmndrs/react-three-fiber) JSX components.
 
-### Why? Because the GLTF workflow on the web is not ideal ...
+### The GLTF workflow on the web is not ideal ...
 
 - GLTF is thrown wholesale into the scene which prevents re-use, in threejs objects can only be mounted once
 - Contents can only be found by traversal which is cumbersome and slow
@@ -16,7 +16,11 @@ A small command-line tool that turns GLTF assets into declarative and re-usable 
 - Model compression is complex and not easily achieved
 - Models often have unnecessary groups that cause extra work and matrix updates
 
-Gltfjsx creates a virtual graph of all the objects and materials inside your asset. Now you can easily make the data dynamic, alter contents, add events, or re-use the asset without having to re-parse and clone. The graph gets pruned (empty groups, double-negatives, unnecessary transforms) and will even perform better.
+### GLTFJSX fixes that
+
+- ⚡️ It creates a virtual graph of all the objects and materials inside your asset. Now you can easily alter contents and re-use. 
+- ⚡️ The graph gets pruned (empty groups, double-negatives, unnecessary transforms) and will even perform better.
+- ⚡️ It will optionally compress your model with up to 90% size reduction.
 
 ## Usage
 
