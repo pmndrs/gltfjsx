@@ -12,9 +12,11 @@ A small command-line tool that turns GLTF assets into declarative and re-usable 
 - GLTF is thrown wholesale into the scene which prevents re-use, in threejs objects can only be mounted once
 - Contents can only be found by traversal which is cumbersome and slow
 - Changes to queried nodes are made by mutation, which alters the source data and prevents re-use
-- Re-structuring content, making nodes conditional or adding/removing thems is cumbersome
+- Re-structuring content, making nodes conditional or adding/removing is cumbersome
+- Model compression is complex and not easily achieved
+- Models often have unnecessary groups that cause extra work and matrix updates
 
-Gltfjsx creates a virtual, nested graph of all the objects and materials inside your asset. It will not touch or modify your files in any way. Now you can easily make the data dynamic, alter contents, add events, or re-use the asset without having to re-parse and clone, as it is usually done.
+Gltfjsx creates a virtual graph of all the objects and materials inside your asset. Now you can easily make the data dynamic, alter contents, add events, or re-use the asset without having to re-parse and clone. The graph gets pruned (empty groups, double-negatives, unnecessary transforms) and will even perform better.
 
 ## Usage
 
