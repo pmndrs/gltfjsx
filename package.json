@@ -22,14 +22,14 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reflektor-digital-inc/gltfjsx-webp.git"
+    "url": "git+https://github.com/pmndrs/gltfjsx.git"
   },
   "bugs": {
     "url": "https://github.com/pmndrs/gltfjsx/issues"
   },
   "homepage": "https://github.com/pmndrs/gltfjsx#readme",
   "bin": {
-    "gltfjsx-webp": "./cli.js"
+    "gltfjsx": "./cli.js"
   },
   "main": "./cli.js",
   "engines": {
