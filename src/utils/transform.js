@@ -1,7 +1,6 @@
-import { cpus } from 'os'
 import { NodeIO } from '@gltf-transform/core'
-import { dedup, resample, prune, textureResize, webp, instance } from '@gltf-transform/functions'
-import squoosh from '@squoosh/lib'
+import { dedup, resample, prune, textureResize, textureCompress } from '@gltf-transform/functions'
+import sharp from 'sharp'
 import { DracoMeshCompression, KHRONOS_EXTENSIONS, MeshGPUInstancing } from '@gltf-transform/extensions'
 import draco3d from 'draco3dgltf'
 
@@ -27,7 +26,7 @@ async function transform(file, output, config = {}) {
     // Resize all textures to ≤1K.
     textureResize({ size: [1024, 1024] }),
     // Convert textures to WebP
-    webp({ squoosh, jobs: cpus().length })
+    textureCompress({ codec: 'webp', encoder: sharp, formats: /.*/ })
   )
 
   // Add Draco compression.

@@ -36,17 +36,17 @@
     "node": ">=16"
   },
   "dependencies": {
-    "@gltf-transform/core": "^2.4.6",
-    "@gltf-transform/extensions": "^2.4.6",
-    "@gltf-transform/functions": "^2.4.6",
+    "@gltf-transform/core": "^3.0.0-alpha.0",
+    "@gltf-transform/extensions": "^3.0.0-alpha.0",
+    "@gltf-transform/functions": "^3.0.0-alpha.0",
     "@node-loader/babel": "^2.0.1",
-    "@squoosh/lib": "^0.4.0",
     "draco3dgltf": "^1.5.5",
     "is-var-name": "^2.0.0",
     "jsdom": "^20.0.3",
     "jsdom-global": "^3.0.2",
     "meow": "^11.0.0",
     "prettier": "^2.3.2",
+    "sharp": "^0.31.3",
     "three": "0.122.0"
   },
   "devDependencies": {
