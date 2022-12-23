@@ -83,7 +83,7 @@ export function Model(props) {
 useGLTF.preload('/model.gltf')
 ```
 
-Add the model to your `/public` folder as always. With the `--transform` flag it has created a compressed copy of it. Without the flag just copy the original model. In the above case it will have create a file named `model-transformed.glb`.
+Add your model to your `/public` folder as you would normally do. With the `--transform` flag it has created a compressed copy of it (in the above case `model-transformed.glb`). Without the flag just copy the original model.
 
 ```text
 /public
