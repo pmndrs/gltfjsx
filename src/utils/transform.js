@@ -1,16 +1,19 @@
 import { NodeIO } from '@gltf-transform/core'
 import { dedup, resample, prune, textureResize, textureCompress } from '@gltf-transform/functions'
 import sharp from 'sharp'
-import { DracoMeshCompression, KHRONOS_EXTENSIONS, MeshGPUInstancing } from '@gltf-transform/extensions'
+import { DracoMeshCompression, ALL_EXTENSIONS } from '@gltf-transform/extensions'
 import draco3d from 'draco3dgltf'
+import { MeshoptDecoder, MeshoptEncoder, MeshoptSimplifier } from 'meshoptimizer'
 
 async function transform(file, output, config = {}) {
-  const io = new NodeIO()
-    .registerExtensions([DracoMeshCompression, ...KHRONOS_EXTENSIONS, MeshGPUInstancing])
-    .registerDependencies({
-      'draco3d.decoder': await draco3d.createDecoderModule(),
-      'draco3d.encoder': await draco3d.createEncoderModule(),
-    })
+  await MeshoptDecoder.ready
+  await MeshoptEncoder.ready
+  const io = new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({
+    'draco3d.decoder': await draco3d.createDecoderModule(),
+    'draco3d.encoder': await draco3d.createEncoderModule(),
+    'meshopt.decoder': MeshoptDecoder,
+    'meshopt.encoder': MeshoptEncoder,
+  })
 
   const document = await io.read(file)
 

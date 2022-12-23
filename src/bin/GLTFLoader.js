@@ -203,7 +203,7 @@ const GLTFLoader = (THREE.GLTFLoader = (function () {
 
             default:
               if (extensionsRequired.indexOf(extensionName) >= 0 && plugins[extensionName] === undefined) {
-                console.warn('THREE.GLTFLoader: Unknown extension "' + extensionName + '".')
+                // console.warn('THREE.GLTFLoader: Unknown extension "' + extensionName + '".')
               }
           }
         }
