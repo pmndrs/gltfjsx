@@ -151,7 +151,7 @@ useGLTF.preload('/model.gltf')
 
 #### ⚡️ Auto-transform (compression, resize)
 
-With the `--transform` flag it creates a binary-packed, draco-compressed, texture-resized (1024x1024), webp squooshed, deduped, instanced and pruned *.glb ready to be consumed on a web site. It uses [glTF-Transform](https://github.com/donmccurdy/glTF-Transform). This can reduce the size of an asset by 70%-90%.
+With the `--transform` flag it creates a binary-packed, draco-compressed, texture-resized (1024x1024), webp compressed, deduped, instanced and pruned *.glb ready to be consumed on a web site. It uses [glTF-Transform](https://github.com/donmccurdy/glTF-Transform). This can reduce the size of an asset by 70%-90%.
 
 It will not alter the original but create a copy and append `[modelname]-transformed.glb`.
 
@@ -275,7 +275,7 @@ it('should have a scene with a blue mesh', async () => {
 
 ## Requirements
 
-- Nodejs must be installed (atm Node > 16 is not supported due to squoosh)
+- Nodejs must be installed
 - The GLTF file has to be present in your projects `/public` folder
 - [three](https://github.com/mrdoob/three.js/) (>= 121.x)
 - [@react-three/fiber](https://github.com/pmndrs/react-three-fiber) (>= 5.x)
