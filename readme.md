@@ -53,7 +53,7 @@ First you run your model through gltfjsx. `npx` allows you to use npm packages w
 npx gltfjsx model.gltf --transform
 ```
 
-It creates a javascript file that plots out all of the assets contents.
+This will create a `Model.jsx` file that plots out all of the assets contents.
 
 ```jsx
 /*
@@ -83,7 +83,7 @@ export function Model(props) {
 useGLTF.preload('/model.gltf')
 ```
 
-Add the model to your `/public` folder as always. With the `--transform` flag it has created a compressed copy of it. Without the flag just copy the original model.
+Add the model to your `/public` folder as always. With the `--transform` flag it has created a compressed copy of it. Without the flag just copy the original model. In the above case it will have create a file named `model-transformed.glb`.
 
 ```text
 /public
