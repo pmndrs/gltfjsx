@@ -335,7 +335,7 @@ function parse(fileName, gltf, options = {}) {
     if (extras) {
       return (
         Object.keys(extras)
-          .map((key) => `${key.toUpperCase()}: ${extras[key]}`)
+          .map((key) => `${key.charAt(0).toUpperCase() + key.slice(1)}: ${extras[key]}`)
           .join('\n') + '\n'
       )
     } else return ''
