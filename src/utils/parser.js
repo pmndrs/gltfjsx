@@ -395,7 +395,7 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
         const context = createContext()
         export function Instances({ children, ...props }) {
           const { nodes } = useGLTF('${url}'${options.draco ? `, ${JSON.stringify(options.draco)}` : ''})${
-                options.types ? ' as GLTFResult' : ''
+                options.types ? ' as unkown as GLTFResult' : ''
               }
           const instances = useMemo(() => ({
             ${Object.values(duplicates.geometries)
