@@ -277,6 +277,6 @@ it('should have a scene with a blue mesh', async () => {
 
 - Nodejs must be installed
 - The GLTF file has to be present in your projects `/public` folder
-- [three](https://github.com/mrdoob/three.js/) (>= 121.x)
+- [three](https://github.com/mrdoob/three.js/) (>= 122.x)
 - [@react-three/fiber](https://github.com/pmndrs/react-three-fiber) (>= 5.x)
 - [@react-three/drei](https://github.com/pmndrs/drei) (>= 2.x)
