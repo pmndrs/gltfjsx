@@ -42,7 +42,8 @@ Options
   --instance, -i      Instance re-occuring geometry
   --instanceall, -I   Instance every geometry (for cheaper re-use)
   --transform, -T     Transform the asset for the web (draco, prune, resize)
-  --resolution, -R    Transorm resolution for resizing (default: 1024)
+  --resolution, -R    Transform resolution for resizing (default: 1024)
+  --simplify, -S      Transform simplification (default: false) (experimental!)
   --debug, -D         Debug output
 ```
 

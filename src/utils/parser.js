@@ -209,7 +209,7 @@ function parse(fileName, gltf, options = {}) {
   function prune(obj, children, result, oldResult, silent) {
     let { type, animated } = getInfo(obj)
     // Prune ...
-    if (!options.keepgroups && !animated && (type === 'group' || type === 'scene')) {
+    if (!obj.__removed && !options.keepgroups && !animated && (type === 'group' || type === 'scene')) {
       /** Empty or no-property groups
        *    <group>
        *      <mesh geometry={nodes.foo} material={materials.bar} />
@@ -230,7 +230,7 @@ function parse(fileName, gltf, options = {}) {
       const values1 = [...result.matchAll(regex)].map(([, , match]) => match)
       const keys2 = [...firstProps.matchAll(regex)].map(([, match]) => match)
 
-      /** Double negative transforms
+      /** Double negative rotations
        *    <group rotation={[-Math.PI / 2, 0, 0]}>
        *      <group rotation={[Math.PI / 2, 0, 0]}>
        *        <mesh geometry={nodes.foo} material={materials.bar} />
@@ -243,6 +243,25 @@ function parse(fileName, gltf, options = {}) {
           obj.__removed = first.__removed = true
           children = ''
           if (first.children) first.children.forEach((child) => (children += print(child, true)))
+          return children
+        }
+      }
+
+      /** Double negative rotations w/ props
+       *    <group rotation={[-Math.PI / 2, 0, 0]}>
+       *      <group rotation={[Math.PI / 2, 0, 0]} scale={0.01}>
+       *        <mesh geometry={nodes.foo} material={materials.bar} />
+       *  Solution:
+       *    <group scale={0.01}>
+       *      <mesh geometry={nodes.foo} material={materials.bar} />
+       */
+      if (obj.children.length === 1 && getType(first) === type && equalOrNegated(obj.rotation, first.rotation)) {
+        if (keys1.length === 1 && keys2.length > 1 && keys1[0] === 'rotation' && keys2.includes('rotation')) {
+          if (!silent) console.log(`group ${obj.name} removed (aggressive: double negative rotation w/ props)`)
+          obj.__removed = true
+          // Remove rotation from first child
+          first.rotation.set(0, 0, 0)
+          children = print(first, true)
           return children
         }
       }
@@ -290,6 +309,12 @@ function parse(fileName, gltf, options = {}) {
     let result = ''
     let children = ''
     let { type, node, instanced, animated } = getInfo(obj)
+
+    // Check if the root node is useless
+    if (obj.__removed && obj.children.length) {
+      obj.children.forEach((child) => (result += print(child)))
+      return result
+    }
 
     // Bail out on lights and bones
     if (type === 'bone') {
@@ -360,24 +385,25 @@ function parse(fileName, gltf, options = {}) {
 
   if (options.debug) p(gltf.scene, 0)
 
-  // Dry run to prune graph
-  print(gltf.scene)
-  // Move children of deleted objects to their new parents
-  objects.forEach((o) => {
-    if (o.__removed) {
-      let parent = o.parent
-      // Making sure we don't add to a removed parent
-      while (parent && parent.__removed) parent = parent.parent
-      if (parent) {
-        o.children.forEach((child) => parent.add(child))
+  if (!options.keepgroups) {
+    // Dry run to prune graph
+    print(gltf.scene)
+    // Move children of deleted objects to their new parents
+    objects.forEach((o) => {
+      if (o.__removed) {
+        let parent = o.parent
+        // Making sure we don't add to a removed parent
+        while (parent && parent.__removed) parent = parent.parent
+        // If no parent was found it must be the root node
+        if (!parent) parent = gltf.scene
+        o.children.slice().forEach((child) => parent.add(child))
       }
-    }
-  })
-  // Remove deleted objects
-  objects.forEach((o) => {
-    if (o.__removed && o.parent) o.parent.remove(o)
-  })
-
+    })
+    // Remove deleted objects
+    objects.forEach((o) => {
+      if (o.__removed && o.parent) o.parent.remove(o)
+    })
+  }
   // 2nd pass to eliminate hard to swat left-overs
   const scene = print(gltf.scene)
 

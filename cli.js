@@ -30,7 +30,7 @@ const cli = meow(
     --instanceall, -I   Instance every geometry (for cheaper re-use)
     --transform, -T     Transform the asset for the web (draco, prune, resize)
     --resolution, -R    Transform resolution for texture resizing (default: 1024)
-    --simplify, -S      Transform simplification (default: false)
+    --simplify, -S      Transform simplification (default: false) (experimental!)
     --debug, -D         Debug output
 `,
   {

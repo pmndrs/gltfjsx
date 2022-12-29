@@ -19,10 +19,10 @@ async function transform(file, output, config = {}) {
   const resolution = config.resolution ?? 1024
 
   const functions = [
-    // Remove duplicate vertex or texture data, if any.
-    dedup(),
     // Losslessly resample animation frames.
     resample(),
+    // Remove duplicate vertex or texture data, if any.
+    dedup(),
     // Remove unused nodes, textures, or other data.
     prune(),
     // Instance meshes.
