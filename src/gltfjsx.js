@@ -41,7 +41,7 @@ export default function (file, output, options) {
         if (options.transform || options.instance || options.instanceall) {
           const { name } = path.parse(file)
           const transformOut = path.join(name + '-transformed.glb')
-          await transform(file, transformOut, {})
+          await transform(file, transformOut, options)
           file = transformOut
         }
         resolve()

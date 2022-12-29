@@ -1,9 +1,9 @@
 import { NodeIO } from '@gltf-transform/core'
-import { dedup, resample, prune, textureResize, textureCompress } from '@gltf-transform/functions'
-import sharp from 'sharp'
+import { simplify, weld, dedup, resample, prune, textureResize, textureCompress } from '@gltf-transform/functions'
 import { DracoMeshCompression, ALL_EXTENSIONS } from '@gltf-transform/extensions'
-import draco3d from 'draco3dgltf'
 import { MeshoptDecoder, MeshoptEncoder, MeshoptSimplifier } from 'meshoptimizer'
+import draco3d from 'draco3dgltf'
+import sharp from 'sharp'
 
 async function transform(file, output, config = {}) {
   await MeshoptDecoder.ready
@@ -16,8 +16,9 @@ async function transform(file, output, config = {}) {
   })
 
   const document = await io.read(file)
+  const resolution = config.resolution ?? 1024
 
-  await document.transform(
+  const functions = [
     // Remove duplicate vertex or texture data, if any.
     dedup(),
     // Losslessly resample animation frames.
@@ -27,10 +28,21 @@ async function transform(file, output, config = {}) {
     // Instance meshes.
     // instance(),
     // Resize all textures to ≤1K.
-    textureResize({ size: [1024, 1024] }),
+    textureResize({ size: [resolution, resolution] }),
     // Convert textures to WebP
-    textureCompress({ codec: 'webp', encoder: sharp, formats: /.*/ })
-  )
+    textureCompress({ codec: 'webp', encoder: sharp, formats: /.*/ }),
+  ]
+
+  if (config.simplify) {
+    functions.push(
+      // Weld vertices
+      weld({ tolerance: 0.0001 }),
+      // Simplify meshes
+      simplify({ simplifier: MeshoptSimplifier, ratio: 0.75, error: 0.001 })
+    )
+  }
+
+  await document.transform(...functions)
 
   // Add Draco compression.
   document.createExtension(DracoMeshCompression).setRequired(true).setEncoderOptions({

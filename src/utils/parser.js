@@ -217,7 +217,7 @@ function parse(fileName, gltf, options = {}) {
        *    <mesh geometry={nodes.foo} material={materials.bar} />
        */
       if (result === oldResult || obj.children.length === 0) {
-        if (!silent) console.log('group removed (empty)')
+        if (!silent) console.log(`group ${obj.name} removed (empty)`)
         obj.__removed = true
         return children
       }
@@ -239,7 +239,7 @@ function parse(fileName, gltf, options = {}) {
        */
       if (obj.children.length === 1 && getType(first) === type && equalOrNegated(obj.rotation, first.rotation)) {
         if (keys1.length === 1 && keys2.length === 1 && keys1[0] === 'rotation' && keys2[0] === 'rotation') {
-          if (!silent) console.log('group removed (aggressive: double negative rotation)')
+          if (!silent) console.log(`group ${obj.name} removed (aggressive: double negative rotation)`)
           obj.__removed = first.__removed = true
           children = ''
           if (first.children) first.children.forEach((child) => (children += print(child, true)))
@@ -256,7 +256,7 @@ function parse(fileName, gltf, options = {}) {
       const isChildTransformed = keys2.includes('position') || keys2.includes('rotation') || keys2.includes('scale')
       const hasOtherProps = keys1.some((key) => !['position', 'scale', 'rotation'].includes(key))
       if (obj.children.length === 1 && !first.__removed && !isChildTransformed && !hasOtherProps) {
-        if (!silent) console.log(`group removed (aggressive: ${keys1.join(' ')} overlap)`)
+        if (!silent) console.log(`group ${obj.name} removed (aggressive: ${keys1.join(' ')} overlap)`)
         // Move props over from the to-be-deleted object to the child
         // This ensures that the child will have the correct transform when pruning is being repeated
         keys1.forEach((key) => obj.children[0][key].copy(obj[key]))
@@ -279,7 +279,7 @@ function parse(fileName, gltf, options = {}) {
         if (type !== 'group' && type !== 'object3D') empty.push(o)
       })
       if (!empty.length) {
-        if (!silent) console.log('group removed (aggressive: lack of content)')
+        if (!silent) console.log(`group ${obj.name} removed (aggressive: lack of content)`)
         empty.forEach((child) => (child.__removed = true))
         return ''
       }
@@ -362,17 +362,22 @@ function parse(fileName, gltf, options = {}) {
 
   // Dry run to prune graph
   print(gltf.scene)
-  objects.forEach((o, index) => {
+  // Move children of deleted objects to their new parents
+  objects.forEach((o) => {
     if (o.__removed) {
       let parent = o.parent
       // Making sure we don't add to a removed parent
       while (parent && parent.__removed) parent = parent.parent
       if (parent) {
         o.children.forEach((child) => parent.add(child))
-        o.parent.remove(o)
       }
     }
   })
+  // Remove deleted objects
+  objects.forEach((o) => {
+    if (o.__removed && o.parent) o.parent.remove(o)
+  })
+
   // 2nd pass to eliminate hard to swat left-overs
   const scene = print(gltf.scene)
 

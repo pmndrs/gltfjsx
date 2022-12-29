@@ -31,7 +31,7 @@
   "bin": {
     "gltfjsx": "./cli.js"
   },
-  "main": "./cli.js",
+  "main": "./src/utils/exports.js",
   "engines": {
     "node": ">=16"
   },

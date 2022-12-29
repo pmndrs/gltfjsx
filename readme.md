@@ -42,6 +42,7 @@ Options
   --instance, -i      Instance re-occuring geometry
   --instanceall, -I   Instance every geometry (for cheaper re-use)
   --transform, -T     Transform the asset for the web (draco, prune, resize)
+  --resolution, -R    Transorm resolution for resizing (default: 1024)
   --debug, -D         Debug output
 ```
 
@@ -243,7 +244,7 @@ import { Instances, Model } from './Model'
 ## Using the parser stand-alone
 
 ```jsx
-import { parse } from '@react-three/gltfjsx'
+import { parse } from 'gltfjsx'
 import { GLTFLoader, DRACOLoader } from 'three-stdlib'
 
 const gltfLoader = new GLTFLoader()
@@ -261,15 +262,16 @@ gltfLoader.load(url, (gltf) => {
 The GLTFStructureLoader can come in handy while testing gltf assets. It allows you to extract the structure without the actual binaries and textures making it possible to run in a testing environment.
 
 ```jsx
-import { GLTFStructureLoader } from '@react-three/gltfjsx'
+import { GLTFStructureLoader } from 'gltfjsx'
 import fs from 'fs/promises'
 
 it('should have a scene with a blue mesh', async () => {
+  const loader = new GLTFStructureLoader()
   const data = await fs.readFile('./model.glb')
   const { scene } = await new Promise((res) => loader.parse(data, '', res))
   expect(() => scene.children.length).toEqual(1)
   expect(() => scene.children[0].type).toEqual('mesh')
-  expect(() => scene.children[0].material.color).toEqual('blue')
+  expect(() => scene.children[0].material.color).toEqual('blue')  
 })
 ```
 
