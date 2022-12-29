@@ -84,7 +84,7 @@ export function Model(props) {
 useGLTF.preload('/model.gltf')
 ```
 
-Add the model to your `/public` folder as always. With the `--transform` flag it has created a compressed copy of it. Without the flag just copy the original model. In the above case it will have create a file named `model-transformed.glb`.
+Add your model to your `/public` folder as you would normally do. With the `--transform` flag it has created a compressed copy of it (in the above case `model-transformed.glb`). Without the flag just copy the original model.
 
 ```text
 /public
@@ -279,6 +279,6 @@ it('should have a scene with a blue mesh', async () => {
 
 - Nodejs must be installed
 - The GLTF file has to be present in your projects `/public` folder
-- [three](https://github.com/mrdoob/three.js/) (>= 121.x)
+- [three](https://github.com/mrdoob/three.js/) (>= 122.x)
 - [@react-three/fiber](https://github.com/pmndrs/react-three-fiber) (>= 5.x)
 - [@react-three/drei](https://github.com/pmndrs/drei) (>= 2.x)
