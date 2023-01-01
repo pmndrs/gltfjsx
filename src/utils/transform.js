@@ -36,9 +36,9 @@ async function transform(file, output, config = {}) {
   if (config.simplify) {
     functions.push(
       // Weld vertices
-      weld({ tolerance: 0.0001 }),
+      weld({ tolerance: config.weld ?? 0.0001 }),
       // Simplify meshes
-      simplify({ simplifier: MeshoptSimplifier, ratio: 0.75, error: 0.001 })
+      simplify({ simplifier: MeshoptSimplifier, ratio: config.ratio ?? 0.75, error: config.error ?? 0.001 })
     )
   }
 

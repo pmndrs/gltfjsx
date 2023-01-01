@@ -26,7 +26,7 @@ A small command-line tool that turns GLTF assets into declarative and re-usable 
 
 ```bash
 Usage
-  $ npx gltfjsx model.gltf [options]
+  $ npx gltfjsx [Model.glb] [options]
 
 Options
   --output, -o        Output file name/path
@@ -42,8 +42,11 @@ Options
   --instance, -i      Instance re-occuring geometry
   --instanceall, -I   Instance every geometry (for cheaper re-use)
   --transform, -T     Transform the asset for the web (draco, prune, resize)
-  --resolution, -R    Transform resolution for resizing (default: 1024)
-  --simplify, -S      Transform simplification (default: false) (experimental!)
+    --resolution, -R  Transform resolution for texture resizing (default: 1024)
+    --simplify, -S    Transform simplification (default: false) (experimental!)
+      --weld          Weld tolerance (default: 0.0001)
+      --ratio         Simplifier ratio (default: 0.075)
+      --error         Simplifier error threshold (default: 0.001)
   --debug, -D         Debug output
 ```
 
