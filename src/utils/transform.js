@@ -1,5 +1,5 @@
 import { NodeIO } from '@gltf-transform/core'
-import { simplify, weld, dedup, resample, prune, textureResize, textureCompress } from '@gltf-transform/functions'
+import { simplify, weld, dedup, resample, prune, textureCompress } from '@gltf-transform/functions'
 import { DracoMeshCompression, ALL_EXTENSIONS } from '@gltf-transform/extensions'
 import { MeshoptDecoder, MeshoptEncoder, MeshoptSimplifier } from 'meshoptimizer'
 import draco3d from 'draco3dgltf'
@@ -25,12 +25,8 @@ async function transform(file, output, config = {}) {
     dedup(),
     // Remove unused nodes, textures, or other data.
     prune(),
-    // Instance meshes.
-    // instance(),
-    // Resize all textures to ≤1K.
-    textureResize({ size: [resolution, resolution] }),
-    // Convert textures to WebP
-    textureCompress({ codec: 'webp', encoder: sharp, formats: /.*/ }),
+    // Resize and convert textures (using webp and sharp)
+    textureCompress({ targetFormat: 'webp', encoder: sharp, resize: [resolution, resolution] }),
   ]
 
   if (config.simplify) {

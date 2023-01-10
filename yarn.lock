@@ -23,30 +23,31 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@gltf-transform/core@^3.0.0-alpha.0":
-  version "3.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@gltf-transform/core/-/core-3.0.0-alpha.0.tgz#772b115f07d91755009475f0fe2369a320cd68c4"
-  integrity sha512-fpoGHRg4kgf2Cxd9CPyz42s+9ApQM3nXa4iLM+oRXId4PNcrE8hl3Z0KepHvkWDjCVforWICJZNIuR8NbjObGw==
+"@gltf-transform/core@^3.0.0-alpha.3":
+  version "3.0.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@gltf-transform/core/-/core-3.0.0-alpha.3.tgz#a0c1831b3a21d79a1d8a5e4e2672f29dd0838c31"
+  integrity sha512-dPpMAd7+nzb9+xzRVgnFkGlmQrpkA0YZLdYztlRMZORuD1uSOpkKkABWNEVFd04hUy7NjyRbgFvdprcM8Sk2fg==
   dependencies:
     gl-matrix "~3.4.3"
     property-graph "^0.2.6"
 
-"@gltf-transform/extensions@^3.0.0-alpha.0":
-  version "3.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@gltf-transform/extensions/-/extensions-3.0.0-alpha.0.tgz#ba5424d5376b079b39fabc9564b7e15d2fab6355"
-  integrity sha512-txOYVzSeYnC4ieJE/DcSbVjYRecckEYeiTNb955fXbIxm7dvLE3W/pJnu8hwDZb+wzUuW1sgjvGIvssccAHK1w==
+"@gltf-transform/extensions@^3.0.0-alpha.3":
+  version "3.0.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@gltf-transform/extensions/-/extensions-3.0.0-alpha.3.tgz#072ccf554e14f6aa5444fc25a26924ac80768013"
+  integrity sha512-XiRvRJvu/lny3uSZw1Qb07vSuWM3IYq0Ebxib340n737YrDZJeHePmDGpPgnmjQcbUWLYiWmEyEUOmv9j2rQ/g==
   dependencies:
-    "@gltf-transform/core" "^3.0.0-alpha.0"
+    "@gltf-transform/core" "^3.0.0-alpha.3"
     ktx-parse "^0.4.5"
 
-"@gltf-transform/functions@^3.0.0-alpha.0":
-  version "3.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@gltf-transform/functions/-/functions-3.0.0-alpha.0.tgz#c4ffc471f44a58af224858379630a46ba8767983"
-  integrity sha512-xU1jKtguHr20XIY49bh7ln6Ar9iSnP1zc6pbDKyHjMiADbQOkqonQ1Tc0e6J87I3LJRD2Ac2tiHLj+Jh/PeLiA==
+"@gltf-transform/functions@^3.0.0-alpha.3":
+  version "3.0.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@gltf-transform/functions/-/functions-3.0.0-alpha.3.tgz#3fdedee99300ac438a21e515d3ce03401a367b2a"
+  integrity sha512-gpvGYB70Zl7tAcD1fgpQPIuWycthDB1BaRIHvMLTOfsXKYABBz5FqOQ/P3ADZxg1RGaK5Hi54hqciFVWWXBa/g==
   dependencies:
-    "@gltf-transform/core" "^3.0.0-alpha.0"
-    "@gltf-transform/extensions" "^3.0.0-alpha.0"
+    "@gltf-transform/core" "^3.0.0-alpha.3"
+    "@gltf-transform/extensions" "^3.0.0-alpha.3"
     gl-matrix "~3.4.3"
+    ktx-parse "^0.4.5"
     ndarray "^1.0.19"
     ndarray-lanczos "^0.1.2"
     ndarray-pixels "^1.0.0"
