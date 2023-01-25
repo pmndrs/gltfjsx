@@ -1,22 +1,23 @@
 'use strict'
-import THREE from 'three'
+import * as THREE from 'three'
+import { DRACOLoader as BaseDRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import draco from 'draco3dgltf'
+
 const decoder = draco.createDecoderModule()
-const DRACOLoader = (THREE.DRACOLoader = function (t) {
-  ;(this.timeLoaded = 0),
-    (this.manager = t || THREE.DefaultLoadingManager),
-    (this.materials = null),
-    (this.verbosity = 0),
-    (this.attributeOptions = {}),
-    (this.drawMode = THREE.TrianglesDrawMode),
-    (this.nativeAttributeMap = { position: 'POSITION', normal: 'NORMAL', color: 'COLOR', uv: 'TEX_COORD' })
-})
 
-export default DRACOLoader
+export class DRACOLoader extends BaseDRACOLoader {
+  constructor(manager) {
+    super(manager)
+    this.timeLoaded = 0
+    this.manager = manager || THREE.DefaultLoadingManager
+    this.materials = null
+    this.verbosity = 0
+    this.attributeOptions = {}
+    this.drawMode = THREE.TrianglesDrawMode
+    this.nativeAttributeMap = { position: 'POSITION', normal: 'NORMAL', color: 'COLOR', uv: 'TEX_COORD' }
+  }
 
-THREE.DRACOLoader.prototype = {
-  constructor: THREE.DRACOLoader,
-  load: function (t, e, r, o) {
+  load(t, e, r, o) {
     var i = this,
       n = new THREE.FileLoader(i.manager)
     n.setPath(this.path),
@@ -29,24 +30,30 @@ THREE.DRACOLoader.prototype = {
         r,
         o
       )
-  },
-  setPath: function (t) {
+  }
+
+  setPath(t) {
     return (this.path = t), this
-  },
-  setVerbosity: function (t) {
+  }
+
+  setVerbosity(t) {
     return (this.verbosity = t), this
-  },
-  setDrawMode: function (t) {
+  }
+
+  setDrawMode(t) {
     return (this.drawMode = t), this
-  },
-  setSkipDequantization: function (t, e) {
+  }
+
+  setSkipDequantization(t, e) {
     var r = !0
     return void 0 !== e && (r = e), (this.getAttributeOptions(t).skipDequantization = r), this
-  },
-  decodeDracoFile: function (t, e, r, o) {
+  }
+
+  decodeDracoFile(t, e, r, o) {
     decoder.then((decoder) => this.decodeDracoFileInternal(t, decoder, e, r, o))
-  },
-  decodeDracoFileInternal: function (t, e, r, o, i) {
+  }
+
+  decodeDracoFileInternal(t, e, r, o, i) {
     var n = new e.DecoderBuffer()
     n.Init(new Int8Array(t), t.byteLength)
     var a = new e.Decoder(),
@@ -60,8 +67,9 @@ THREE.DRACOLoader.prototype = {
       this.verbosity > 0 && console.log('Loaded a point cloud.')
     }
     r(this.convertDracoGeometryTo3JS(e, a, s, n, o, i))
-  },
-  addAttributeToGeometry: function (t, e, r, o, i, n, a, s) {
+  }
+
+  addAttributeToGeometry(t, e, r, o, i, n, a, s) {
     if (0 === n.ptr) {
       var u = 'THREE.DRACOLoader: No attribute ' + o
       throw (console.error(u), new Error(u))
@@ -119,8 +127,9 @@ THREE.DRACOLoader.prototype = {
     }
     for (var b = 0; b < l; b++) s[o][b] = d.GetValue(b)
     a.setAttribute(o, new A(s[o], c)), t.destroy(d)
-  },
-  convertDracoGeometryTo3JS: function (t, e, r, o, i, n) {
+  }
+
+  convertDracoGeometryTo3JS(t, e, r, o, i, n) {
     var a, s, u
     if (
       (!0 === this.getAttributeOptions('position').skipDequantization && e.SkipAttributeTransform(t.POSITION),
@@ -198,11 +207,13 @@ THREE.DRACOLoader.prototype = {
       for (I = 0; I < 3; ++I) y.attributes.position.minValues[I] = G.min_value(I)
     }
     return t.destroy(G), t.destroy(e), t.destroy(a), y
-  },
-  isVersionSupported: function (t, e) {
+  }
+
+  isVersionSupported(t, e) {
     e(decoder.isVersionSupported(t))
-  },
-  getAttributeOptions: function (t) {
+  }
+
+  getAttributeOptions(t) {
     return void 0 === this.attributeOptions[t] && (this.attributeOptions[t] = {}), this.attributeOptions[t]
-  },
+  }
 }

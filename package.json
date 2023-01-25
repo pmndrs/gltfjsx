@@ -32,6 +32,7 @@
     "gltfjsx": "./cli.js"
   },
   "main": "./src/utils/exports.js",
+  "types": "./src/utils/exports.d.js",
   "engines": {
     "node": ">=16"
   },
@@ -48,14 +49,15 @@
     "meshoptimizer": "^0.18.1",
     "prettier": "^2.3.2",
     "sharp": "^0.31.3",
-    "three": "0.122.0"
+    "three": "^0.138.0"
   },
   "devDependencies": {
     "chalk": "^4.1.1",
     "fast-glob": "^3.2.7",
     "fs-extra": "^9.0.1",
     "husky": "^4.3.0",
-    "lint-staged": "^10.4.0"
+    "lint-staged": "^10.4.0",
+    "@types/three": "^0.138.0"
   },
   "husky": {
     "hooks": {
