@@ -1,6 +1,6 @@
 import { NodeIO } from '@gltf-transform/core'
-import { simplify, weld, dedup, resample, prune, textureCompress } from '@gltf-transform/functions'
-import { DracoMeshCompression, ALL_EXTENSIONS } from '@gltf-transform/extensions'
+import { simplify, weld, dedup, resample, prune, textureCompress, draco } from '@gltf-transform/functions'
+import { ALL_EXTENSIONS } from '@gltf-transform/extensions'
 import { MeshoptDecoder, MeshoptEncoder, MeshoptSimplifier } from 'meshoptimizer'
 import draco3d from 'draco3dgltf'
 import sharp from 'sharp'
@@ -27,6 +27,8 @@ async function transform(file, output, config = {}) {
     prune(),
     // Resize and convert textures (using webp and sharp)
     textureCompress({ targetFormat: 'webp', encoder: sharp, resize: [resolution, resolution] }),
+    // Add Draco compression.
+    draco(),
   ]
 
   if (config.simplify) {
@@ -39,11 +41,6 @@ async function transform(file, output, config = {}) {
   }
 
   await document.transform(...functions)
-
-  // Add Draco compression.
-  document.createExtension(DracoMeshCompression).setRequired(true).setEncoderOptions({
-    method: DracoMeshCompression.EncoderMethod.EDGEBREAKER,
-  })
 
   await io.write(output, document)
 }
