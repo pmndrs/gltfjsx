@@ -32,43 +32,50 @@ export default function (file, output, options) {
   }
 
   return new Promise((resolve, reject) => {
-    const stream = fs.createWriteStream(output)
-    stream.once('open', async (fd) => {
-      if (!fs.existsSync(file)) {
-        reject(file + ' does not exist.')
-      } else {
-        // Process GLTF
-        if (options.transform || options.instance || options.instanceall) {
-          const { name } = path.parse(file)
-          const transformOut = path.join(name + '-transformed.glb')
-          await transform(file, transformOut, options)
-          file = transformOut
-        }
-        resolve()
+    if (fs.existsSync(file)) {
+      const stream = fs.createWriteStream(output)
+      stream.once('open', async (fd) => {
+        if (!fs.existsSync(file)) {
+          console.log('rejected')
+          reject(file + ' does not exist.')
+          return
+        } else {
+          console.log('accepted')
+          // Process GLTF
+          if (options.transform || options.instance || options.instanceall) {
+            const { name } = path.parse(file)
+            const transformOut = path.join(name + '-transformed.glb')
+            await transform(file, transformOut, options)
+            file = transformOut
+          }
+          resolve()
 
-        const filePath = getRelativeFilePath(file)
-        const data = fs.readFileSync(file)
-        const arrayBuffer = toArrayBuffer(data)
-        gltfLoader.parse(
-          arrayBuffer,
-          '',
-          (gltf) => {
-            stream.write(
-              prettier.format(parse(filePath, gltf, options), {
-                semi: false,
-                printWidth: options.printwidth || 1000,
-                singleQuote: true,
-                jsxBracketSameLine: true,
-                parser: options.types ? 'babel-ts' : 'babel',
-                //plugins: [parserBabel],
-              })
-            )
-            stream.end()
-            resolve()
-          },
-          reject
-        )
-      }
-    })
+          const filePath = getRelativeFilePath(file)
+          const data = fs.readFileSync(file)
+          const arrayBuffer = toArrayBuffer(data)
+          gltfLoader.parse(
+            arrayBuffer,
+            '',
+            (gltf) => {
+              stream.write(
+                prettier.format(parse(filePath, gltf, options), {
+                  semi: false,
+                  printWidth: options.printwidth || 1000,
+                  singleQuote: true,
+                  jsxBracketSameLine: true,
+                  parser: options.types ? 'babel-ts' : 'babel',
+                  //plugins: [parserBabel],
+                })
+              )
+              stream.end()
+              resolve()
+            },
+            reject
+          )
+        }
+      })
+    } else {
+      console.log('file does not exist.')
+    }
   })
 }
