@@ -23,7 +23,7 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@gltf-transform/core@^3.0.0-alpha.4":
+"@gltf-transform/core@3.0.0-alpha.4", "@gltf-transform/core@^3.0.0-alpha.4":
   version "3.0.0-alpha.4"
   resolved "https://registry.yarnpkg.com/@gltf-transform/core/-/core-3.0.0-alpha.4.tgz#a4d67a1c9a0d18c4215dc361180155b5e41d754c"
   integrity sha512-fvZFPeq+etlY0TEm3/JBEwvrRY6XI2U2PeqUz/p/5srtRWP5UoWj/v6wX4/GIk1lbNPjHGH8KjVA55b2Ihq6vg==
@@ -31,7 +31,7 @@
     gl-matrix "~3.4.3"
     property-graph "^0.2.6"
 
-"@gltf-transform/extensions@^3.0.0-alpha.4":
+"@gltf-transform/extensions@3.0.0-alpha.4", "@gltf-transform/extensions@^3.0.0-alpha.4":
   version "3.0.0-alpha.4"
   resolved "https://registry.yarnpkg.com/@gltf-transform/extensions/-/extensions-3.0.0-alpha.4.tgz#d6d5cdf08669f780f5c16be1b5a799dab6b1abf5"
   integrity sha512-IzHXO/KvdBc045dJ5YqJaVF/yUClvyeuC5Yh0PRUS9W6/+OBpqw9i+yuPQzlJe7V/3v6ouT/HWvr1/QHxNalqg==
@@ -39,7 +39,7 @@
     "@gltf-transform/core" "^3.0.0-alpha.4"
     ktx-parse "^0.4.5"
 
-"@gltf-transform/functions@^3.0.0-alpha.4":
+"@gltf-transform/functions@3.0.0-alpha.4":
   version "3.0.0-alpha.4"
   resolved "https://registry.yarnpkg.com/@gltf-transform/functions/-/functions-3.0.0-alpha.4.tgz#dee5181bfc59356186ace07e7f18c804de0c2da6"
   integrity sha512-K5iINos3B+g6cOrXTF5NyyhghP01aO+fRW5Rp1fDFTWtnnoi1/bBjJFRNm/oLxHgvCuiGdvj3cnmkqcBtz/TjQ==
