@@ -35,12 +35,14 @@ const cli = meow(
         --ratio         Simplifier ratio (default: 0.75)
         --error         Simplifier error threshold (default: 0.001)
     --debug, -D         Debug output
+    --threlte           Transform to Threlte component
 `,
   {
     importMeta: import.meta,
     flags: {
       output: { type: 'string', alias: 'o' },
       types: { type: 'boolean', alias: 't' },
+      threlte: { type: 'boolean', alias: 'T' },
       keepnames: { type: 'boolean', alias: 'k' },
       keepgroups: { type: 'boolean', alias: 'K' },
       shadows: { type: 'boolean', alias: 's' },
@@ -76,7 +78,8 @@ Command: npx gltfjsx@${packageJson.version} ${process.argv.slice(2).join(' ')}`,
   const filePath = path.resolve(__dirname, file)
   let nameExt = file.match(/[-_\w]+[.][\w]+$/i)[0]
   let name = nameExt.split('.').slice(0, -1).join('.')
-  const output = name.charAt(0).toUpperCase() + name.slice(1) + (config.types ? '.tsx' : '.jsx')
+  const baseName = name.charAt(0).toUpperCase() + name.slice(1)
+  const output = baseName + (config.threlte ? '.svelte' : config.types ? '.tsx' : '.jsx')
   const showLog = (log) => {
     console.info('log:', log)
   }

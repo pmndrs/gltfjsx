@@ -2,6 +2,9 @@ import THREE from 'three'
 import isVarName from './isVarName.js'
 
 function parse(fileName, gltf, options = {}) {
+  /** @type {'jsx' | 'threlte'} Output type (jsx or threlte) */
+  const outputType = options.threlte ? 'threlte' : 'jsx'
+
   const url = (fileName.toLowerCase().startsWith('http') ? '' : '/') + fileName
   const animations = gltf.animations
   const hasAnimations = animations.length > 0
@@ -85,7 +88,33 @@ function parse(fileName, gltf, options = {}) {
     return rNbr(number)
   }
 
-  function printTypes(objects, animations) {
+  function printThrelteTypes(objects, animations) {
+    let meshes = objects.filter((o) => o.isMesh && o.__removed === undefined)
+    let bones = objects.filter((o) => o.isBone && !(o.parent && o.parent.isBone) && o.__removed === undefined)
+    let materials = [...new Set(objects.filter((o) => o.material && o.material.name).map((o) => o.material))]
+
+    /** @type {string[]} */
+    const types = []
+
+    let animationTypes = ''
+    if (animations.length) {
+      types.push(`type ActionName = ${animations.map((clip, i) => `"${clip.name}"`).join(' | ')};`)
+    }
+
+    types.push(`type GLTFResult = {
+    nodes: {
+      ${meshes.map(({ name, type }) => (isVarName(name) ? name : `['${name}']`) + ': THREE.' + type).join(',')}
+      ${bones.map(({ name, type }) => (isVarName(name) ? name : `['${name}']`) + ': THREE.' + type).join(',')}
+    }
+    materials: {
+      ${materials.map(({ name, type }) => (isVarName(name) ? name : `['${name}']`) + ': THREE.' + type).join(',')}
+    }
+  }`)
+
+    return types.join('\n')
+  }
+
+  function printJsxTypes(objects, animations) {
     let meshes = objects.filter((o) => o.isMesh && o.__removed === undefined)
     let bones = objects.filter((o) => o.isBone && !(o.parent && o.parent.isBone) && o.__removed === undefined)
     let materials = [...new Set(objects.filter((o) => o.material && o.material.name).map((o) => o.material))]
@@ -117,7 +146,79 @@ function parse(fileName, gltf, options = {}) {
     return type
   }
 
-  function handleProps(obj) {
+  function handleThrelteProps(obj) {
+    let { type, node, instanced } = getInfo(obj)
+
+    let result = ''
+    let isCamera = type === 'PerspectiveCamera' || type === 'OrthographicCamera'
+    // Handle cameras
+    if (isCamera) {
+      result += `makeDefault={false} `
+      if (obj.zoom !== 1) result += `zoom={${rNbr(obj.zoom)}} `
+      if (obj.far !== 2000) result += `far={${rNbr(obj.far)}} `
+      if (obj.near !== 0.1) result += `near={${rNbr(obj.near)}} `
+    }
+    if (type === 'PerspectiveCamera') {
+      if (obj.fov !== 50) result += `fov={${rNbr(obj.fov)}} `
+    }
+
+    if (!instanced) {
+      // Shadows
+      if ((type === 'mesh' || type === 'skinnedMesh') && options.shadows) result += `castShadow receiveShadow `
+
+      // Write out geometry first
+      if (obj.geometry) {
+        result += `geometry={$gltf.${node}.geometry} `
+      }
+
+      // Write out materials
+      if (obj.material) {
+        if (obj.material.name) result += `material={$gltf.materials${sanitizeName(obj.material.name)}} `
+        else result += `material={$gltf.${node}.material} `
+      }
+
+      if (obj.skeleton) result += `skeleton={$gltf.${node}.skeleton} `
+      if (obj.visible === false) result += `visible={false} `
+      if (obj.castShadow === true) result += `castShadow `
+      if (obj.receiveShadow === true) result += `receiveShadow `
+      if (obj.morphTargetDictionary) result += `morphTargetDictionary={$gltf.${node}.morphTargetDictionary} `
+      if (obj.morphTargetInfluences) result += `morphTargetInfluences={$gltf.${node}.morphTargetInfluences} `
+      if (obj.intensity && rNbr(obj.intensity)) result += `intensity={${rNbr(obj.intensity)}} `
+      //if (obj.power && obj.power !== 4 * Math.PI) result += `power={${rNbr(obj.power)}} `
+      if (obj.angle && obj.angle !== Math.PI / 3) result += `angle={${rDeg(obj.angle)}} `
+      if (obj.penumbra && rNbr(obj.penumbra) !== 0) result += `penumbra={${rNbr(obj.penumbra)}} `
+      if (obj.decay && rNbr(obj.decay) !== 1) result += `decay={${rNbr(obj.decay)}} `
+      if (obj.distance && rNbr(obj.distance) !== 0) result += `distance={${rNbr(obj.distance)}} `
+      if (obj.up && obj.up.isVector3 && !obj.up.equals(new THREE.Vector3(0, 1, 0)))
+        result += `up={[${rNbr(obj.up.x)}, ${rNbr(obj.up.y)}, ${rNbr(obj.up.z)},]} `
+    }
+
+    if (obj.color && obj.color.getHexString() !== 'ffffff') result += `color="#${obj.color.getHexString()}" `
+    if (obj.position && obj.position.isVector3 && rNbr(obj.position.length()))
+      result += `position={[${rNbr(obj.position.x)}, ${rNbr(obj.position.y)}, ${rNbr(obj.position.z)},]} `
+    if (obj.rotation && obj.rotation.isEuler && rNbr(obj.rotation.toVector3().length()))
+      result += `rotation={[${rDeg(obj.rotation.x)}, ${rDeg(obj.rotation.y)}, ${rDeg(obj.rotation.z)},]} `
+    if (
+      obj.scale &&
+      obj.scale.isVector3 &&
+      !(rNbr(obj.scale.x) === 1 && rNbr(obj.scale.y) === 1 && rNbr(obj.scale.z) === 1)
+    ) {
+      const rX = rNbr(obj.scale.x)
+      const rY = rNbr(obj.scale.y)
+      const rZ = rNbr(obj.scale.z)
+      if (rX === rY && rX === rZ) {
+        result += `scale={${rX}} `
+      } else {
+        result += `scale={[${rX}, ${rY}, ${rZ},]} `
+      }
+    }
+    if (options.meta && obj.userData && Object.keys(obj.userData).length)
+      result += `userData={${JSON.stringify(obj.userData)}} `
+
+    return result
+  }
+
+  function handleJsxProps(obj) {
     let { type, node, instanced } = getInfo(obj)
 
     let result = ''
@@ -224,7 +325,7 @@ function parse(fileName, gltf, options = {}) {
 
       // More aggressive removal strategies ...
       const first = obj.children[0]
-      const firstProps = handleProps(first)
+      const firstProps = handleJsxProps(first)
       const regex = /([a-z-A-Z]*)={([a-zA-Z0-9\.\[\]\-\,\ \/]*)}/g
       const keys1 = [...result.matchAll(regex)].map(([, match]) => match)
       const values1 = [...result.matchAll(regex)].map(([, , match]) => match)
@@ -242,7 +343,7 @@ function parse(fileName, gltf, options = {}) {
           if (!silent) console.log(`group ${obj.name} removed (aggressive: double negative rotation)`)
           obj.__removed = first.__removed = true
           children = ''
-          if (first.children) first.children.forEach((child) => (children += print(child, true)))
+          if (first.children) first.children.forEach((child) => (children += printJsx(child, true)))
           return children
         }
       }
@@ -261,7 +362,7 @@ function parse(fileName, gltf, options = {}) {
           obj.__removed = true
           // Remove rotation from first child
           first.rotation.set(0, 0, 0)
-          children = print(first, true)
+          children = printJsx(first, true)
           return children
         }
       }
@@ -280,7 +381,7 @@ function parse(fileName, gltf, options = {}) {
         // This ensures that the child will have the correct transform when pruning is being repeated
         keys1.forEach((key) => obj.children[0][key].copy(obj[key]))
         // Insert the props into the result string
-        children = print(first, true)
+        children = printJsx(first, true)
         obj.__removed = true
         return children
       }
@@ -305,14 +406,64 @@ function parse(fileName, gltf, options = {}) {
     }
   }
 
-  function print(obj, silent = false) {
+  /**
+   * Transforms a type like "mesh" into "T.Mesh".
+   * @param {string} type
+   * @returns
+   */
+  function getThrelteComponentName(type) {
+    return `T.${type[0].toUpperCase()}${type.slice(1)}`
+  }
+
+  function printThrelte(obj, silent = false) {
     let result = ''
     let children = ''
     let { type, node, instanced, animated } = getInfo(obj)
 
     // Check if the root node is useless
     if (obj.__removed && obj.children.length) {
-      obj.children.forEach((child) => (result += print(child)))
+      obj.children.forEach((child) => (result += printThrelte(child)))
+      return result
+    }
+
+    // Bail out on lights and bones
+    if (type === 'bone') {
+      return `<Three type={$gltf.${node}} />\n`
+    }
+
+    // Collect children
+    if (obj.children) obj.children.forEach((child) => (children += printThrelte(child)))
+
+    // TODO: Instances are currently not supported for Threlte components
+
+    result = `<${getThrelteComponentName(type)} `
+
+    // Include names when output is uncompressed or morphTargetDictionaries are present
+    if (obj.name.length && (options.keepnames || obj.morphTargetDictionary || animated)) result += `name="${obj.name}" `
+
+    const oldResult = result
+    result += handleThrelteProps(obj)
+
+    const pruned = prune(obj, children, result, oldResult, silent)
+    // Bail out if the object was pruned
+    if (pruned !== undefined) return pruned
+
+    // Close tag
+    result += `${children.length ? '>' : '/>'}\n`
+
+    // Add children and return
+    if (children.length) result += children + `\n</${getThrelteComponentName(type)}>\n`
+    return result
+  }
+
+  function printJsx(obj, silent = false) {
+    let result = ''
+    let children = ''
+    let { type, node, instanced, animated } = getInfo(obj)
+
+    // Check if the root node is useless
+    if (obj.__removed && obj.children.length) {
+      obj.children.forEach((child) => (result += printJsx(child)))
       return result
     }
 
@@ -322,7 +473,7 @@ function parse(fileName, gltf, options = {}) {
     }
 
     // Collect children
-    if (obj.children) obj.children.forEach((child) => (children += print(child)))
+    if (obj.children) obj.children.forEach((child) => (children += printJsx(child)))
 
     if (instanced) {
       result = `<instances.${duplicates.geometries[obj.geometry.uuid + obj.material.name].name} `
@@ -336,7 +487,7 @@ function parse(fileName, gltf, options = {}) {
     if (obj.name.length && (options.keepnames || obj.morphTargetDictionary || animated)) result += `name="${obj.name}" `
 
     const oldResult = result
-    result += handleProps(obj)
+    result += handleJsxProps(obj)
 
     const pruned = prune(obj, children, result, oldResult, silent)
     // Bail out if the object was pruned
@@ -387,7 +538,7 @@ function parse(fileName, gltf, options = {}) {
 
   if (!options.keepgroups) {
     // Dry run to prune graph
-    print(gltf.scene)
+    printJsx(gltf.scene)
     // Move children of deleted objects to their new parents
     objects.forEach((o) => {
       if (o.__removed) {
@@ -405,20 +556,21 @@ function parse(fileName, gltf, options = {}) {
     })
   }
   // 2nd pass to eliminate hard to swat left-overs
-  const scene = print(gltf.scene)
+  const scene = outputType === 'jsx' ? printJsx(gltf.scene) : printThrelte(gltf.scene)
 
-  return `/*
+  if (outputType === 'jsx') {
+    return `/*
 ${options.header ? options.header : 'Auto-generated by: https://github.com/pmndrs/gltfjsx'}
 ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
         ${options.types ? `\nimport * as THREE from 'three'` : ''}
         import React, { useRef ${hasInstances ? ', useMemo, useContext, createContext' : ''} } from 'react'
         import { useGLTF, ${hasInstances ? 'Merged, ' : ''} ${
-    scene.includes('PerspectiveCamera') ? 'PerspectiveCamera,' : ''
-  }
+      scene.includes('PerspectiveCamera') ? 'PerspectiveCamera,' : ''
+    }
         ${scene.includes('OrthographicCamera') ? 'OrthographicCamera,' : ''}
         ${hasAnimations ? 'useAnimations' : ''} } from '@react-three/drei'
         ${options.types ? 'import { GLTF } from "three-stdlib"' : ''}
-        ${options.types ? printTypes(objects, animations) : ''}
+        ${options.types ? printJsxTypes(objects, animations) : ''}
 
         ${
           hasInstances
@@ -445,14 +597,14 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
 
         export function Model(props${options.types ? ": JSX.IntrinsicElements['group']" : ''}) {
           ${hasInstances ? 'const instances = useContext(context);' : ''} ${
-    hasAnimations ? `const group = ${options.types ? 'useRef<THREE.Group>()' : 'useRef()'};` : ''
-  } ${
-    !options.instanceall
-      ? `const { nodes, materials${hasAnimations ? ', animations' : ''} } = useGLTF('${url}'${
-          options.draco ? `, ${JSON.stringify(options.draco)}` : ''
-        })${options.types ? ' as GLTFResult' : ''}`
-      : ''
-  } ${printAnimations(animations)}
+      hasAnimations ? `const group = ${options.types ? 'useRef<THREE.Group>()' : 'useRef()'};` : ''
+    } ${
+      !options.instanceall
+        ? `const { nodes, materials${hasAnimations ? ', animations' : ''} } = useGLTF('${url}'${
+            options.draco ? `, ${JSON.stringify(options.draco)}` : ''
+          })${options.types ? ' as GLTFResult' : ''}`
+        : ''
+    } ${printAnimations(animations)}
           return (
             <group ${hasAnimations ? `ref={group}` : ''} {...props} dispose={null}>
         ${scene}
@@ -461,6 +613,55 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
         }
 
 useGLTF.preload('${url}')`
+  } else {
+    // Threlte Output
+    return `
+    <!--
+${options.header ? options.header : 'Auto-generated by: https://github.com/pmndrs/gltfjsx'}
+${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}-->
+    
+    <script${options.types ? ' lang="ts"' : ''}>
+
+
+        ${options.types ? `\nimport type * as THREE from 'three'` : ''}
+        import { Group } from 'three'
+        import { ${['T', 'Three', options.types ? 'type Props, type Events, type Slots' : ''].join(
+          ', '
+        )} } from '@threlte/core'
+        import { ${['useGltf', hasAnimations ? 'useGltfAnimations' : ''].join(', ')} } from '@threlte/extras'
+
+        ${options.types ? 'type $$Props = Props<THREE.Group>' : ''}
+        ${options.types ? 'type $$Events = Events<THREE.Group>' : ''}
+        ${options.types ? 'type $$Slots = Slots<THREE.Group>' : ''}
+
+        export const ref = new Group()
+
+        ${options.types ? printThrelteTypes(objects, animations) : ''}
+
+        const { gltf } = useGltf${options.types ? '<GLTFResult>' : ''}('${url}'${
+      options.draco
+        ? `, {
+          useDraco: ${JSON.stringify(options.draco)},
+        }`
+        : ''
+    })
+    ${
+      hasAnimations
+        ? `export const { actions, mixer } = useGltfAnimations${options.types ? '<ActionName>' : ''}(gltf, ref)`
+        : ''
+    }
+
+    </script>
+
+    {#if $gltf}
+            <Three type={ref} {...$$restProps}>
+        ${scene}
+
+        <slot {ref} />
+            </Three>
+            {/if}
+        `
+  }
 }
 
 export default parse

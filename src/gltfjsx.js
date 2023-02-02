@@ -53,16 +53,30 @@ export default function (file, output, options) {
           arrayBuffer,
           '',
           (gltf) => {
-            stream.write(
-              prettier.format(parse(filePath, gltf, options), {
-                semi: false,
-                printWidth: options.printwidth || 1000,
-                singleQuote: true,
-                jsxBracketSameLine: true,
-                parser: options.types ? 'babel-ts' : 'babel',
-                //plugins: [parserBabel],
-              })
+            const raw = parse(filePath, gltf, options)
+            const prettiered = prettier.format(
+              raw,
+              options.threlte
+                ? {
+                    semi: false,
+                    bracketSameLine: true,
+                    svelteBracketNewLine: false,
+                    printWidth: options.printwidth || 1000,
+                    svelteBracketNewLine: true,
+                    singleQuote: true,
+                    parser: 'svelte',
+                    plugins: ['prettier-plugin-svelte'],
+                  }
+                : {
+                    semi: false,
+                    printWidth: options.printwidth || 1000,
+                    singleQuote: true,
+                    jsxBracketSameLine: true,
+                    parser: options.types ? 'babel-ts' : 'babel',
+                    //plugins: [parserBabel],
+                  }
             )
+            stream.write(prettiered)
             stream.end()
             resolve()
           },
