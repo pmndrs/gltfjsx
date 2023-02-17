@@ -73,7 +73,6 @@ if (cli.input.length === 0) {
 Command: npx gltfjsx@${packageJson.version} ${process.argv.slice(2).join(' ')}`,
   }
   const file = cli.input[0]
-  const filePath = path.resolve(__dirname, file)
   let nameExt = file.match(/[-_\w]+[.][\w]+$/i)[0]
   let name = nameExt.split('.').slice(0, -1).join('.')
   const output = config.output ?? name.charAt(0).toUpperCase() + name.slice(1) + (config.types ? '.tsx' : '.jsx')
