@@ -1,7 +1,7 @@
 https://user-images.githubusercontent.com/2223602/126318148-99da7ed6-a578-48dd-bdd2-21056dbad003.mp4
 
 <br />
-<br/>
+<br />
 
 [![Version](https://img.shields.io/npm/v/gltfjsx?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/gltfjsx) [![Discord Shield](https://img.shields.io/discord/740090768164651008?style=flat&colorA=000000&colorB=000000&label=discord&logo=discord&logoColor=ffffff)](https://discord.gg/ZZjjNvJ)
 
@@ -18,7 +18,7 @@ A small command-line tool that turns GLTF assets into declarative and re-usable 
 
 ### GLTFJSX fixes that
 
-- 🧑‍💻 It creates a virtual graph of all objects and materials. Now you can easily alter contents and re-use. 
+- 🧑‍💻 It creates a virtual graph of all objects and materials. Now you can easily alter contents and re-use.
 - 🏎️ The graph gets pruned (empty groups, unnecessary transforms, ...) and will perform better.
 - ⚡️ It will optionally compress your model with up to 70%-90% size reduction.
 
@@ -75,7 +75,7 @@ export function Model(props) {
   const { nodes, materials } = useGLTF('/model-transformed.glb')
   return (
     <group {...props} dispose={null}>
-      <PerspectiveCamera name="camera" fov={40} near={10} far={1000} position={[10, 0, 50]} />      
+      <PerspectiveCamera name="camera" fov={40} near={10} far={1000} position={[10, 0, 50]} />
       <pointLight intensity={10} position={[100, 50, 100]} rotation={[-Math.PI / 2, 0, 0]} />
       <group position={[10, -5, 0]}>
         <mesh geometry={nodes.robot.geometry} material={materials.metal} />
@@ -104,7 +104,7 @@ import { Model } from './Model'
 function App() {
   return (
     <Canvas>
-      <Model />      
+      <Model />
 ```
 
 You can re-use it, it will re-use geometries and materials out of the box:
@@ -202,7 +202,7 @@ useEffect(() => {
 
 #### ⚡️ Auto-instancing
 
-Use the `--instance` flag and it will look for similar geometry and create instances of them. Look into [drei/Merged](https://github.com/pmndrs/drei#instances) to understand how it works. It does not matter if you instanced the model previously in Blender, it creates instances for each mesh that has a specific geometry and/or material. 
+Use the `--instance` flag and it will look for similar geometry and create instances of them. Look into [drei/Merged](https://github.com/pmndrs/drei#instances) to understand how it works. It does not matter if you instanced the model previously in Blender, it creates instances for each mesh that has a specific geometry and/or material.
 
 `--instanceall` will create instances of all the geometry. This allows you to re-use the model with the smallest amount of drawcalls.
 
@@ -275,7 +275,7 @@ it('should have a scene with a blue mesh', async () => {
   const { scene } = await new Promise((res) => loader.parse(data, '', res))
   expect(() => scene.children.length).toEqual(1)
   expect(() => scene.children[0].type).toEqual('mesh')
-  expect(() => scene.children[0].material.color).toEqual('blue')  
+  expect(() => scene.children[0].material.color).toEqual('blue')
 })
 ```
 
