@@ -1,6 +1,6 @@
 'use strict'
-import THREE from 'three'
 import draco from 'draco3dgltf'
+import THREE from 'three'
 const decoder = draco.createDecoderModule()
 const DRACOLoader = (THREE.DRACOLoader = function (t) {
   ;(this.timeLoaded = 0),

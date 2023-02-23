@@ -1,8 +1,8 @@
 import { NodeIO } from '@gltf-transform/core'
-import { simplify, weld, dedup, resample, prune, textureCompress, draco } from '@gltf-transform/functions'
 import { ALL_EXTENSIONS } from '@gltf-transform/extensions'
-import { MeshoptDecoder, MeshoptEncoder, MeshoptSimplifier } from 'meshoptimizer'
+import { dedup, draco, prune, resample, simplify, textureCompress, weld } from '@gltf-transform/functions'
 import draco3d from 'draco3dgltf'
+import { MeshoptDecoder, MeshoptEncoder, MeshoptSimplifier } from 'meshoptimizer'
 import sharp from 'sharp'
 
 async function transform(file, output, config = {}) {

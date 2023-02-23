@@ -1,5 +1,5 @@
-import 'jsdom-global'
 import fs from 'fs'
+import 'jsdom-global'
 import path from 'path'
 import transform from './utils/transform.js'
 
@@ -7,10 +7,10 @@ import prettier from 'prettier'
 import THREE from 'three'
 global.THREE = THREE
 
-import './bin/GLTFLoader.js'
 import DracoLoader from './bin/DRACOLoader.js'
-THREE.DRACOLoader.getDecoderModule = () => {}
+import './bin/GLTFLoader.js'
 import parse from './utils/parser.js'
+THREE.DRACOLoader.getDecoderModule = () => {}
 
 const gltfLoader = new THREE.GLTFLoader()
 gltfLoader.setDRACOLoader(new DracoLoader())

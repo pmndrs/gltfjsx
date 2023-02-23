@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 'use strict'
 import meow from 'meow'
-import path from 'path'
-import { fileURLToPath } from 'url'
 import { dirname } from 'path'
-import gltfjsx from './src/gltfjsx.js'
 import { readPackageUpSync } from 'read-pkg-up'
+import { fileURLToPath } from 'url'
+import gltfjsx from './src/gltfjsx.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
