@@ -94,7 +94,9 @@ function parse(fileName, gltf, options = {}) {
     if (animations.length) {
       animationTypes = `\n
   type ActionName = ${animations.map((clip, i) => `"${clip.name}"`).join(' | ')};
-  type GLTFActions = Record<ActionName, THREE.AnimationAction>;\n`
+  interface GLTFAction extends THREE.AnimationClip {\n
+    name: ActionName;\n
+  }`
     }
 
     return `\ntype GLTFResult = GLTF & {
@@ -105,6 +107,7 @@ function parse(fileName, gltf, options = {}) {
     materials: {
       ${materials.map(({ name, type }) => (isVarName(name) ? name : `['${name}']`) + ': THREE.' + type).join(',')}
     }
+    animations: GLTFAction[]
   }\n${animationTypes}`
   }
 
@@ -351,9 +354,7 @@ function parse(fileName, gltf, options = {}) {
   }
 
   function printAnimations(animations) {
-    return animations.length
-      ? `\nconst { actions } = useAnimations${options.types ? '<GLTFActions>' : ''}(animations, group)`
-      : ''
+    return animations.length ? `\nconst { actions } = useAnimations(animations, group)` : ''
   }
 
   function parseExtras(extras) {
