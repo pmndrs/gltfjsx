@@ -24,7 +24,7 @@ A small command-line tool that turns GLTF assets into declarative and re-usable 
 
 ## Usage
 
-```bash
+```text
 Usage
   $ npx gltfjsx [Model.glb] [options]
 
