@@ -1,4 +1,3 @@
-const THREE = (global.THREE = require('three'))
-require('../bin/GLTFLoader')
+import { GLTFLoader } from '../bin/GLTFLoader.js'
 
-module.exports = THREE.GLTFLoader
+module.exports = GLTFLoader

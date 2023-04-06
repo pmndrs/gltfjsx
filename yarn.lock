@@ -103,6 +103,11 @@
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
 
+"@types/three@^0.138.0":
+  version "0.138.0"
+  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.138.0.tgz#ec9f1d1fd8dffea2e0572f9d815ff5a35cf4dc6b"
+  integrity sha512-D8AoV7h2kbCfrv/DcebHOFh1WDwyus3HdooBkAwcBikXArdqnsQ38PQ85JCunnvun160oA9jz53GszF3zch3tg==
+
 abab@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.6.tgz#41b80f2c871d19686216b82309231cfd3cb3d291"
@@ -2103,10 +2108,10 @@ tar-stream@^2.1.4:
     inherits "^2.0.3"
     readable-stream "^3.1.1"
 
-three@0.122.0:
-  version "0.122.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.122.0.tgz#bd9ed8a8820074856e8ba7b63fe0a65176e01aeb"
-  integrity sha512-bgYMo0WdaQhf7DhLE8OSNN/rVFO5J4K1A2VeeKqoV4MjjuHjfCP6xLpg8Xedhns7NlEnN3sZ6VJROq19Qyl6Sg==
+three@^0.138.0:
+  version "0.138.3"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.138.3.tgz#7be5153d79dcbf9e9baad82e7faf8c29edda4ed0"
+  integrity sha512-4t1cKC8gimNyJChJbaklg8W/qj3PpsLJUIFm5LIuAy/hVxxNm1ru2FGTSfbTSsuHmC/7ipsyuGKqrSAKLNtkzg==
 
 through@^2.3.4, through@^2.3.8:
   version "2.3.8"
