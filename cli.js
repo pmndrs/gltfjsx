@@ -28,7 +28,7 @@ const cli = meow(
     --root, -r          Sets directory from which .gltf file is served
     --instance, -i      Instance re-occuring geometry
     --instanceall, -I   Instance every geometry (for cheaper re-use)
-    --exportdefault -E  Use default export
+    --exportdefault, -E Use default export
     --transform, -T     Transform the asset for the web (draco, prune, resize)
       --resolution, -R  Transform resolution for texture resizing (default: 1024)
       --simplify, -S    Transform simplification (default: false) (experimental!)
