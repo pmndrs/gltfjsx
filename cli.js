@@ -28,6 +28,7 @@ const cli = meow(
     --root, -r          Sets directory from which .gltf file is served
     --instance, -i      Instance re-occuring geometry
     --instanceall, -I   Instance every geometry (for cheaper re-use)
+    --exportdefault -E  Use default export
     --transform, -T     Transform the asset for the web (draco, prune, resize)
       --resolution, -R  Transform resolution for texture resizing (default: 1024)
       --simplify, -S    Transform simplification (default: false) (experimental!)
@@ -51,6 +52,7 @@ const cli = meow(
       root: { type: 'string', alias: 'r' },
       instance: { type: 'boolean', alias: 'i' },
       instanceall: { type: 'boolean', alias: 'I' },
+      exportdefault: { type: 'boolean', alias: 'E' },
       transform: { type: 'boolean', alias: 'T' },
       resolution: { type: 'number', alias: 'R', default: 1024 },
       simplify: { type: 'boolean', alias: 'S', default: false },
