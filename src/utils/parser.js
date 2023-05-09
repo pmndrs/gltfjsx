@@ -167,7 +167,11 @@ function parse(fileName, gltf, options = {}) {
     if (obj.color && obj.color.getHexString() !== 'ffffff') result += `color="#${obj.color.getHexString()}" `
     if (obj.position && obj.position.isVector3 && rNbr(obj.position.length()))
       result += `position={[${rNbr(obj.position.x)}, ${rNbr(obj.position.y)}, ${rNbr(obj.position.z)},]} `
-    if (obj.rotation && obj.rotation.isEuler && rNbr(obj.rotation.toVector3().length()))
+    if (
+      obj.rotation &&
+      obj.rotation.isEuler &&
+      rNbr(new THREE.Vector3(obj.rotation.x, obj.rotation.y, obj.rotation.z).length())
+    )
       result += `rotation={[${rDeg(obj.rotation.x)}, ${rDeg(obj.rotation.y)}, ${rDeg(obj.rotation.z)},]} `
     if (
       obj.scale &&
