@@ -2,7 +2,6 @@ import 'jsdom-global'
 import fs from 'fs'
 import path from 'path'
 import transform from './utils/transform.js'
-import prettier from 'prettier'
 
 import { GLTFLoader } from './bin/GLTFLoader.js'
 import { DRACOLoader } from './bin/DRACOLoader.js'
@@ -50,16 +49,7 @@ export default function (file, output, options) {
           arrayBuffer,
           '',
           (gltf) => {
-            stream.write(
-              prettier.format(parse(gltf, { fileName: filePath, ...options }), {
-                semi: false,
-                printWidth: options.printwidth || 1000,
-                singleQuote: true,
-                jsxBracketSameLine: true,
-                parser: options.types ? 'babel-ts' : 'babel',
-                //plugins: [parserBabel],
-              })
-            )
+            stream.write(parse(gltf, { fileName: filePath, ...options }))
             stream.end()
             resolve()
           },
