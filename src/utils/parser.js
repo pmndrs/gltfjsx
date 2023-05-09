@@ -1,7 +1,12 @@
 import * as THREE from 'three'
 import isVarName from './isVarName.js'
 
-function parse(fileName, gltf, options = {}) {
+function parse(gltf, { filename = 'model', ...options } = {}) {
+  if (gltf instanceof THREE.Object3D) {
+    // Wrap scene in a GLTF Structure
+    gltf = { scene: gltf, animations: [], parser: { json: {} } }
+  }
+
   const url = (fileName.toLowerCase().startsWith('http') ? '' : '/') + fileName
   const animations = gltf.animations
   const hasAnimations = animations.length > 0

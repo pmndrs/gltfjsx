@@ -257,8 +257,14 @@ dracoloader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/')
 gltfLoader.setDRACOLoader(dracoloader)
 
 gltfLoader.load(url, (gltf) => {
-  const jsx = parse(filename, gltf, config)
+  const jsx = parse(gltf, optionalConfig)
 })
+```
+
+## Using the parser stand-alone for scenes (object3d's)
+
+```jsx
+const jsx = parse(scene, optionalConfig)
 ```
 
 ## Using GLTFStructureLoader stand-alone

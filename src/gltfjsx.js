@@ -51,7 +51,7 @@ export default function (file, output, options) {
           '',
           (gltf) => {
             stream.write(
-              prettier.format(parse(filePath, gltf, options), {
+              prettier.format(parse(gltf, { filename: filePath, ...options }), {
                 semi: false,
                 printWidth: options.printwidth || 1000,
                 singleQuote: true,
