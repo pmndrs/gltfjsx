@@ -2,18 +2,15 @@ import 'jsdom-global'
 import fs from 'fs'
 import path from 'path'
 import transform from './utils/transform.js'
-
 import prettier from 'prettier'
-import THREE from 'three'
-global.THREE = THREE
 
-import './bin/GLTFLoader.js'
-import DracoLoader from './bin/DRACOLoader.js'
-THREE.DRACOLoader.getDecoderModule = () => {}
+import { GLTFLoader } from './bin/GLTFLoader.js'
+import { DRACOLoader } from './bin/DRACOLoader.js'
+DRACOLoader.getDecoderModule = () => {}
 import parse from './utils/parser.js'
 
-const gltfLoader = new THREE.GLTFLoader()
-gltfLoader.setDRACOLoader(new DracoLoader())
+const gltfLoader = new GLTFLoader()
+gltfLoader.setDRACOLoader(new DRACOLoader())
 
 function toArrayBuffer(buf) {
   var ab = new ArrayBuffer(buf.length)
