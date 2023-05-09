@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import isVarName from './isVarName.js'
 
-function parse(gltf, { filename = 'model', ...options } = {}) {
+function parse(gltf, { fileName = 'model', ...options } = {}) {
   if (gltf instanceof THREE.Object3D) {
     // Wrap scene in a GLTF Structure
     gltf = { scene: gltf, animations: [], parser: { json: {} } }
