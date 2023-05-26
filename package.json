@@ -36,31 +36,29 @@
     "node": ">=16"
   },
   "dependencies": {
-    "@gltf-transform/core": "3.0.0-alpha.4",
-    "@gltf-transform/extensions": "3.0.0-alpha.4",
-    "@gltf-transform/functions": "3.0.0-alpha.4",
+    "@gltf-transform/core": "3.3.6",
+    "@gltf-transform/extensions": "3.3.6",
+    "@gltf-transform/functions": "3.3.6",
     "@node-loader/babel": "^2.0.1",
     "draco3dgltf": "^1.5.6",
     "is-var-name": "^2.0.0",
-    "jsdom": "^20.0.3",
-    "jsdom-global": "^3.0.2",
-    "meow": "^11.0.0",
+    "keyframe-resample": "^0.0.14",
+    "meow": "^12.0.1",
     "meshoptimizer": "^0.19.0",
     "prettier": "^2.8.8",
-    "sharp": "^0.32.1",
-    "three": "0.122.0"
+    "three": "0.152.2",
+    "three-stdlib": "^2.22.4"
+  },
+  "optionalDependencies": {
+    "jsdom": "^22.0.0",
+    "jsdom-global": "^3.0.2",
+    "sharp": "^0.32.1"
   },
   "devDependencies": {
-    "chalk": "^4.1.1",
-    "fast-glob": "^3.2.7",
-    "fs-extra": "^9.0.1",
-    "husky": "^4.3.0",
-    "lint-staged": "^10.4.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npx lint-staged"
-    }
+    "chalk": "^5.2.0",
+    "fast-glob": "^3.2.12",
+    "fs-extra": "^11.1.1",
+    "lint-staged": "^13.2.2"
   },
   "prettier": {
     "semi": false,

@@ -1,7 +1,21 @@
 import { NodeIO } from '@gltf-transform/core'
-import { simplify, weld, dedup, resample, prune, textureCompress, draco } from '@gltf-transform/functions'
+import {
+  simplify,
+  instance,
+  flatten,
+  dequantize,
+  join,
+  weld,
+  sparse,
+  dedup,
+  resample,
+  prune,
+  textureCompress,
+  draco,
+} from '@gltf-transform/functions'
 import { ALL_EXTENSIONS } from '@gltf-transform/extensions'
 import { MeshoptDecoder, MeshoptEncoder, MeshoptSimplifier } from 'meshoptimizer'
+import { ready as resampleReady, resample as resampleWASM } from 'keyframe-resample'
 import draco3d from 'draco3dgltf'
 import sharp from 'sharp'
 
@@ -17,31 +31,31 @@ async function transform(file, output, config = {}) {
 
   const document = await io.read(file)
   const resolution = config.resolution ?? 1024
-
-  const functions = [
-    // Losslessly resample animation frames.
-    resample(),
-    // Remove duplicate vertex or texture data, if any.
-    dedup(),
-    // Remove unused nodes, textures, or other data.
-    prune(),
-    // Resize and convert textures (using webp and sharp)
-    textureCompress({ targetFormat: 'webp', encoder: sharp, resize: [resolution, resolution] }),
-    // Add Draco compression.
-    draco(),
-  ]
+  
+  const functions = [dedup(), instance({ min: 5 }), flatten(), dequantize(), join()]
 
   if (config.simplify) {
     functions.push(
       // Weld vertices
-      weld({ tolerance: config.weld ?? 0.0001 }),
+      weld({ tolerance: config.weld ?? 0.0001 / 2 }),
       // Simplify meshes
-      simplify({ simplifier: MeshoptSimplifier, ratio: config.ratio ?? 0.75, error: config.error ?? 0.001 })
+      simplify({ simplifier: MeshoptSimplifier, ratio: config.ratio ?? 0, error: config.error ?? 0.0001 })
     )
   }
 
-  await document.transform(...functions)
+  functions.push(
+    resample({ ready: resampleReady, resample: resampleWASM }),
+    prune({ keepAttributes: false, keepLeaves: false }),
+    sparse(),
+    textureCompress({
+      encoder: sharp,
+      targetFormat: 'webp',
+      resize: [resolution, resolution],
+    }),
+    draco()
+  )
 
+  await document.transform(...functions)
   await io.write(output, document)
 }
 

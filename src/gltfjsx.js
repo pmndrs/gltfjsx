@@ -53,7 +53,9 @@ export default function (file, output, options) {
             stream.end()
             resolve()
           },
-          reject
+          reason => {
+            console.log(reason)
+          }
         )
       }
     })
