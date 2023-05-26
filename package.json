@@ -1,6 +1,6 @@
 {
   "name": "gltfjsx",
-  "version": "6.1.11",
+  "version": "6.1.12",
   "description": "GLTF to JSX converter",
   "scripts": {
     "test": "node src/test"
