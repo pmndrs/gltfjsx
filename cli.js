@@ -29,6 +29,7 @@ const cli = meow(
     --instance, -i      Instance re-occuring geometry
     --instanceall, -I   Instance every geometry (for cheaper re-use)
     --transform, -T     Transform the asset for the web (draco, prune, resize)
+      --join, -j        Join compatible geometries and meshes (reduces draw calls)
       --resolution, -R  Transform resolution for texture resizing (default: 1024)
       --simplify, -S    Transform simplification (default: false) (experimental!)
         --weld          Weld tolerance (default: 0.0001)

@@ -32,7 +32,11 @@ async function transform(file, output, config = {}) {
   const document = await io.read(file)
   const resolution = config.resolution ?? 1024
   
-  const functions = [dedup(), instance({ min: 5 }), flatten(), dequantize(), join()]
+  const functions = [dedup(), instance({ min: 5 }), flatten(), dequantize()]
+
+  if (config.join) {
+    functions.push(join())
+  }
 
   if (config.simplify) {
     functions.push(
