@@ -23,18 +23,18 @@ const cli = meow(
     --meta, -m          Include metadata (as userData)
     --shadows, s        Let meshes cast and receive shadows
     --printwidth, w     Prettier printWidth (default: 120)
-    --precision, -p     Number of fractional digits (default: 2)
+    --precision, -p     Number of fractional digits (default: 3)
     --draco, -d         Draco binary path
     --root, -r          Sets directory from which .gltf file is served
     --instance, -i      Instance re-occuring geometry
     --instanceall, -I   Instance every geometry (for cheaper re-use)
     --transform, -T     Transform the asset for the web (draco, prune, resize)
-      --join, -j        Join compatible geometries and meshes (reduces draw calls)
-      --resolution, -R  Transform resolution for texture resizing (default: 1024)
-      --simplify, -S    Transform simplification (default: false) (experimental!)
-        --weld          Weld tolerance (default: 0.0001)
-        --ratio         Simplifier ratio (default: 0.75)
-        --error         Simplifier error threshold (default: 0.001)
+      --resolution, -R  Resolution for texture resizing (default: 1024)
+      --keepmeshes, -j  Do not join compatible meshes
+      --simplify, -S    Mesh simplification (default: false)
+        --weld          Weld tolerance (default: 0.00005)
+        --ratio         Simplifier ratio (default: 0)
+        --error         Simplifier error threshold (default: 0.0001)
     --debug, -D         Debug output
 `,
   {
@@ -47,7 +47,7 @@ const cli = meow(
       shadows: { type: 'boolean', shortFlag: 's' },
       printwidth: { type: 'number', shortFlag: 'p', default: 1000 },
       meta: { type: 'boolean', shortFlag: 'm' },
-      precision: { type: 'number', shortFlag: 'p', default: 2 },
+      precision: { type: 'number', shortFlag: 'p', default: 3 },
       draco: { type: 'string', shortFlag: 'd' },
       root: { type: 'string', shortFlag: 'r' },
       instance: { type: 'boolean', shortFlag: 'i' },
@@ -55,6 +55,7 @@ const cli = meow(
       transform: { type: 'boolean', shortFlag: 'T' },
       resolution: { type: 'number', shortFlag: 'R', default: 1024 },
       simplify: { type: 'boolean', shortFlag: 'S', default: false },
+      keepmeshes: { type: 'boolean', shortFlag: 'j', default: false },
       weld: { type: 'number', default: 0.0001 },
       ratio: { type: 'number', default: 0.75 },
       error: { type: 'number', default: 0.001 },

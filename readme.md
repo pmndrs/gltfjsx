@@ -36,18 +36,18 @@ Options
   --meta, -m          Include metadata (as userData)
   --shadows, s        Let meshes cast and receive shadows
   --printwidth, w     Prettier printWidth (default: 120)
-  --precision, -p     Number of fractional digits (default: 2)
+  --precision, -p     Number of fractional digits (default: 3)
   --draco, -d         Draco binary path
   --root, -r          Sets directory from which .gltf file is served
   --instance, -i      Instance re-occuring geometry
   --instanceall, -I   Instance every geometry (for cheaper re-use)
   --transform, -T     Transform the asset for the web (draco, prune, resize)
-    --join, -j        Join compatible geometries and meshes (reduces draw calls)
-    --resolution, -R  Transform resolution for texture resizing (default: 1024)
-    --simplify, -S    Transform simplification (default: false) (experimental!)
-      --weld          Weld tolerance (default: 0.0001)
-      --ratio         Simplifier ratio (default: 0.075)
-      --error         Simplifier error threshold (default: 0.001)
+    --resolution, -R  Resolution for texture resizing (default: 1024)
+    --keepmeshes, -j  Do not join compatible meshes
+    --simplify, -S    Mesh simplification (default: false)
+      --weld          Weld tolerance (default: 0.00005)
+      --ratio         Simplifier ratio (default: 0)
+      --error         Simplifier error threshold (default: 0.0001)
   --debug, -D         Debug output
 ```
 
@@ -56,7 +56,7 @@ Options
 First you run your model through gltfjsx. `npx` allows you to use npm packages without installing them.
 
 ```bash
-npx gltfjsx model.gltf --transform --simplify --join
+npx gltfjsx model.gltf --transform
 ```
 
 This will create a `Model.jsx` file that plots out all of the assets contents.

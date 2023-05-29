@@ -34,7 +34,7 @@ async function transform(file, output, config = {}) {
   
   const functions = [dedup(), instance({ min: 5 }), flatten(), dequantize()]
 
-  if (config.join) {
+  if (!config.keepmeshes) {
     functions.push(join())
   }
 
