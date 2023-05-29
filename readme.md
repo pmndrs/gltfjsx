@@ -56,7 +56,7 @@ Options
 First you run your model through gltfjsx. `npx` allows you to use npm packages without installing them.
 
 ```bash
-npx gltfjsx model.gltf --transform
+npx gltfjsx model.gltf --transform --simplify --join
 ```
 
 This will create a `Model.jsx` file that plots out all of the assets contents.
