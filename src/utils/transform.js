@@ -31,7 +31,7 @@ async function transform(file, output, config = {}) {
 
   const document = await io.read(file)
   const resolution = config.resolution ?? 1024
-  
+
   const functions = [dedup(), instance({ min: 5 }), flatten(), dequantize()]
 
   if (!config.keepmeshes) {
@@ -50,23 +50,36 @@ async function transform(file, output, config = {}) {
   functions.push(
     resample({ ready: resampleReady, resample: resampleWASM }),
     prune({ keepAttributes: false, keepLeaves: false }),
-    sparse(),
-    textureCompress({
-      slots: /^(?!normalTexture).*$/, // exclude normal maps
-      encoder: sharp,
-      targetFormat: 'webp',
-      resize: [resolution, resolution],
-    }),
-    
-    textureCompress({
-      slots: /^(?=normalTexture).*$/, // include normal maps
-      nearLossless: true,
-      encoder: sharp,
-      targetFormat: 'webp',
-      resize: [resolution, resolution],
-    }),
-    draco()
+    sparse()
   )
+
+  if (config.keepnormals) {
+    functions.push(
+      textureCompress({
+        slots: /^(?!normalTexture).*$/, // exclude normal maps
+        encoder: sharp,
+        targetFormat: 'webp',
+        resize: [resolution, resolution],
+      }),
+      textureCompress({
+        slots: /^(?=normalTexture).*$/, // include normal maps
+        nearLossless: true,
+        encoder: sharp,
+        targetFormat: 'webp',
+        resize: [resolution, resolution],
+      })
+    )
+  } else {
+    functions.push(
+      textureCompress({
+        encoder: sharp,
+        targetFormat: 'webp',
+        resize: [resolution, resolution],
+      })
+    )
+  }
+
+  functions.push(draco())
 
   await document.transform(...functions)
   await io.write(output, document)

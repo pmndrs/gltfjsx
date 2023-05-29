@@ -44,6 +44,7 @@ Options
   --transform, -T     Transform the asset for the web (draco, prune, resize)
     --resolution, -R  Resolution for texture resizing (default: 1024)
     --keepmeshes, -j  Do not join compatible meshes
+    --keepnormals, -n Do not compress normal maps with loss
     --simplify, -S    Mesh simplification (default: false)
       --weld          Weld tolerance (default: 0.00005)
       --ratio         Simplifier ratio (default: 0)

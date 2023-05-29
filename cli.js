@@ -31,6 +31,7 @@ const cli = meow(
     --transform, -T     Transform the asset for the web (draco, prune, resize)
       --resolution, -R  Resolution for texture resizing (default: 1024)
       --keepmeshes, -j  Do not join compatible meshes
+      --keepnormals, -n Do not compress normal maps with loss
       --simplify, -S    Mesh simplification (default: false)
         --weld          Weld tolerance (default: 0.00005)
         --ratio         Simplifier ratio (default: 0)
@@ -56,6 +57,7 @@ const cli = meow(
       resolution: { type: 'number', shortFlag: 'R', default: 1024 },
       simplify: { type: 'boolean', shortFlag: 'S', default: false },
       keepmeshes: { type: 'boolean', shortFlag: 'j', default: false },
+      keepnormals: { type: 'boolean', shortFlag: 'n', default: false },
       weld: { type: 'number', default: 0.0001 },
       ratio: { type: 'number', default: 0.75 },
       error: { type: 'number', default: 0.001 },
