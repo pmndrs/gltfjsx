@@ -52,6 +52,15 @@ async function transform(file, output, config = {}) {
     prune({ keepAttributes: false, keepLeaves: false }),
     sparse(),
     textureCompress({
+      slots: /^(?!normalTexture).*$/, // exclude normal maps
+      encoder: sharp,
+      targetFormat: 'webp',
+      resize: [resolution, resolution],
+    }),
+    
+    textureCompress({
+      slots: /^(?=normalTexture).*$/, // include normal maps
+      nearLossless: true,
       encoder: sharp,
       targetFormat: 'webp',
       resize: [resolution, resolution],
