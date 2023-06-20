@@ -45,6 +45,8 @@ Options
     --resolution, -R  Resolution for texture resizing (default: 1024)
     --keepmeshes, -j  Do not join compatible meshes
     --keepnormals, -n Do not compress normal maps with loss
+    --keepmaterials, -M Do not palette join materials
+    --format, -f      Texture format (default: "webp")
     --simplify, -S    Mesh simplification (default: false)
       --weld          Weld tolerance (default: 0.00005)
       --ratio         Simplifier ratio (default: 0)

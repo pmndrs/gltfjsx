@@ -36,9 +36,9 @@
     "node": ">=16"
   },
   "dependencies": {
-    "@gltf-transform/core": "3.3.6",
-    "@gltf-transform/extensions": "3.3.6",
-    "@gltf-transform/functions": "3.3.6",
+    "@gltf-transform/core": "3.4.2",
+    "@gltf-transform/extensions": "3.4.2",
+    "@gltf-transform/functions": "3.4.2",
     "@node-loader/babel": "^2.0.1",
     "draco3dgltf": "^1.5.6",
     "is-var-name": "^2.0.0",

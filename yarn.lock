@@ -57,28 +57,28 @@
   resolved "https://registry.yarnpkg.com/@chevrotain/utils/-/utils-10.5.0.tgz#0ee36f65b49b447fbac71b9e5af5c5c6c98ac057"
   integrity sha512-hBzuU5+JjB2cqNZyszkDHZgOSrUUT8V3dhgRl8Q9Gp6dAj/H5+KILGjbhDpc3Iy9qmqlm/akuOI2ut9VUtzJxQ==
 
-"@gltf-transform/core@3.3.6", "@gltf-transform/core@^3.3.6":
-  version "3.3.6"
-  resolved "https://registry.yarnpkg.com/@gltf-transform/core/-/core-3.3.6.tgz#367573d8cfcc180f24cccb7fa25f3504101b3f86"
-  integrity sha512-fMJ43m+LdPV1w/uS9RZKQci55oH8AAgQyvYBy8BqESn/UgrwWpf/Dw5BtrhvLFhIKgsP0q5boslutYSf49lXUQ==
+"@gltf-transform/core@3.4.2", "@gltf-transform/core@^3.4.2":
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/@gltf-transform/core/-/core-3.4.2.tgz#663da43b78a501ac2edb1441dbce3738993d19aa"
+  integrity sha512-9YvltytbpVbL9kp6i/b5T2bY4nwsWtlYUf9raNLny1cjvPyCukYxO/3e+nweAMgLofQcvPnBrzRxLC/RPjQ+Wg==
   dependencies:
     property-graph "^1.2.0"
 
-"@gltf-transform/extensions@3.3.6", "@gltf-transform/extensions@^3.3.6":
-  version "3.3.6"
-  resolved "https://registry.yarnpkg.com/@gltf-transform/extensions/-/extensions-3.3.6.tgz#2858af73d42279754a5f3aecc7db6e261b15ffb3"
-  integrity sha512-cpo7iTohZGiZu1HdFgla6setEmrnZxyilEuslddI06L3d0+mCYrY88Rx4RyIj4ZwWSfohfQK9eXPOTFxMlHRCg==
+"@gltf-transform/extensions@3.4.2", "@gltf-transform/extensions@^3.4.2":
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/@gltf-transform/extensions/-/extensions-3.4.2.tgz#d16a64809550abb300f89dbdf4935bce1aab39d6"
+  integrity sha512-cJ6wPKokCA/JPFvRmylu33cY68XwTPKiIGDxckgH1t5LAYJygAuEGEWE6oSo4ojy50G1KduKxHsxT+Cp6zgBcA==
   dependencies:
-    "@gltf-transform/core" "^3.3.6"
+    "@gltf-transform/core" "^3.4.2"
     ktx-parse "^0.5.0"
 
-"@gltf-transform/functions@3.3.6":
-  version "3.3.6"
-  resolved "https://registry.yarnpkg.com/@gltf-transform/functions/-/functions-3.3.6.tgz#03f9459503d0aed1a5712c4763c4e6b2e35b21a2"
-  integrity sha512-SZtzS7FjC7iSOunqt+X2y/OyZ8NA3eXcuUf+AxkMOZqappATVZQO6vaK6jQjUA3086N0j4aCACLyrLSgWLR8MQ==
+"@gltf-transform/functions@3.4.2":
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/@gltf-transform/functions/-/functions-3.4.2.tgz#15b5861143cb3d53d390c10bb41fab66a0f839d1"
+  integrity sha512-Emc9nm9k553T1DE4n7vIyYASvZtEVtdQm7bW99r3vRksMeKZ6jPJXBTv6Zl65huPYmWKZ8sP2cu2LNbkwslm7g==
   dependencies:
-    "@gltf-transform/core" "^3.3.6"
-    "@gltf-transform/extensions" "^3.3.6"
+    "@gltf-transform/core" "^3.4.2"
+    "@gltf-transform/extensions" "^3.4.2"
     ktx-parse "^0.5.0"
     ndarray "^1.0.19"
     ndarray-lanczos "^0.3.0"
@@ -848,11 +848,6 @@ human-signals@^4.3.0:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-4.3.1.tgz#ab7f811e851fca97ffbd2c1fe9a958964de321b2"
   integrity sha512-nZXjEF2nbo7lIw3mgYjItAfgQXog3OjJogSbKa2CQIIvSGWcKgeJnQlNXip6NglNzYH45nSRiEVimMvYL8DDqQ==
-
-husky@^8.0.3:
-  version "8.0.3"
-  resolved "https://registry.yarnpkg.com/husky/-/husky-8.0.3.tgz#4936d7212e46d1dea28fef29bb3a108872cd9184"
-  integrity sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==
 
 iconv-lite@0.6.3:
   version "0.6.3"

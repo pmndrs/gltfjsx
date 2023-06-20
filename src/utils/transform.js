@@ -12,6 +12,7 @@ import {
   prune,
   textureCompress,
   draco,
+  palette,
 } from '@gltf-transform/functions'
 import { ALL_EXTENSIONS } from '@gltf-transform/extensions'
 import { MeshoptDecoder, MeshoptEncoder, MeshoptSimplifier } from 'meshoptimizer'
@@ -31,8 +32,13 @@ async function transform(file, output, config = {}) {
 
   const document = await io.read(file)
   const resolution = config.resolution ?? 1024
+  const degradeResolution = config.degraderesolution ?? 512
 
-  const functions = [dedup(), instance({ min: 5 }), flatten(), dequantize()]
+  const functions = []
+
+  if (!config.keepmaterials) functions.push(palette())
+
+  functions.push(dedup(), instance({ min: 5 }), flatten(), dequantize())
 
   if (!config.keepmeshes) {
     functions.push(join())
@@ -53,27 +59,45 @@ async function transform(file, output, config = {}) {
     sparse()
   )
 
-  if (config.keepnormals) {
+  if (config.degrade) {
+    // Custom per-file resolution
+    functions.push(
+      textureCompress({
+        encoder: sharp,
+        pattern: new RegExp(`^(?=${config.degrade}).*$`),
+        targetFormat: config.format,
+        resize: [degradeResolution, degradeResolution],
+      }),
+      textureCompress({
+        encoder: sharp,
+        pattern: new RegExp(`^(?!${config.degrade}).*$`),
+        targetFormat: config.format,
+        resize: [resolution, resolution],
+      })
+    )
+  } else if (config.keepnormals) {
+    // Keep normal maps near lossless
     functions.push(
       textureCompress({
         slots: /^(?!normalTexture).*$/, // exclude normal maps
         encoder: sharp,
-        targetFormat: 'webp',
+        targetFormat: config.format,
         resize: [resolution, resolution],
       }),
       textureCompress({
         slots: /^(?=normalTexture).*$/, // include normal maps
         nearLossless: true,
         encoder: sharp,
-        targetFormat: 'webp',
+        targetFormat: config.format,
         resize: [resolution, resolution],
       })
     )
   } else {
+    // Just treat everything the same
     functions.push(
       textureCompress({
         encoder: sharp,
-        targetFormat: 'webp',
+        targetFormat: config.format,
         resize: [resolution, resolution],
       })
     )
