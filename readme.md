@@ -9,7 +9,7 @@ A small command-line tool that turns GLTF assets into declarative and re-usable 
 
 ### The GLTF workflow on the web is not ideal ...
 
-- GLTF is thrown wholesale into the scene which prevents re-use, in threejs objects can only be mounted once
+- GLTF is thrown whole into the scene which prevents re-use, in threejs objects can only be mounted once
 - Contents can only be found by traversal which is cumbersome and slow
 - Changes to queried nodes are made by mutation, which alters the source data and prevents re-use
 - Re-structuring content, making nodes conditional or adding/removing is cumbersome
