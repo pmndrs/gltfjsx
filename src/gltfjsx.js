@@ -34,6 +34,10 @@ export default function (file, output, options) {
         reject(file + ' does not exist.')
       } else {
         // Process GLTF
+        if (output && path.parse(output).ext === '.tsx') {
+          options.types = true
+        }
+        
         if (options.transform || options.instance || options.instanceall) {
           const { name } = path.parse(file)
           const outputDir = path.parse(path.resolve(output ?? file)).dir;
