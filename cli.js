@@ -30,8 +30,7 @@ const cli = meow(
     --instanceall, -I   Instance every geometry (for cheaper re-use)
     --transform, -T     Transform the asset for the web (draco, prune, resize)
       --resolution, -R  Resolution for texture resizing (default: 1024)
-      --keepmeshes, -j  Do not join compatible meshes
-      --keepnormals, -n Do not compress normal maps with loss
+      --keepmeshes, -j  Do not join compatible meshes      
       --keepmaterials, -M Do not palette join materials
       --format, -f      Texture format (default: "webp")
       --simplify, -S    Mesh simplification (default: false)
@@ -61,8 +60,7 @@ const cli = meow(
       degraderesolution: { type: 'number', shortFlag: 'Q', default: 512 },
       simplify: { type: 'boolean', shortFlag: 'S', default: false },
       keepmeshes: { type: 'boolean', shortFlag: 'j', default: false },
-      keepmaterials: { type: 'boolean', shortFlag: 'M', default: false },
-      keepnormals: { type: 'boolean', shortFlag: 'n', default: false },
+      keepmaterials: { type: 'boolean', shortFlag: 'M', default: false },      
       format: { type: 'string', shortFlag: 'f', default: 'webp' },
       weld: { type: 'number', default: 0.0001 },
       ratio: { type: 'number', default: 0.75 },

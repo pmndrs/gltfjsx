@@ -32,8 +32,8 @@ async function transform(file, output, config = {}) {
 
   const document = await io.read(file)
   const resolution = config.resolution ?? 1024
+  const normalResolution = Math.max(resolution, 2048)
   const degradeResolution = config.degraderesolution ?? 512
-
   const functions = []
 
   if (!config.keepmaterials) functions.push(palette())
@@ -75,7 +75,7 @@ async function transform(file, output, config = {}) {
         resize: [resolution, resolution],
       })
     )
-  } else if (config.keepnormals) {
+  } else {
     // Keep normal maps near lossless
     functions.push(
       textureCompress({
@@ -86,19 +86,9 @@ async function transform(file, output, config = {}) {
       }),
       textureCompress({
         slots: /^(?=normalTexture).*$/, // include normal maps
-        nearLossless: true,
         encoder: sharp,
-        targetFormat: config.format,
-        resize: [resolution, resolution],
-      })
-    )
-  } else {
-    // Just treat everything the same
-    functions.push(
-      textureCompress({
-        encoder: sharp,
-        targetFormat: config.format,
-        resize: [resolution, resolution],
+        targetFormat: 'jpeg',
+        resize: [normalResolution, normalResolution],
       })
     )
   }
