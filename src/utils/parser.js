@@ -1,6 +1,6 @@
 import * as THREE from 'three'
-import prettier from 'prettier'
-import babelParser from 'prettier/parser-babel.js'
+import * as prettier from "prettier";
+import babelParser from "prettier/parser-babel.js";
 import isVarName from './isVarName.js'
 
 function parse(gltf, { fileName = 'model', ...options } = {}) {
