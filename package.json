@@ -48,6 +48,7 @@
     "meow": "^12.0.1",
     "meshoptimizer": "^0.19.0",
     "prettier": "2.8.7",
+    "read-pkg-up": "10.0.0",
     "three": "0.152.2",
     "three-stdlib": "^2.22.4"
   },
