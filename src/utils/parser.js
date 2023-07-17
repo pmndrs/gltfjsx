@@ -1,6 +1,6 @@
 import * as THREE from 'three'
-import * as prettier from "prettier";
-import babelParser from "prettier/parser-babel.js";
+import * as prettier from 'prettier'
+import babelParser from 'prettier/parser-babel.js'
 import isVarName from './isVarName.js'
 
 function parse(gltf, { fileName = 'model', ...options } = {}) {
@@ -145,16 +145,18 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
       if (type === 'mesh' && options.shadows) result += `castShadow receiveShadow `
 
       // Write out geometry first
-      if (obj.geometry) {
+      if (obj.geometry && !obj.isInstancedMesh) {
         result += `geometry={${node}.geometry} `
       }
 
       // Write out materials
-      if (obj.material) {
+      if (obj.material && !obj.isInstancedMesh) {
         if (obj.material.name) result += `material={materials${sanitizeName(obj.material.name)}} `
         else result += `material={${node}.material} `
       }
 
+      if (obj.instanceMatrix) result += `instanceMatrix={${node}.instanceMatrix} `
+      if (obj.instanceColor) result += `instanceColor={${node}.instanceColor} `
       if (obj.skeleton) result += `skeleton={${node}.skeleton} `
       if (obj.visible === false) result += `visible={false} `
       if (obj.castShadow === true) result += `castShadow `
@@ -339,8 +341,14 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
       result = `<instances.${duplicates.geometries[obj.geometry.uuid + obj.material.name].name} `
       type = `instances.${duplicates.geometries[obj.geometry.uuid + obj.material.name].name}`
     } else {
-      // Form the object in JSX syntax
-      result = `<${type} `
+      if (obj.isInstancedMesh) {        
+        const geo = `${node}.geometry`
+        const mat = obj.material.name ? `materials${sanitizeName(obj.material.name)}` : `${node}.material`
+        result = `<instancedMesh args={[${geo}, ${mat}, ${obj.count}]} `
+      } else {
+        // Form the object in JSX syntax
+        result = `<${type} `
+      }
     }
 
     // Include names when output is uncompressed or morphTargetDictionaries are present

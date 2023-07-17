@@ -4,6 +4,7 @@ import {
   instance,
   flatten,
   dequantize,
+  reorder,
   join,
   weld,
   sparse,
@@ -13,6 +14,7 @@ import {
   textureCompress,
   draco,
   palette,
+  unpartition,
 } from '@gltf-transform/functions'
 import { ALL_EXTENSIONS } from '@gltf-transform/extensions'
 import { MeshoptDecoder, MeshoptEncoder, MeshoptSimplifier } from 'meshoptimizer'
@@ -34,14 +36,22 @@ async function transform(file, output, config = {}) {
   const resolution = config.resolution ?? 1024
   const normalResolution = Math.max(resolution, 2048)
   const degradeResolution = config.degraderesolution ?? 512
-  const functions = []
+  const functions = [unpartition()]
 
-  if (!config.keepmaterials) functions.push(palette())
+  if (!config.keepmaterials) functions.push(palette({ min: 5 }))
 
-  functions.push(dedup(), instance({ min: 5 }), flatten(), dequantize())
+  functions.push(
+    reorder({ encoder: MeshoptEncoder }),
+    dedup(),
+    instance({ min: 5 }),
+    flatten(),
+    dequantize() // ...
+  )
 
   if (!config.keepmeshes) {
-    functions.push(join())
+    functions.push(
+      join() // ...
+    )
   }
 
   if (config.simplify) {

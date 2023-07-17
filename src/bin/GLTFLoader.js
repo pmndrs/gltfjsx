@@ -24,6 +24,9 @@ export class GLTFLoader extends THREE.Loader {
     this.register(function (parser) {
       return new GLTFLightsExtension(parser)
     })
+    this.register(function (parser) {
+      return new GLTFMeshGpuInstancing(parser)
+    })
   }
 
   load(url, onLoad, onProgress, onError) {
@@ -251,6 +254,7 @@ var EXTENSIONS = {
   KHR_TEXTURE_TRANSFORM: 'KHR_texture_transform',
   KHR_MESH_QUANTIZATION: 'KHR_mesh_quantization',
   MSFT_TEXTURE_DDS: 'MSFT_texture_dds',
+  EXT_MESH_GPU_INSTANCING: 'EXT_mesh_gpu_instancing',
 }
 
 /**
@@ -509,6 +513,108 @@ function GLTFTextureBasisUExtension(parser) {
 
 GLTFTextureBasisUExtension.prototype.loadTexture = function (textureIndex) {
   return Promise.resolve(new THREE.Texture())
+}
+
+/**
+ * GPU Instancing Extension
+ *
+ * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Vendor/EXT_mesh_gpu_instancing
+ *
+ */
+class GLTFMeshGpuInstancing {
+  constructor(parser) {
+    this.name = EXTENSIONS.EXT_MESH_GPU_INSTANCING
+    this.parser = parser
+  }
+
+  createNodeMesh(nodeIndex) {
+    const json = this.parser.json
+    const nodeDef = json.nodes[nodeIndex]
+
+    if (!nodeDef.extensions || !nodeDef.extensions[this.name] || nodeDef.mesh === undefined) {
+      return null
+    }
+
+    const meshDef = json.meshes[nodeDef.mesh]
+
+    // No Points or Lines + Instancing support yet
+    for (const primitive of meshDef.primitives) {
+      if (
+        primitive.mode !== WEBGL_CONSTANTS.TRIANGLES &&
+        primitive.mode !== WEBGL_CONSTANTS.TRIANGLE_STRIP &&
+        primitive.mode !== WEBGL_CONSTANTS.TRIANGLE_FAN &&
+        primitive.mode !== undefined
+      ) {
+        return null
+      }
+    }
+
+    const extensionDef = nodeDef.extensions[this.name]
+    const attributesDef = extensionDef.attributes
+    // @TODO: Can we support InstancedMesh + SkinnedMesh?
+    const pending = []
+    const attributes = {}
+
+    for (const key in attributesDef) {
+      pending.push(
+        this.parser.getDependency('accessor', attributesDef[key]).then((accessor) => {
+          attributes[key] = accessor
+          return attributes[key]
+        })
+      )
+    }
+    if (pending.length < 1) {
+      return null
+    }
+    pending.push(this.parser.createNodeMesh(nodeIndex))
+
+    return Promise.all(pending).then((results) => {
+      const nodeObject = results.pop()
+      const meshes = nodeObject.isGroup ? nodeObject.children : [nodeObject]
+      const count = results[0].count // All attribute counts should be same
+
+      const instancedMeshes = []
+      for (const mesh of meshes) {
+        // Temporal variables
+        const m = new THREE.Matrix4()
+        const p = new THREE.Vector3()
+        const q = new THREE.Quaternion()
+        const s = new THREE.Vector3(1, 1, 1)
+        const instancedMesh = new THREE.InstancedMesh(mesh.geometry, mesh.material, count)
+
+        for (let i = 0; i < count; i++) {
+          if (attributes.TRANSLATION) {
+            p.fromBufferAttribute(attributes.TRANSLATION, i)
+          }
+          if (attributes.ROTATION) {
+            q.fromBufferAttribute(attributes.ROTATION, i)
+          }
+          if (attributes.SCALE) {
+            s.fromBufferAttribute(attributes.SCALE, i)
+          }
+          instancedMesh.setMatrixAt(i, m.compose(p, q, s))
+        }
+
+        // Add instance attributes to the geometry, excluding TRS.
+        for (const attributeName in attributes) {
+          if (attributeName !== 'TRANSLATION' && attributeName !== 'ROTATION' && attributeName !== 'SCALE') {
+            mesh.geometry.setAttribute(attributeName, attributes[attributeName])
+          }
+        }
+
+        // Just in case
+        THREE.Object3D.prototype.copy.call(instancedMesh, mesh)
+        this.parser.assignFinalMaterial(instancedMesh)
+        instancedMeshes.push(instancedMesh)
+      }
+      if (nodeObject.isGroup) {
+        nodeObject.clear()
+        nodeObject.add(...instancedMeshes)
+        return nodeObject
+      }
+      return instancedMeshes[0]
+    })
+  }
 }
 
 /* BINARY EXTENSION */
@@ -1528,7 +1634,6 @@ GLTFParser.prototype.loadAccessor = function (accessorIndex) {
       } else {
         array = new TypedArray(bufferView, byteOffset, accessorDef.count * itemSize)
       }
-
       bufferAttribute = new THREE.BufferAttribute(array, itemSize, normalized)
     }
 
@@ -1567,6 +1672,7 @@ GLTFParser.prototype.loadAccessor = function (accessorIndex) {
       }
     }
 
+    bufferAttribute.count = accessorDef.count
     return bufferAttribute
   })
 }
@@ -1782,7 +1888,7 @@ GLTFParser.prototype.loadMaterial = function (materialIndex) {
   return Promise.all(pending).then(function () {
     var material
 
-    material = new materialType(materialParams)    
+    material = new materialType(materialParams)
 
     if (materialDef.name) material.name = materialDef.name
 
@@ -2223,7 +2329,151 @@ GLTFParser.prototype.loadSkin = function (skinIndex) {
  * @return {Promise<THREE.AnimationClip>}
  */
 GLTFParser.prototype.loadAnimation = function (animationIndex) {
-  return Promise.resolve()
+  var json = this.json
+
+  var animationDef = json.animations[animationIndex]
+
+  var pendingNodes = []
+  var pendingInputAccessors = []
+  var pendingOutputAccessors = []
+  var pendingSamplers = []
+  var pendingTargets = []
+
+  for (var i = 0, il = animationDef.channels.length; i < il; i++) {
+    var channel = animationDef.channels[i]
+    var sampler = animationDef.samplers[channel.sampler]
+    var target = channel.target
+    var name = target.node !== undefined ? target.node : target.id // NOTE: target.id is deprecated.
+    var input = animationDef.parameters !== undefined ? animationDef.parameters[sampler.input] : sampler.input
+    var output = animationDef.parameters !== undefined ? animationDef.parameters[sampler.output] : sampler.output
+
+    pendingNodes.push(this.getDependency('node', name))
+    pendingInputAccessors.push(this.getDependency('accessor', input))
+    pendingOutputAccessors.push(this.getDependency('accessor', output))
+    pendingSamplers.push(sampler)
+    pendingTargets.push(target)
+  }
+
+  return Promise.all([
+    Promise.all(pendingNodes),
+    Promise.all(pendingInputAccessors),
+    Promise.all(pendingOutputAccessors),
+    Promise.all(pendingSamplers),
+    Promise.all(pendingTargets),
+  ]).then(function (dependencies) {
+    var nodes = dependencies[0]
+    var inputAccessors = dependencies[1]
+    var outputAccessors = dependencies[2]
+    var samplers = dependencies[3]
+    var targets = dependencies[4]
+
+    var tracks = []
+
+    for (var i = 0, il = nodes.length; i < il; i++) {
+      var node = nodes[i]
+      var inputAccessor = inputAccessors[i]
+      var outputAccessor = outputAccessors[i]
+      var sampler = samplers[i]
+      var target = targets[i]
+
+      if (node === undefined) continue
+
+      node.updateMatrix()
+      node.matrixAutoUpdate = true
+
+      var TypedKeyframeTrack
+
+      switch (PATH_PROPERTIES[target.path]) {
+        case PATH_PROPERTIES.weights:
+          TypedKeyframeTrack = THREE.NumberKeyframeTrack
+          break
+
+        case PATH_PROPERTIES.rotation:
+          TypedKeyframeTrack = THREE.QuaternionKeyframeTrack
+          break
+
+        case PATH_PROPERTIES.position:
+        case PATH_PROPERTIES.scale:
+        default:
+          TypedKeyframeTrack = THREE.VectorKeyframeTrack
+          break
+      }
+
+      var targetName = node.name ? node.name : node.uuid
+
+      var interpolation =
+        sampler.interpolation !== undefined ? INTERPOLATION[sampler.interpolation] : THREE.InterpolateLinear
+
+      var targetNames = []
+
+      if (PATH_PROPERTIES[target.path] === PATH_PROPERTIES.weights) {
+        // Node may be a THREE.Group (glTF mesh with several primitives) or a THREE.Mesh.
+        node.traverse(function (object) {
+          if (object.isMesh === true && object.morphTargetInfluences) {
+            targetNames.push(object.name ? object.name : object.uuid)
+          }
+        })
+      } else {
+        targetNames.push(targetName)
+      }
+
+      var outputArray = outputAccessor.array
+
+      if (outputAccessor.normalized) {
+        var scale
+
+        if (outputArray.constructor === Int8Array) {
+          scale = 1 / 127
+        } else if (outputArray.constructor === Uint8Array) {
+          scale = 1 / 255
+        } else if (outputArray.constructor == Int16Array) {
+          scale = 1 / 32767
+        } else if (outputArray.constructor === Uint16Array) {
+          scale = 1 / 65535
+        } else {
+          throw new Error('THREE.GLTFLoader: Unsupported output accessor component type.')
+        }
+
+        var scaled = new Float32Array(outputArray.length)
+
+        for (var j = 0, jl = outputArray.length; j < jl; j++) {
+          scaled[j] = outputArray[j] * scale
+        }
+
+        outputArray = scaled
+      }
+    }
+
+    var name = animationDef.name ? animationDef.name : 'animation_' + animationIndex
+    var clip = new THREE.AnimationClip(name, undefined, tracks)
+    clip.targetNames = targetNames
+    return clip
+  })
+}
+
+GLTFParser.prototype.createNodeMesh = function (nodeIndex) {
+  const json = this.json
+  const parser = this
+  const nodeDef = json.nodes[nodeIndex]
+
+  if (nodeDef.mesh === undefined) return null
+
+  return parser.getDependency('mesh', nodeDef.mesh).then(function (mesh) {
+    const node = parser._getNodeRef(parser.meshCache, nodeDef.mesh, mesh)
+
+    // if weights are provided on the node, override weights on the mesh.
+    if (nodeDef.weights !== undefined) {
+      node.traverse(function (o) {
+        if (!o.isMesh) return
+
+        for (let i = 0, il = nodeDef.weights.length; i < il; i++) {
+          o.morphTargetInfluences[i] = nodeDef.weights[i]
+        }
+      })
+    }
+
+    return node
+  })
 }
 
 /**
@@ -2244,25 +2494,12 @@ GLTFParser.prototype.loadNode = function (nodeIndex) {
   return (function () {
     var pending = []
 
-    if (nodeDef.mesh !== undefined) {
-      pending.push(
-        parser.getDependency('mesh', nodeDef.mesh).then(function (mesh) {
-          var node = parser._getNodeRef(parser.meshCache, nodeDef.mesh, mesh)
+    const meshPromise = parser._invokeOne(function (ext) {
+      return ext.createNodeMesh && ext.createNodeMesh(nodeIndex)
+    })
 
-          // if weights are provided on the node, override weights on the mesh.
-          if (nodeDef.weights !== undefined) {
-            node.traverse(function (o) {
-              if (!o.isMesh) return
-
-              for (var i = 0, il = nodeDef.weights.length; i < il; i++) {
-                o.morphTargetInfluences[i] = nodeDef.weights[i]
-              }
-            })
-          }
-
-          return node
-        })
-      )
+    if (meshPromise) {
+      pending.push(meshPromise)
     }
 
     if (nodeDef.camera !== undefined) {
