@@ -18,6 +18,21 @@ function toArrayBuffer(buf) {
   return ab
 }
 
+function roundOff(value) {
+  return Math.round(value * 100) / 100
+}
+
+function getFileSize(file) {
+  const stats = fs.statSync(file)
+  let fileSize = stats.size
+  let fileSizeKB = roundOff(fileSize * 0.001)
+  let fileSizeMB = roundOff(fileSizeKB * 0.001)
+  return {
+    size: fileSizeKB > 1000 ? `${fileSizeMB}MB` : `${fileSizeKB}KB`,
+    sizeKB: fileSizeKB,
+  }
+}
+
 export default function (file, output, options) {
   function getRelativeFilePath(file) {
     const filePath = path.resolve(file)
@@ -33,11 +48,17 @@ export default function (file, output, options) {
       if (!fs.existsSync(file)) {
         reject(file + ' does not exist.')
       } else {
+        let size = ''
         // Process GLTF
         if (options.transform || options.instance || options.instanceall) {
           const { name } = path.parse(file)
           const transformOut = path.join(name + '-transformed.glb')
           await transform(file, transformOut, options)
+          const { size: sizeOriginal, sizeKB: sizeKBOriginal } = getFileSize(file)
+          const { size: sizeTransformed, sizeKB: sizeKBTransformed } = getFileSize(transformOut)
+          size = `${file} [${sizeOriginal}] > ${transformOut} [${sizeTransformed}] (${Math.round(
+            100 - (sizeKBTransformed / sizeKBOriginal) * 100
+          )}%)`
           file = transformOut
         }
         resolve()
@@ -49,11 +70,11 @@ export default function (file, output, options) {
           arrayBuffer,
           '',
           (gltf) => {
-            stream.write(parse(gltf, { fileName: filePath, ...options }))
+            stream.write(parse(gltf, { fileName: filePath, size, ...options }))
             stream.end()
             resolve()
           },
-          reason => {
+          (reason) => {
             console.log(reason)
           }
         )
