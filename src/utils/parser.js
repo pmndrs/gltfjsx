@@ -270,7 +270,8 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
        */
       if (obj.children.length === 1 && getType(first) === type && equalOrNegated(obj.rotation, first.rotation)) {
         if (keys1.length === 1 && keys2.length > 1 && keys1[0] === 'rotation' && keys2.includes('rotation')) {
-          if (options.debug && !silent) console.log(`group ${obj.name} removed (aggressive: double negative rotation w/ props)`)
+          if (options.debug && !silent)
+            console.log(`group ${obj.name} removed (aggressive: double negative rotation w/ props)`)
           obj.__removed = true
           // Remove rotation from first child
           first.rotation.set(0, 0, 0)
@@ -344,7 +345,7 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
       if (obj.isInstancedMesh) {
         const geo = `${node}.geometry`
         const mat = obj.material.name ? `materials${sanitizeName(obj.material.name)}` : `${node}.material`
-        result = `<instancedMesh args={[${geo}, ${mat}, ${obj.count}]} `
+        result = `<instancedMesh args={[${geo}, ${mat}, ${!obj.count ? `${node}.count` : obj.count}]} `
       } else {
         // Form the object in JSX syntax
         result = `<${type} `

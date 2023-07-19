@@ -1672,7 +1672,9 @@ GLTFParser.prototype.loadAccessor = function (accessorIndex) {
       }
     }
 
-    bufferAttribute.count = accessorDef.count
+    try {
+      bufferAttribute.count = accessorDef.count
+    } catch (e) {}
     return bufferAttribute
   })
 }
