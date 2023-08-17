@@ -104,6 +104,11 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
   type GLTFActions = Record<ActionName, THREE.AnimationAction>;\n`
     }
 
+    const types = [...new Set([...meshes, ...bones].map((o) => getType(o)))]
+    const contextType = `type ContextType = Record<string, React.ForwardRefExoticComponent<
+     ${types.map((type) => `JSX.IntrinsicElements['${type}']`).join(' | ')}
+    >>`;
+
     return `\ntype GLTFResult = GLTF & {
     nodes: {
       ${meshes.map(({ name, type }) => (isVarName(name) ? name : `['${name}']`) + ': THREE.' + type).join(',')}
@@ -112,7 +117,7 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
     materials: {
       ${materials.map(({ name, type }) => (isVarName(name) ? name : `['${name}']`) + ': THREE.' + type).join(',')}
     }
-  }\n${animationTypes}`
+  }\n${animationTypes}\n${contextType}`
   }
 
   function getType(obj) {
@@ -449,8 +454,8 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/`
         ${
           hasInstances
             ? `
-        const context = createContext()
-        export function Instances({ children, ...props }) {
+        const context = createContext(${options.types ? '{} as ContextType' : ''})
+        export function Instances({ children, ...props }${options.types ? ': JSX.IntrinsicElements["group"]' : ''}) {
           const { nodes } = useGLTF('${url}'${options.draco ? `, ${JSON.stringify(options.draco)}` : ''})${
                 options.types ? ' as GLTFResult' : ''
               }
@@ -461,7 +466,7 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/`
           }), [nodes])
           return (
             <Merged meshes={instances} {...props}>
-              {(instances) => <context.Provider value={instances} children={children} />}
+              {(instances${options.types ? ': ContextType' : ''}) => <context.Provider value={instances} children={children} />}
             </Merged>
           )
         }
