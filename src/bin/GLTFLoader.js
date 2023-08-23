@@ -2214,6 +2214,7 @@ GLTFParser.prototype.loadMesh = function (meshIndex) {
         primitive.mode === undefined
       ) {
         // .isSkinnedMesh isn't in glTF spec. See ._markDefs()
+        geometry.morphAttributes = {}
         mesh =
           meshDef.isSkinnedMesh === true
             ? new THREE.SkinnedMesh(geometry, material)
