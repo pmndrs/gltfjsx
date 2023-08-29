@@ -1,6 +1,6 @@
 {
   "name": "gltfjsx",
-  "version": "6.2.12",
+  "version": "6.2.13",
   "description": "GLTF to JSX converter",
   "scripts": {
     "build": "rollup -c",
