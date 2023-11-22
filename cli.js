@@ -60,7 +60,7 @@ const cli = meow(
       degraderesolution: { type: 'number', shortFlag: 'Q', default: 512 },
       simplify: { type: 'boolean', shortFlag: 'S', default: false },
       keepmeshes: { type: 'boolean', shortFlag: 'j', default: false },
-      keepmaterials: { type: 'boolean', shortFlag: 'M', default: false },      
+      keepmaterials: { type: 'boolean', shortFlag: 'M', default: false },
       format: { type: 'string', shortFlag: 'f', default: 'webp' },
       weld: { type: 'number', default: 0.0001 },
       ratio: { type: 'number', default: 0.75 },
@@ -93,3 +93,5 @@ Command: npx gltfjsx@${packageJson.version} ${process.argv.slice(2).join(' ')}`,
     console.error(e)
   }
 }
+
+process.exit()
