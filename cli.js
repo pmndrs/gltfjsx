@@ -28,6 +28,7 @@ const cli = meow(
     --root, -r          Sets directory from which .gltf file is served
     --instance, -i      Instance re-occuring geometry
     --instanceall, -I   Instance every geometry (for cheaper re-use)
+    --exportdefault, -E Use default export
     --transform, -T     Transform the asset for the web (draco, prune, resize)
       --resolution, -R  Resolution for texture resizing (default: 1024)
       --keepmeshes, -j  Do not join compatible meshes      
@@ -62,6 +63,7 @@ const cli = meow(
       keepmeshes: { type: 'boolean', shortFlag: 'j', default: false },
       keepmaterials: { type: 'boolean', shortFlag: 'M', default: false },      
       format: { type: 'string', shortFlag: 'f', default: 'webp' },
+      exportdefault: { type: 'boolean', alias: 'E' },
       weld: { type: 'number', default: 0.0001 },
       ratio: { type: 'number', default: 0.75 },
       error: { type: 'number', default: 0.001 },

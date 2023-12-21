@@ -474,7 +474,9 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/`
             : ''
         }
 
-        export function Model(props${options.types ? ": JSX.IntrinsicElements['group']" : ''}) {
+        export ${options.exportdefault ? 'default' : ''} function Model(props${
+    options.types ? ": JSX.IntrinsicElements['group']" : ''
+  }) {
           ${hasInstances ? 'const instances = useContext(context);' : ''} ${
     hasAnimations ? `const group = ${options.types ? 'useRef<THREE.Group>()' : 'useRef()'};` : ''
   } ${
