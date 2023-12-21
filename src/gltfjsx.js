@@ -43,16 +43,21 @@ export default function (file, output, options) {
   }
 
   return new Promise((resolve, reject) => {
-    const stream = fs.createWriteStream(output)
+    const stream = fs.createWriteStream(path.resolve(output))
     stream.once('open', async (fd) => {
       if (!fs.existsSync(file)) {
         reject(file + ' does not exist.')
       } else {
         let size = ''
         // Process GLTF
+        if (output && path.parse(output).ext === '.tsx') {
+          options.types = true
+        }
+        
         if (options.transform || options.instance || options.instanceall) {
           const { name } = path.parse(file)
-          const transformOut = path.join(name + '-transformed.glb')
+          const outputDir = path.parse(path.resolve(output ?? file)).dir;
+          const transformOut = path.join(outputDir, name + '-transformed.glb')
           await transform(file, transformOut, options)
           const { size: sizeOriginal, sizeKB: sizeKBOriginal } = getFileSize(file)
           const { size: sizeTransformed, sizeKB: sizeKBTransformed } = getFileSize(transformOut)
