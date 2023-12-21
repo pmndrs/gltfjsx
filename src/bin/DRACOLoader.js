@@ -1,8 +1,8 @@
-'use strict'
-import THREE from 'three'
+import * as THREE from 'three'
 import draco from 'draco3dgltf'
+
 const decoder = draco.createDecoderModule()
-const DRACOLoader = (THREE.DRACOLoader = function (t) {
+const DRACOLoader = function (t) {
   ;(this.timeLoaded = 0),
     (this.manager = t || THREE.DefaultLoadingManager),
     (this.materials = null),
@@ -10,12 +10,10 @@ const DRACOLoader = (THREE.DRACOLoader = function (t) {
     (this.attributeOptions = {}),
     (this.drawMode = THREE.TrianglesDrawMode),
     (this.nativeAttributeMap = { position: 'POSITION', normal: 'NORMAL', color: 'COLOR', uv: 'TEX_COORD' })
-})
+}
 
-export default DRACOLoader
-
-THREE.DRACOLoader.prototype = {
-  constructor: THREE.DRACOLoader,
+DRACOLoader.prototype = {
+  constructor: DRACOLoader,
   load: function (t, e, r, o) {
     var i = this,
       n = new THREE.FileLoader(i.manager)
@@ -206,3 +204,5 @@ THREE.DRACOLoader.prototype = {
     return void 0 === this.attributeOptions[t] && (this.attributeOptions[t] = {}), this.attributeOptions[t]
   },
 }
+
+export { DRACOLoader }

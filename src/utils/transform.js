@@ -1,7 +1,24 @@
 import { NodeIO } from '@gltf-transform/core'
-import { simplify, weld, dedup, resample, prune, textureCompress, draco } from '@gltf-transform/functions'
+import {
+  simplify,
+  instance,
+  flatten,
+  dequantize,
+  reorder,
+  join,
+  weld,
+  sparse,
+  dedup,
+  resample,
+  prune,
+  textureCompress,
+  draco,
+  palette,
+  unpartition,
+} from '@gltf-transform/functions'
 import { ALL_EXTENSIONS } from '@gltf-transform/extensions'
 import { MeshoptDecoder, MeshoptEncoder, MeshoptSimplifier } from 'meshoptimizer'
+import { ready as resampleReady, resample as resampleWASM } from 'keyframe-resample'
 import draco3d from 'draco3dgltf'
 import sharp from 'sharp'
 
@@ -17,31 +34,78 @@ async function transform(file, output, config = {}) {
 
   const document = await io.read(file)
   const resolution = config.resolution ?? 1024
+  const normalResolution = Math.max(resolution, 2048)
+  const degradeResolution = config.degraderesolution ?? 512
+  const functions = [unpartition()]
 
-  const functions = [
-    // Losslessly resample animation frames.
-    resample(),
-    // Remove duplicate vertex or texture data, if any.
+  if (!config.keepmaterials) functions.push(palette({ min: 5 }))
+
+  functions.push(
+    reorder({ encoder: MeshoptEncoder }),
     dedup(),
-    // Remove unused nodes, textures, or other data.
-    prune(),
-    // Resize and convert textures (using webp and sharp)
-    textureCompress({ targetFormat: 'webp', encoder: sharp, resize: [resolution, resolution] }),
-    // Add Draco compression.
-    draco(),
-  ]
+    instance({ min: 5 }),
+    flatten(),
+    dequantize() // ...
+  )
+
+  if (!config.keepmeshes) {
+    functions.push(
+      join() // ...
+    )
+  }
 
   if (config.simplify) {
     functions.push(
       // Weld vertices
-      weld({ tolerance: config.weld ?? 0.0001 }),
+      weld({ tolerance: config.weld ?? 0.0001 / 2 }),
       // Simplify meshes
-      simplify({ simplifier: MeshoptSimplifier, ratio: config.ratio ?? 0.75, error: config.error ?? 0.001 })
+      simplify({ simplifier: MeshoptSimplifier, ratio: config.ratio ?? 0, error: config.error ?? 0.0001 })
     )
   }
 
-  await document.transform(...functions)
+  functions.push(
+    resample({ ready: resampleReady, resample: resampleWASM }),
+    prune({ keepAttributes: false, keepLeaves: false }),
+    sparse()
+  )
 
+  if (config.degrade) {
+    // Custom per-file resolution
+    functions.push(
+      textureCompress({
+        encoder: sharp,
+        pattern: new RegExp(`^(?=${config.degrade}).*$`),
+        targetFormat: config.format,
+        resize: [degradeResolution, degradeResolution],
+      }),
+      textureCompress({
+        encoder: sharp,
+        pattern: new RegExp(`^(?!${config.degrade}).*$`),
+        targetFormat: config.format,
+        resize: [resolution, resolution],
+      })
+    )
+  } else {
+    // Keep normal maps near lossless
+    functions.push(
+      textureCompress({
+        slots: /^(?!normalTexture).*$/, // exclude normal maps
+        encoder: sharp,
+        targetFormat: config.format,
+        resize: [resolution, resolution],
+      }),
+      textureCompress({
+        slots: /^(?=normalTexture).*$/, // include normal maps
+        encoder: sharp,
+        targetFormat: 'jpeg',
+        resize: [normalResolution, normalResolution],
+      })
+    )
+  }
+
+  functions.push(draco())
+
+  await document.transform(...functions)
   await io.write(output, document)
 }
 

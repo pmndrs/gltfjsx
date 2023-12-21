@@ -23,41 +23,51 @@ const cli = meow(
     --meta, -m          Include metadata (as userData)
     --shadows, s        Let meshes cast and receive shadows
     --printwidth, w     Prettier printWidth (default: 120)
-    --precision, -p     Number of fractional digits (default: 2)
+    --precision, -p     Number of fractional digits (default: 3)
     --draco, -d         Draco binary path
     --root, -r          Sets directory from which .gltf file is served
     --instance, -i      Instance re-occuring geometry
     --instanceall, -I   Instance every geometry (for cheaper re-use)
+    --exportdefault, -E Use default export
     --transform, -T     Transform the asset for the web (draco, prune, resize)
-      --resolution, -R  Transform resolution for texture resizing (default: 1024)
-      --simplify, -S    Transform simplification (default: false) (experimental!)
-        --weld          Weld tolerance (default: 0.0001)
-        --ratio         Simplifier ratio (default: 0.75)
-        --error         Simplifier error threshold (default: 0.001)
+      --resolution, -R  Resolution for texture resizing (default: 1024)
+      --keepmeshes, -j  Do not join compatible meshes      
+      --keepmaterials, -M Do not palette join materials
+      --format, -f      Texture format (default: "webp")
+      --simplify, -S    Mesh simplification (default: false)
+        --weld          Weld tolerance (default: 0.00005)
+        --ratio         Simplifier ratio (default: 0)
+        --error         Simplifier error threshold (default: 0.0001)
     --debug, -D         Debug output
 `,
   {
     importMeta: import.meta,
     flags: {
-      output: { type: 'string', alias: 'o' },
-      types: { type: 'boolean', alias: 't' },
-      keepnames: { type: 'boolean', alias: 'k' },
-      keepgroups: { type: 'boolean', alias: 'K' },
-      shadows: { type: 'boolean', alias: 's' },
-      printwidth: { type: 'number', alias: 'p', default: 1000 },
-      meta: { type: 'boolean', alias: 'm' },
-      precision: { type: 'number', alias: 'p', default: 2 },
-      draco: { type: 'string', alias: 'd' },
-      root: { type: 'string', alias: 'r' },
-      instance: { type: 'boolean', alias: 'i' },
-      instanceall: { type: 'boolean', alias: 'I' },
-      transform: { type: 'boolean', alias: 'T' },
-      resolution: { type: 'number', alias: 'R', default: 1024 },
-      simplify: { type: 'boolean', alias: 'S', default: false },
+      output: { type: 'string', shortFlag: 'o' },
+      types: { type: 'boolean', shortFlag: 't' },
+      keepnames: { type: 'boolean', shortFlag: 'k' },
+      keepgroups: { type: 'boolean', shortFlag: 'K' },
+      shadows: { type: 'boolean', shortFlag: 's' },
+      printwidth: { type: 'number', shortFlag: 'p', default: 1000 },
+      meta: { type: 'boolean', shortFlag: 'm' },
+      precision: { type: 'number', shortFlag: 'p', default: 3 },
+      draco: { type: 'string', shortFlag: 'd' },
+      root: { type: 'string', shortFlag: 'r' },
+      instance: { type: 'boolean', shortFlag: 'i' },
+      instanceall: { type: 'boolean', shortFlag: 'I' },
+      transform: { type: 'boolean', shortFlag: 'T' },
+      resolution: { type: 'number', shortFlag: 'R', default: 1024 },
+      degrade: { type: 'string', shortFlag: 'q', default: '' },
+      degraderesolution: { type: 'number', shortFlag: 'Q', default: 512 },
+      simplify: { type: 'boolean', shortFlag: 'S', default: false },
+      keepmeshes: { type: 'boolean', shortFlag: 'j', default: false },
+      keepmaterials: { type: 'boolean', shortFlag: 'M', default: false },      
+      format: { type: 'string', shortFlag: 'f', default: 'webp' },
+      exportdefault: { type: 'boolean', alias: 'E' },
       weld: { type: 'number', default: 0.0001 },
       ratio: { type: 'number', default: 0.75 },
       error: { type: 'number', default: 0.001 },
-      debug: { type: 'boolean', alias: 'D' },
+      debug: { type: 'boolean', shortFlag: 'D' },
     },
   }
 )
@@ -73,7 +83,7 @@ if (cli.input.length === 0) {
 Command: npx gltfjsx@${packageJson.version} ${process.argv.slice(2).join(' ')}`,
   }
   const file = cli.input[0]
-  let nameExt = file.match(/[-_\w]+[.][\w]+$/i)[0]
+  let nameExt = file.match(/[-_\w\d\s]+[.][\w]+$/i)[0]
   let name = nameExt.split('.').slice(0, -1).join('.')
   const output = config.output ?? name.charAt(0).toUpperCase() + name.slice(1) + (config.types ? '.tsx' : '.jsx')
   const showLog = (log) => {

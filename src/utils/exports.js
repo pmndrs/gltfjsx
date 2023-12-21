@@ -1,5 +1,4 @@
-import parse from './parser'
-import transform from './transform'
-import GLTFStructureLoader from './glftLoader'
+import parse from './parser.js'
+import { GLTFLoader as GLTFStructureLoader } from '../bin/GLTFLoader.js'
 
-export { transform, parse, GLTFStructureLoader }
+export { parse, GLTFStructureLoader }
