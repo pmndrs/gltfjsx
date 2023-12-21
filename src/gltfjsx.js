@@ -1,15 +1,16 @@
 import 'jsdom-global'
 import fs from 'fs'
 import path from 'path'
-import transform from './utils/transform.js'
-
-import { GLTFLoader } from './bin/GLTFLoader.js'
-import { DRACOLoader } from './bin/DRACOLoader.js'
-DRACOLoader.getDecoderModule = () => {}
+import { GLTFLoader } from 'three-stdlib'
 import parse from './utils/parser.js'
+import transform from './utils/transform.js'
+import { DRACOLoader } from 'node-three-gltf'
 
-const gltfLoader = new GLTFLoader()
-gltfLoader.setDRACOLoader(new DRACOLoader())
+let gltfLoader
+// Use the same CDN as useGLTF for draco
+const dracoloader = new DRACOLoader()
+
+gltfLoader = new GLTFLoader().setCrossOrigin('anonymous').setDRACOLoader(dracoloader)
 
 function toArrayBuffer(buf) {
   var ab = new ArrayBuffer(buf.length)
@@ -42,6 +43,14 @@ export default function (file, output, options) {
     return relativePath
   }
 
+  // Mock ProgressEvent in a global context
+  global.ProgressEvent = class ProgressEvent {
+    constructor(type, eventInitDict) {
+      this.type = type
+      this.eventInitDict = eventInitDict
+    }
+  }
+
   return new Promise((resolve, reject) => {
     const stream = fs.createWriteStream(output)
     stream.once('open', async (fd) => {
@@ -61,7 +70,7 @@ export default function (file, output, options) {
           )}%)`
           file = transformOut
         }
-        resolve()
+        // resolve()
 
         const filePath = getRelativeFilePath(file)
         const data = fs.readFileSync(file)
@@ -76,6 +85,7 @@ export default function (file, output, options) {
           },
           (reason) => {
             console.log(reason)
+            reject(reason)
           }
         )
       }
