@@ -1,6 +1,6 @@
 {
   "name": "gltfjsx",
-  "version": "6.2.8",
+  "version": "6.2.15",
   "description": "GLTF to JSX converter",
   "scripts": {
     "build": "rollup -c",
@@ -38,23 +38,24 @@
     "node": ">=16"
   },
   "dependencies": {
-    "@gltf-transform/core": "3.4.8",
+    "@gltf-transform/core": "3.7.3",
     "@gltf-transform/extensions": "3.4.8",
-    "@gltf-transform/functions": "3.4.8",
+    "@gltf-transform/functions": "3.7.3",
     "@node-loader/babel": "^2.0.1",
     "draco3dgltf": "^1.5.6",
     "is-var-name": "^2.0.0",
     "keyframe-resample": "^0.0.15",
-    "meow": "^12.0.1",
+    "meow": "^12.1.1",
     "meshoptimizer": "^0.19.0",
     "prettier": "2.8.7",
+    "read-pkg-up": "^10.0.0",
     "three": "0.152.2",
     "three-stdlib": "^2.22.4"
   },
   "optionalDependencies": {
-    "jsdom": "^22.0.0",
+    "jsdom": "^22.1.0",
     "jsdom-global": "^3.0.2",
-    "sharp": "^0.32.3"
+    "sharp": "^0.32.6"
   },
   "devDependencies": {
     "@babel/core": "7.16.0",
@@ -68,7 +69,7 @@
     "@babel/preset-typescript": "^7.16.0",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-node-resolve": "^13.0.6",
-    "chalk": "^5.2.0",
+    "chalk": "^5.3.0",
     "fast-glob": "^3.2.12",
     "fs-extra": "^11.1.1",
     "lint-staged": "^13.2.2",

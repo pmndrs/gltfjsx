@@ -104,6 +104,11 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
   type GLTFActions = Record<ActionName, THREE.AnimationAction>;\n`
     }
 
+    const types = [...new Set([...meshes, ...bones].map((o) => getType(o)))]
+    const contextType = `type ContextType = Record<string, React.ForwardRefExoticComponent<
+     ${types.map((type) => `JSX.IntrinsicElements['${type}']`).join(' | ')}
+    >>`;
+
     return `\ntype GLTFResult = GLTF & {
     nodes: {
       ${meshes.map(({ name, type }) => (isVarName(name) ? name : `['${name}']`) + ': THREE.' + type).join(',')}
@@ -112,7 +117,7 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
     materials: {
       ${materials.map(({ name, type }) => (isVarName(name) ? name : `['${name}']`) + ': THREE.' + type).join(',')}
     }
-  }\n${animationTypes}`
+  }\n${animationTypes}\n${contextType}`
   }
 
   function getType(obj) {
@@ -230,7 +235,7 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
        *    <mesh geometry={nodes.foo} material={materials.bar} />
        */
       if (result === oldResult || obj.children.length === 0) {
-        if (!silent) console.log(`group ${obj.name} removed (empty)`)
+        if (options.debug && !silent) console.log(`group ${obj.name} removed (empty)`)
         obj.__removed = true
         return children
       }
@@ -252,7 +257,7 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
        */
       if (obj.children.length === 1 && getType(first) === type && equalOrNegated(obj.rotation, first.rotation)) {
         if (keys1.length === 1 && keys2.length === 1 && keys1[0] === 'rotation' && keys2[0] === 'rotation') {
-          if (!silent) console.log(`group ${obj.name} removed (aggressive: double negative rotation)`)
+          if (options.debug && !silent) console.log(`group ${obj.name} removed (aggressive: double negative rotation)`)
           obj.__removed = first.__removed = true
           children = ''
           if (first.children) first.children.forEach((child) => (children += print(child, true)))
@@ -270,7 +275,8 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
        */
       if (obj.children.length === 1 && getType(first) === type && equalOrNegated(obj.rotation, first.rotation)) {
         if (keys1.length === 1 && keys2.length > 1 && keys1[0] === 'rotation' && keys2.includes('rotation')) {
-          if (!silent) console.log(`group ${obj.name} removed (aggressive: double negative rotation w/ props)`)
+          if (options.debug && !silent)
+            console.log(`group ${obj.name} removed (aggressive: double negative rotation w/ props)`)
           obj.__removed = true
           // Remove rotation from first child
           first.rotation.set(0, 0, 0)
@@ -288,7 +294,7 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
       const isChildTransformed = keys2.includes('position') || keys2.includes('rotation') || keys2.includes('scale')
       const hasOtherProps = keys1.some((key) => !['position', 'scale', 'rotation'].includes(key))
       if (obj.children.length === 1 && !first.__removed && !isChildTransformed && !hasOtherProps) {
-        if (!silent) console.log(`group ${obj.name} removed (aggressive: ${keys1.join(' ')} overlap)`)
+        if (options.debug && !silent) console.log(`group ${obj.name} removed (aggressive: ${keys1.join(' ')} overlap)`)
         // Move props over from the to-be-deleted object to the child
         // This ensures that the child will have the correct transform when pruning is being repeated
         keys1.forEach((key) => obj.children[0][key].copy(obj[key]))
@@ -311,7 +317,7 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
         if (type !== 'group' && type !== 'object3D') empty.push(o)
       })
       if (!empty.length) {
-        if (!silent) console.log(`group ${obj.name} removed (aggressive: lack of content)`)
+        if (options.debug && !silent) console.log(`group ${obj.name} removed (aggressive: lack of content)`)
         empty.forEach((child) => (child.__removed = true))
         return ''
       }
@@ -341,10 +347,10 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
       result = `<instances.${duplicates.geometries[obj.geometry.uuid + obj.material.name].name} `
       type = `instances.${duplicates.geometries[obj.geometry.uuid + obj.material.name].name}`
     } else {
-      if (obj.isInstancedMesh) {        
+      if (obj.isInstancedMesh) {
         const geo = `${node}.geometry`
         const mat = obj.material.name ? `materials${sanitizeName(obj.material.name)}` : `${node}.material`
-        result = `<instancedMesh args={[${geo}, ${mat}, ${obj.count}]} `
+        result = `<instancedMesh args={[${geo}, ${mat}, ${!obj.count ? `${node}.count` : obj.count}]} `
       } else {
         // Form the object in JSX syntax
         result = `<${type} `
@@ -430,10 +436,12 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
   } catch (e) {
     console.log('Error while parsing glTF', e)
   }
-  const result = `/*
-${options.header ? options.header : 'Auto-generated by: https://github.com/pmndrs/gltfjsx'}
-${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
-        ${options.types ? `\nimport * as THREE from 'three'` : ''}
+  const header = `/*
+${options.header ? options.header : 'Auto-generated by: https://github.com/pmndrs/gltfjsx'} ${
+    options.size ? `\nFiles: ${options.size}` : ''
+  }
+${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/`
+  const result = `${options.types ? `\nimport * as THREE from 'three'` : ''}
         import React, { useRef ${hasInstances ? ', useMemo, useContext, createContext' : ''} } from 'react'
         import { useGLTF, ${hasInstances ? 'Merged, ' : ''} ${
     scene.includes('PerspectiveCamera') ? 'PerspectiveCamera,' : ''
@@ -446,8 +454,8 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
         ${
           hasInstances
             ? `
-        const context = createContext()
-        export function Instances({ children, ...props }) {
+        const context = createContext(${options.types ? '{} as ContextType' : ''})
+        export function Instances({ children, ...props }${options.types ? ': JSX.IntrinsicElements["group"]' : ''}) {
           const { nodes } = useGLTF('${url}'${options.draco ? `, ${JSON.stringify(options.draco)}` : ''})${
                 options.types ? ' as GLTFResult' : ''
               }
@@ -458,7 +466,7 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
           }), [nodes])
           return (
             <Merged meshes={instances} {...props}>
-              {(instances) => <context.Provider value={instances} children={children} />}
+              {(instances${options.types ? ': ContextType' : ''}) => <context.Provider value={instances} children={children} />}
             </Merged>
           )
         }
@@ -484,7 +492,10 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/
         }
 
 useGLTF.preload('${url}')`
-  return prettier.format(result, {
+
+  console.log(header)
+  const output = header + '\n' + result
+  return prettier.format(output, {
     semi: false,
     printWidth: options.printwidth || 1000,
     singleQuote: true,
