@@ -74,8 +74,8 @@ export default function (file, output, options) {
         gltfLoader.parse(
           arrayBuffer,
           '',
-          (gltf) => {
-            stream.write(parse(gltf, { fileName: filePath, size, ...options }))
+          async (gltf) => {        
+            stream.write(await parse(gltf, { fileName: filePath, size, ...options }))
             stream.end()
             resolve()
           },
