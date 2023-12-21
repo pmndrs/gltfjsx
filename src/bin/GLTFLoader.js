@@ -1672,9 +1672,11 @@ GLTFParser.prototype.loadAccessor = function (accessorIndex) {
       }
     }
 
-    try {
+    if (bufferAttribute.isInterleavedBufferAttribute) {
+      bufferAttribute.data.count = accessorDef.count
+    } else {
       bufferAttribute.count = accessorDef.count
-    } catch (e) {}
+    }
     return bufferAttribute
   })
 }
