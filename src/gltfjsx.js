@@ -3,23 +3,34 @@ import fs from 'fs'
 import path from 'path'
 import transform from './utils/transform.js'
 
-import prettier from 'prettier'
-import THREE from 'three'
-global.THREE = THREE
-
-import './bin/GLTFLoader.js'
-import DracoLoader from './bin/DRACOLoader.js'
-THREE.DRACOLoader.getDecoderModule = () => {}
+import { GLTFLoader } from './bin/GLTFLoader.js'
+import { DRACOLoader } from './bin/DRACOLoader.js'
+DRACOLoader.getDecoderModule = () => {}
 import parse from './utils/parser.js'
 
-const gltfLoader = new THREE.GLTFLoader()
-gltfLoader.setDRACOLoader(new DracoLoader())
+const gltfLoader = new GLTFLoader()
+gltfLoader.setDRACOLoader(new DRACOLoader())
 
 function toArrayBuffer(buf) {
   var ab = new ArrayBuffer(buf.length)
   var view = new Uint8Array(ab)
   for (var i = 0; i < buf.length; ++i) view[i] = buf[i]
   return ab
+}
+
+function roundOff(value) {
+  return Math.round(value * 100) / 100
+}
+
+function getFileSize(file) {
+  const stats = fs.statSync(file)
+  let fileSize = stats.size
+  let fileSizeKB = roundOff(fileSize * 0.001)
+  let fileSizeMB = roundOff(fileSizeKB * 0.001)
+  return {
+    size: fileSizeKB > 1000 ? `${fileSizeMB}MB` : `${fileSizeKB}KB`,
+    sizeKB: fileSizeKB,
+  }
 }
 
 export default function (file, output, options) {
@@ -32,16 +43,27 @@ export default function (file, output, options) {
   }
 
   return new Promise((resolve, reject) => {
-    const stream = fs.createWriteStream(output)
+    const stream = fs.createWriteStream(path.resolve(output))
     stream.once('open', async (fd) => {
       if (!fs.existsSync(file)) {
         reject(file + ' does not exist.')
       } else {
+        let size = ''
         // Process GLTF
+        if (output && path.parse(output).ext === '.tsx') {
+          options.types = true
+        }
+        
         if (options.transform || options.instance || options.instanceall) {
           const { name } = path.parse(file)
-          const transformOut = path.join(name + '-transformed.glb')
+          const outputDir = path.parse(path.resolve(output ?? file)).dir;
+          const transformOut = path.join(outputDir, name + '-transformed.glb')
           await transform(file, transformOut, options)
+          const { size: sizeOriginal, sizeKB: sizeKBOriginal } = getFileSize(file)
+          const { size: sizeTransformed, sizeKB: sizeKBTransformed } = getFileSize(transformOut)
+          size = `${file} [${sizeOriginal}] > ${transformOut} [${sizeTransformed}] (${Math.round(
+            100 - (sizeKBTransformed / sizeKBOriginal) * 100
+          )}%)`
           file = transformOut
         }
         resolve()
@@ -53,20 +75,13 @@ export default function (file, output, options) {
           arrayBuffer,
           '',
           (gltf) => {
-            stream.write(
-              prettier.format(parse(filePath, gltf, options), {
-                semi: false,
-                printWidth: options.printwidth || 1000,
-                singleQuote: true,
-                jsxBracketSameLine: true,
-                parser: options.types ? 'babel-ts' : 'babel',
-                //plugins: [parserBabel],
-              })
-            )
+            stream.write(parse(gltf, { fileName: filePath, size, ...options }))
             stream.end()
             resolve()
           },
-          reject
+          (reason) => {
+            console.log(reason)
+          }
         )
       }
     })
