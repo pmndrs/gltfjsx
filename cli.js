@@ -63,7 +63,7 @@ const cli = meow(
       keepmeshes: { type: 'boolean', shortFlag: 'j', default: false },
       keepmaterials: { type: 'boolean', shortFlag: 'M', default: false },      
       format: { type: 'string', shortFlag: 'f', default: 'webp' },
-      exportdefault: { type: 'boolean', alias: 'E' },
+      exportdefault: { type: 'boolean', shortFlag: 'E' },
       weld: { type: 'number', default: 0.0001 },
       ratio: { type: 'number', default: 0.75 },
       error: { type: 'number', default: 0.001 },
