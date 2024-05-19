@@ -119,7 +119,7 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
     materials: {
       ${materials.map(({ name, type }) => (isVarName(name) ? name : `['${name}']`) + ': THREE.' + type).join(',')}
     }
-    animations: GLTFAction[]
+    animations: ${animations.length ? 'GLTFAction' : ''}[]
   }\n${animationTypes}\n${contextType}`
   }
 
