@@ -29,9 +29,7 @@
     "url": "https://github.com/pmndrs/gltfjsx/issues"
   },
   "homepage": "https://github.com/pmndrs/gltfjsx#readme",
-  "bin": {
-    "gltfjsx": "./cli.js"
-  },
+  "bin": "./cli.js",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "engines": {
@@ -93,5 +91,6 @@
   "collective": {
     "type": "opencollective",
     "url": "https://opencollective.com/react-three-fiber"
-  }
+  },
+  "packageManager": "yarn@4.2.2"
 }
