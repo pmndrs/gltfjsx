@@ -1178,35 +1178,6 @@ function addMorphTargets(geometry, targets, parser) {
   })
 }
 
-/**
- * @param {THREE.Mesh} mesh
- * @param {GLTF.Mesh} meshDef
- */
-function updateMorphTargets(mesh, meshDef) {
-  mesh.updateMorphTargets()
-
-  if (meshDef.weights !== undefined) {
-    for (var i = 0, il = meshDef.weights.length; i < il; i++) {
-      mesh.morphTargetInfluences[i] = meshDef.weights[i]
-    }
-  }
-
-  // .extras has user-defined data, so check that .extras.targetNames is an array.
-  if (meshDef.extras && Array.isArray(meshDef.extras.targetNames)) {
-    var targetNames = meshDef.extras.targetNames
-
-    if (mesh.morphTargetInfluences.length === targetNames.length) {
-      mesh.morphTargetDictionary = {}
-
-      for (var i = 0, il = targetNames.length; i < il; i++) {
-        mesh.morphTargetDictionary[targetNames[i]] = i
-      }
-    } else {
-      console.warn('THREE.GLTFLoader: Invalid extras.targetNames length. Ignoring names.')
-    }
-  }
-}
-
 function createPrimitiveKey(primitiveDef) {
   var dracoExtension = primitiveDef.extensions && primitiveDef.extensions[EXTENSIONS.KHR_DRACO_MESH_COMPRESSION]
   var geometryKey
@@ -2204,9 +2175,7 @@ GLTFParser.prototype.loadMesh = function (meshIndex) {
       var primitive = primitives[i]
 
       // 1. create Mesh
-
       var mesh
-
       var material = materials[i]
 
       if (
@@ -2216,6 +2185,9 @@ GLTFParser.prototype.loadMesh = function (meshIndex) {
         primitive.mode === undefined
       ) {
         // .isSkinnedMesh isn't in glTF spec. See ._markDefs()
+        if (geometry.morphAttributes && Object.keys(geometry.morphAttributes).length > 0) {
+          meshDef.hasMorphAttributes = true
+        }
         geometry.morphAttributes = {}
         mesh =
           meshDef.isSkinnedMesh === true
@@ -2239,8 +2211,11 @@ GLTFParser.prototype.loadMesh = function (meshIndex) {
         throw new Error('THREE.GLTFLoader: Primitive mode unsupported: ' + primitive.mode)
       }
 
-      if (Object.keys(mesh.geometry.morphAttributes).length > 0) {
-        updateMorphTargets(mesh, meshDef)
+      if (meshDef.hasMorphAttributes)  {
+        // Just flag the mesh, so that parser.js can link morphTarget dictionaries and influences
+        // This prevented a crash relating to morphTarget definitions
+        mesh.morphTargetDictionary = true
+        mesh.morphTargetInfluences = true
       }
 
       mesh.name = parser.createUniqueName(meshDef.name || 'mesh_' + meshIndex)
