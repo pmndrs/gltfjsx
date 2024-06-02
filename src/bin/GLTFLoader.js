@@ -2397,6 +2397,7 @@ GLTFParser.prototype.loadAnimation = function (animationIndex) {
         targetNames.push(targetName)
       }
 
+      if (outputAccessor === null) continue
       var outputArray = outputAccessor.array
 
       if (outputAccessor.normalized) {
