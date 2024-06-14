@@ -3,7 +3,7 @@ import * as prettier from 'prettier'
 import babelParser from 'prettier/parser-babel.js'
 import isVarName from './isVarName.js'
 
-function parse(gltf, { fileName = 'model', ...options } = {}) {
+function parseRaw(gltf, { fileName = 'model', ...options } = {}) {
   if (gltf.isObject3D) {
     // Wrap scene in a GLTF Structure
     gltf = { scene: gltf, animations: [], parser: { json: {} } }
@@ -498,6 +498,11 @@ useGLTF.preload('${url}')`
 
   console.log(header)
   const output = header + '\n' + result
+  return output;
+}
+
+export default function parse(gltf, { fileName = 'model', ...options } = {}) {
+  const output = parseRaw(gltf, { fileName, ...options })
   return prettier.format(output, {
     semi: false,
     printWidth: options.printwidth || 1000,
@@ -508,4 +513,4 @@ useGLTF.preload('${url}')`
   })
 }
 
-export default parse
+export {parseRaw}
