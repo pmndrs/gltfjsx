@@ -109,7 +109,7 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
     const types = [...new Set([...meshes, ...bones].map((o) => getType(o)))]
     const contextType = `type ContextType = Record<string, React.ForwardRefExoticComponent<
      ${types.map((type) => `JSX.IntrinsicElements['${type}']`).join(' | ')}
-    >>`;
+    >>`
 
     return `\ntype GLTFResult = GLTF & {
     nodes: {
@@ -339,7 +339,7 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
     }
 
     // Bail out on lights and bones
-    if (type === 'bone') {
+    if (!options.bones && type === 'bone') {
       return `<primitive object={${node}} />`
     }
 
@@ -356,7 +356,8 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
         result = `<instancedMesh args={[${geo}, ${mat}, ${!obj.count ? `${node}.count` : obj.count}]} `
       } else {
         // Form the object in JSX syntax
-        result = `<${type} `
+        if (type === 'bone') result = `<primitive object={${node}} `
+        else result = `<${type} `
       }
     }
 
@@ -374,7 +375,10 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
     result += `${children.length ? '>' : '/>'}\n`
 
     // Add children and return
-    if (children.length) result += children + `</${type}>`
+    if (children.length) {
+      if (type === 'bone') result += children + `</primitive>`
+      else result += children + `</${type}>`
+    }
     return result
   }
 
@@ -445,8 +449,8 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/`
   const result = `${options.types ? `\nimport * as THREE from 'three'` : ''}
         import React, { useRef ${hasInstances ? ', useMemo, useContext, createContext' : ''} } from 'react'
         import { useGLTF, ${hasInstances ? 'Merged, ' : ''} ${
-    scene.includes('PerspectiveCamera') ? 'PerspectiveCamera,' : ''
-  }
+          scene.includes('PerspectiveCamera') ? 'PerspectiveCamera,' : ''
+        }
         ${scene.includes('OrthographicCamera') ? 'OrthographicCamera,' : ''}
         ${hasAnimations ? 'useAnimations' : ''} } from '@react-three/drei'
         ${options.types ? 'import { GLTF } from "three-stdlib"' : ''}
@@ -458,8 +462,8 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/`
         const context = createContext(${options.types ? '{} as ContextType' : ''})
         export function Instances({ children, ...props }${options.types ? ': JSX.IntrinsicElements["group"]' : ''}) {
           const { nodes } = useGLTF('${url}'${options.draco ? `, ${JSON.stringify(options.draco)}` : ''})${
-                options.types ? ' as GLTFResult' : ''
-              }
+            options.types ? ' as GLTFResult' : ''
+          }
           const instances = useMemo(() => ({
             ${Object.values(duplicates.geometries)
               .map((v) => `${v.name}: ${v.node}`)
@@ -467,7 +471,9 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/`
           }), [nodes])
           return (
             <Merged meshes={instances} {...props}>
-              {(instances${options.types ? ': ContextType' : ''}) => <context.Provider value={instances} children={children} />}
+              {(instances${
+                options.types ? ': ContextType' : ''
+              }) => <context.Provider value={instances} children={children} />}
             </Merged>
           )
         }
@@ -476,17 +482,17 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/`
         }
 
         export ${options.exportdefault ? 'default' : ''} function Model(props${
-    options.types ? ": JSX.IntrinsicElements['group']" : ''
-  }) {
+          options.types ? ": JSX.IntrinsicElements['group']" : ''
+        }) {
           ${hasInstances ? 'const instances = useContext(context);' : ''} ${
-    hasAnimations ? `const group = ${options.types ? 'useRef<THREE.Group>()' : 'useRef()'};` : ''
-  } ${
-    !options.instanceall
-      ? `const { nodes, materials${hasAnimations ? ', animations' : ''} } = useGLTF('${url}'${
-          options.draco ? `, ${JSON.stringify(options.draco)}` : ''
-        })${options.types ? ' as GLTFResult' : ''}`
-      : ''
-  } ${printAnimations(animations)}
+            hasAnimations ? `const group = ${options.types ? 'useRef<THREE.Group>()' : 'useRef()'};` : ''
+          } ${
+            !options.instanceall
+              ? `const { nodes, materials${hasAnimations ? ', animations' : ''} } = useGLTF('${url}'${
+                  options.draco ? `, ${JSON.stringify(options.draco)}` : ''
+                })${options.types ? ' as GLTFResult' : ''}`
+              : ''
+          } ${printAnimations(animations)}
           return (
             <group ${hasAnimations ? `ref={group}` : ''} {...props} dispose={null}>
         ${scene}

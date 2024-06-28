@@ -20,6 +20,7 @@ const cli = meow(
     --types, -t         Add Typescript definitions
     --keepnames, -k     Keep original names
     --keepgroups, -K    Keep (empty) groups, disable pruning
+    --bones, -b         Lay out bones declaratively (default: false)
     --meta, -m          Include metadata (as userData)
     --shadows, s        Let meshes cast and receive shadows
     --printwidth, w     Prettier printWidth (default: 120)
@@ -47,6 +48,7 @@ const cli = meow(
       types: { type: 'boolean', shortFlag: 't' },
       keepnames: { type: 'boolean', shortFlag: 'k' },
       keepgroups: { type: 'boolean', shortFlag: 'K' },
+      bones: { type: 'boolean', shortFlag: 'b', default: false },
       shadows: { type: 'boolean', shortFlag: 's' },
       printwidth: { type: 'number', shortFlag: 'p', default: 1000 },
       meta: { type: 'boolean', shortFlag: 'm' },
@@ -61,7 +63,7 @@ const cli = meow(
       degraderesolution: { type: 'number', shortFlag: 'Q', default: 512 },
       simplify: { type: 'boolean', shortFlag: 'S', default: false },
       keepmeshes: { type: 'boolean', shortFlag: 'j', default: false },
-      keepmaterials: { type: 'boolean', shortFlag: 'M', default: false },      
+      keepmaterials: { type: 'boolean', shortFlag: 'M', default: false },
       format: { type: 'string', shortFlag: 'f', default: 'webp' },
       exportdefault: { type: 'boolean', shortFlag: 'E' },
       weld: { type: 'number', default: 0.0001 },
