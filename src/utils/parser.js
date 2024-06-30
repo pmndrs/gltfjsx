@@ -18,6 +18,7 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
   gltf.scene.traverse((child) => objects.push(child))
   const json = gltf.parser.json;
   const needsDraco = json.extensionsRequired && json.extensionsRequired.includes('KHR_draco_mesh_compression');
+  const needsMeshopt = json.extensionsUsed && json.extensionsUsed.includes('KHR_meshopt_compression');
   const needsKTX2Loader = json.extensionsRequired && json.extensionsRequired.includes('KHR_texture_basisu');
 
   // Browse for duplicates
@@ -497,7 +498,7 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/`
               ? `const { nodes, materials${hasAnimations ? ', animations' : ''} } = useGLTF('${url}'${
                   needsDraco ? ", true" : options.draco ? `, ${JSON.stringify(options.draco)}` : ', false'
                 }
-                  , false, ${needsKTX2Loader ? `(loader) => {
+                  , ${needsMeshopt ? 'true' : 'false'}, ${needsKTX2Loader ? `(loader) => {
                       const { gl } = useThree();
                       const THREE_PATH = \`https://unpkg.com/three@0.$\{REVISION\}.x\`;
                       const ktx2Loader = new KTX2Loader().setTranscoderPath(\`$\{THREE_PATH\}/examples/jsm/libs/basis/\`);
