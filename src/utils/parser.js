@@ -16,6 +16,9 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
   // Collect all objects
   const objects = []
   gltf.scene.traverse((child) => objects.push(child))
+  const json = gltf.parser.json;
+  const needsDraco = json.extensionsRequired && json.extensionsRequired.includes('KHR_draco_mesh_compression');
+  const needsKTX2Loader = json.extensionsRequired && json.extensionsRequired.includes('KHR_texture_basisu');
 
   // Browse for duplicates
   const duplicates = {
@@ -454,6 +457,9 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/`
         ${scene.includes('OrthographicCamera') ? 'OrthographicCamera,' : ''}
         ${hasAnimations ? 'useAnimations' : ''} } from '@react-three/drei'
         ${options.types ? 'import { GLTF } from "three-stdlib"' : ''}
+        ${needsKTX2Loader ? 'import { REVISION } from "three"' : ''}
+        ${needsKTX2Loader ? 'import { useThree } from "@react-three/fiber"' : ''}
+        ${needsKTX2Loader ? 'import { KTX2Loader } from "three-stdlib"' : ''}
         ${options.types ? printTypes(objects, animations) : ''}
 
         ${
@@ -489,8 +495,16 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/`
           } ${
             !options.instanceall
               ? `const { nodes, materials${hasAnimations ? ', animations' : ''} } = useGLTF('${url}'${
-                  options.draco ? `, ${JSON.stringify(options.draco)}` : ''
-                })${options.types ? ' as GLTFResult' : ''}`
+                  needsDraco ? ", true" : options.draco ? `, ${JSON.stringify(options.draco)}` : ', false'
+                }
+                  , false, ${needsKTX2Loader ? `(loader) => {
+                      const { gl } = useThree();
+                      const THREE_PATH = \`https://unpkg.com/three@0.$\{REVISION\}.x\`;
+                      const ktx2Loader = new KTX2Loader().setTranscoderPath(\`$\{THREE_PATH\}/examples/jsm/libs/basis/\`);
+                      ktx2Loader.detectSupport(gl);
+                      loader.setKTX2Loader(ktx2Loader);
+                    }` : ''}
+                  )${options.types ? ' as GLTFResult' : ''}`
               : ''
           } ${printAnimations(animations)}
           return (
@@ -500,7 +514,7 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/`
           )
         }
 
-useGLTF.preload('${url}')`
+${ /* Can't use preload with KTX2 */ needsKTX2Loader ? '' : `useGLTF.preload('${url}')` }`
 
   console.log(header)
   const output = header + '\n' + result
