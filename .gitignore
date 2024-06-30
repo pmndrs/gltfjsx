@@ -12,4 +12,10 @@ $RECYCLE.BIN/
 package-lock.json
 coverage/
 .idea
+
+# yarn
 yarn-error.log
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+.pnp.*
