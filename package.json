@@ -38,24 +38,25 @@
     "node": ">=16"
   },
   "dependencies": {
-    "@gltf-transform/core": "3.10.0",
-    "@gltf-transform/extensions": "3.10.0",
-    "@gltf-transform/functions": "3.10.0",
+    "@gltf-transform/core": "4.0.4",
+    "@gltf-transform/extensions": "4.0.4",
+    "@gltf-transform/functions": "4.0.4",
     "@node-loader/babel": "^2.0.1",
-    "draco3dgltf": "^1.5.6",
+    "draco3dgltf": "^1.5.7",
     "is-var-name": "^2.0.0",
-    "keyframe-resample": "^0.0.15",
+    "keyframe-resample": "^0.1.0",
     "meow": "^12.1.1",
-    "meshoptimizer": "^0.20.0",
+    "meshoptimizer": "^0.21.0",
     "prettier": "3.1.1",
     "read-pkg-up": "^10.1.0",
     "three": "0.159.0",
     "three-stdlib": "^2.28.7"
   },
   "optionalDependencies": {
-    "jsdom": "^23.0.1",
+    "jsdom": "^24.1.0",
     "jsdom-global": "^3.0.2",
-    "sharp": "0.32.6"
+    "libvips": "0.0.2",
+    "sharp": "^0.33.4"
   },
   "devDependencies": {
     "@babel/core": "7.23.6",

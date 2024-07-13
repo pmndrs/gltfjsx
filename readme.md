@@ -33,23 +33,26 @@ Options
   --types, -t         Add Typescript definitions
   --keepnames, -k     Keep original names
   --keepgroups, -K    Keep (empty) groups, disable pruning
+  --bones, -b         Lay out bones declaratively (default: false)
   --meta, -m          Include metadata (as userData)
-  --shadows, -s        Let meshes cast and receive shadows
+  --shadows, s        Let meshes cast and receive shadows
   --printwidth, w     Prettier printWidth (default: 120)
   --precision, -p     Number of fractional digits (default: 3)
   --draco, -d         Draco binary path
   --root, -r          Sets directory from which .gltf file is served
   --instance, -i      Instance re-occuring geometry
   --instanceall, -I   Instance every geometry (for cheaper re-use)
+  --exportdefault, -E Use default export
   --transform, -T     Transform the asset for the web (draco, prune, resize)
     --resolution, -R  Resolution for texture resizing (default: 1024)
-    --keepmeshes, -j  Do not join compatible meshes
+    --keepmeshes, -j  Do not join compatible meshes      
     --keepmaterials, -M Do not palette join materials
     --format, -f      Texture format (default: "webp")
     --simplify, -S    Mesh simplification (default: false)
       --weld          Weld tolerance (default: 0.00005)
       --ratio         Simplifier ratio (default: 0)
       --error         Simplifier error threshold (default: 0.0001)
+  --console, -c       Log JSX to console, won't produce a file
   --debug, -D         Debug output
 ```
 

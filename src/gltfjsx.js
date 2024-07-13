@@ -43,47 +43,47 @@ export default function (file, output, options) {
   }
 
   return new Promise((resolve, reject) => {
-    const stream = fs.createWriteStream(path.resolve(output))
-    stream.once('open', async (fd) => {
-      if (!fs.existsSync(file)) {
-        reject(file + ' does not exist.')
-      } else {
-        let size = ''
-        // Process GLTF
-        if (output && path.parse(output).ext === '.tsx') {
-          options.types = true
-        }
-        
-        if (options.transform || options.instance || options.instanceall) {
-          const { name } = path.parse(file)
-          const outputDir = path.parse(path.resolve(output ?? file)).dir;
-          const transformOut = path.join(outputDir, name + '-transformed.glb')
-          await transform(file, transformOut, options)
-          const { size: sizeOriginal, sizeKB: sizeKBOriginal } = getFileSize(file)
-          const { size: sizeTransformed, sizeKB: sizeKBTransformed } = getFileSize(transformOut)
-          size = `${file} [${sizeOriginal}] > ${transformOut} [${sizeTransformed}] (${Math.round(
-            100 - (sizeKBTransformed / sizeKBOriginal) * 100
-          )}%)`
-          file = transformOut
-        }
-        resolve()
-
-        const filePath = getRelativeFilePath(file)
-        const data = fs.readFileSync(file)
-        const arrayBuffer = toArrayBuffer(data)
-        gltfLoader.parse(
-          arrayBuffer,
-          '',
-          async (gltf) => {        
-            stream.write(await parse(gltf, { fileName: filePath, size, ...options }))
-            stream.end()
-            resolve()
-          },
-          (reason) => {
-            console.log(reason)
-          }
-        )
+    async function run(stream) {
+      let size = ''
+      // Process GLTF
+      if (output && path.parse(output).ext === '.tsx') options.types = true
+      if (options.transform || options.instance || options.instanceall) {
+        const { name } = path.parse(file)
+        const outputDir = path.parse(path.resolve(output ?? file)).dir
+        const transformOut = path.join(outputDir, name + '-transformed.glb')
+        await transform(file, transformOut, options)
+        const { size: sizeOriginal, sizeKB: sizeKBOriginal } = getFileSize(file)
+        const { size: sizeTransformed, sizeKB: sizeKBTransformed } = getFileSize(transformOut)
+        size = `${file} [${sizeOriginal}] > ${transformOut} [${sizeTransformed}] (${Math.round(
+          100 - (sizeKBTransformed / sizeKBOriginal) * 100
+        )}%)`
+        file = transformOut
       }
-    })
+      const filePath = getRelativeFilePath(file)
+      const data = fs.readFileSync(file)
+      const arrayBuffer = toArrayBuffer(data)
+      gltfLoader.parse(
+        arrayBuffer,
+        '',
+        async (gltf) => {
+          const output = await parse(gltf, { fileName: filePath, size, ...options })
+          if (options.console) console.log(output)
+          else stream?.write(output)
+          stream?.end()
+          resolve()
+        },
+        (reason) => console.log(reason)
+      )
+    }
+
+    if (options.console) {
+      run()
+    } else {
+      const stream = fs.createWriteStream(path.resolve(output))
+      stream.once('open', async () => {
+        if (!fs.existsSync(file)) reject(file + ' does not exist.')
+        else run(stream)
+      })
+    }
   })
 }

@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 'use strict'
 import meow from 'meow'
-import path from 'path'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 import gltfjsx from './src/gltfjsx.js'
@@ -39,6 +38,7 @@ const cli = meow(
         --weld          Weld tolerance (default: 0.00005)
         --ratio         Simplifier ratio (default: 0)
         --error         Simplifier error threshold (default: 0.0001)
+    --console, -c       Log JSX to console, won't produce a file
     --debug, -D         Debug output
 `,
   {
@@ -69,6 +69,7 @@ const cli = meow(
       weld: { type: 'number', default: 0.0001 },
       ratio: { type: 'number', default: 0.75 },
       error: { type: 'number', default: 0.001 },
+      console: { type: 'boolean', shortFlag: 'c' },
       debug: { type: 'boolean', shortFlag: 'D' },
     },
   }
