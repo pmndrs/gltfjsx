@@ -1,4 +1,4 @@
-import { NodeIO } from '@gltf-transform/core'
+import { Logger, NodeIO } from '@gltf-transform/core'
 import {
   simplify,
   instance,
@@ -31,6 +31,8 @@ async function transform(file, output, config = {}) {
     'meshopt.decoder': MeshoptDecoder,
     'meshopt.encoder': MeshoptEncoder,
   })
+  if (config.console) io.setLogger(new Logger(Logger.Verbosity.ERROR))
+  else io.setLogger(new Logger(Logger.Verbosity.WARN))
 
   const document = await io.read(file)
   const resolution = config.resolution ?? 1024
