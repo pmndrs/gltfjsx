@@ -56,7 +56,10 @@
     "jsdom": "^24.1.0",
     "jsdom-global": "^3.0.2",
     "libvips": "0.0.2",
-    "sharp": "^0.33.4"
+    "sharp": "<0.33.0"
+  },
+  "resolutions": {
+    "sharp": "<0.33.0"
   },
   "devDependencies": {
     "@babel/core": "7.23.6",
