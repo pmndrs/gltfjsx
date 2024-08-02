@@ -106,9 +106,11 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
     }
 
     const types = [...new Set([...meshes, ...bones].map((o) => getType(o)))]
-    const contextType = hasInstances ? `\ntype ContextType = Record<string, React.ForwardRefExoticComponent<
+    const contextType = hasInstances
+      ? `\ntype ContextType = Record<string, React.ForwardRefExoticComponent<
      ${types.map((type) => `JSX.IntrinsicElements['${type}']`).join(' | ')}
-    >>\n` : ''
+    >>\n`
+      : ''
 
     return `\n${animationTypes}\ntype GLTFResult = GLTF & {
     nodes: {
@@ -337,9 +339,16 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
       return result
     }
 
-    // Bail out on lights and bones
+    // Bail out on bones
     if (!options.bones && type === 'bone') {
       return `<primitive object={${node}} />`
+    }
+
+    // Take care of lights with targets
+    if (type.endsWith('Light') && obj.target && obj.children[0] === obj.target) {
+      return `<${type} ${handleProps(obj)} target={${node}.target}>
+        <primitive object={${node}.target} ${handleProps(obj.target)} />
+      </${type}>`
     }
 
     // Collect children
@@ -493,16 +502,12 @@ ${parseExtras(gltf.parser.json.asset && gltf.parser.json.asset.extras)}*/`
             hasAnimations ? `const group = ${options.types ? 'React.useRef<THREE.Group>()' : 'React.useRef()'};` : ''
           } ${
             !options.instanceall
-              ? `const { ${
-                  !hasPrimitives ? `nodes, materials${hasAnimations ? ', animations' : ''}` : 'scene'
-                }} = useGLTF('${url}'${options.draco ? `, ${JSON.stringify(options.draco)}` : ''})${
-                  !hasPrimitives && options.types ? ' as GLTFResult' : ''
-                }${
+              ? `const { ${!hasPrimitives ? `nodes, materials` : 'scene'} ${hasAnimations ? ', animations' : ''}} = useGLTF('${url}'${
+                  options.draco ? `, ${JSON.stringify(options.draco)}` : ''
+                })${!hasPrimitives && options.types ? ' as GLTFResult' : ''}${
                   hasPrimitives
                     ? `\nconst clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene])
-                const { nodes, materials${hasAnimations ? ', animations' : ''} } = useGraph(clone) ${
-                  options.types ? ' as GLTFResult' : ''
-                }`
+                const { nodes, materials } = useGraph(clone) ${options.types ? ' as GLTFResult' : ''}`
                     : ''
                 }`
               : ''
