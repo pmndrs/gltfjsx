@@ -31,11 +31,10 @@ const cli = meow(
     --exportdefault, -E Use default export
     --transform, -T     Transform the asset for the web (draco, prune, resize)
       --resolution, -R  Resolution for texture resizing (default: 1024)
-      --keepmeshes, -j  Do not join compatible meshes      
+      --keepmeshes, -j  Do not join compatible meshes
       --keepmaterials, -M Do not palette join materials
       --format, -f      Texture format (default: "webp")
       --simplify, -S    Mesh simplification (default: false)
-        --weld          Weld tolerance (default: 0.00005)
         --ratio         Simplifier ratio (default: 0)
         --error         Simplifier error threshold (default: 0.0001)
     --console, -c       Log JSX to console, won't produce a file
@@ -66,7 +65,6 @@ const cli = meow(
       keepmaterials: { type: 'boolean', shortFlag: 'M', default: false },
       format: { type: 'string', shortFlag: 'f', default: 'webp' },
       exportdefault: { type: 'boolean', shortFlag: 'E' },
-      weld: { type: 'number', default: 0.0001 },
       ratio: { type: 'number', default: 0.75 },
       error: { type: 'number', default: 0.001 },
       console: { type: 'boolean', shortFlag: 'c' },

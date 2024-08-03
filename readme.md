@@ -18,7 +18,7 @@ A small command-line tool that turns GLTF assets into declarative and re-usable 
 
 ### GLTFJSX fixes that
 
-- 🧑‍💻 It creates a virtual graph of all objects and materials. Now you can easily alter contents and re-use. 
+- 🧑‍💻 It creates a virtual graph of all objects and materials. Now you can easily alter contents and re-use.
 - 🏎️ The graph gets pruned (empty groups, unnecessary transforms, ...) and will perform better.
 - ⚡️ It will optionally compress your model with up to 70%-90% size reduction.
 
@@ -45,11 +45,10 @@ Options
   --exportdefault, -E Use default export
   --transform, -T     Transform the asset for the web (draco, prune, resize)
     --resolution, -R  Resolution for texture resizing (default: 1024)
-    --keepmeshes, -j  Do not join compatible meshes      
+    --keepmeshes, -j  Do not join compatible meshes
     --keepmaterials, -M Do not palette join materials
     --format, -f      Texture format (default: "webp")
     --simplify, -S    Mesh simplification (default: false)
-      --weld          Weld tolerance (default: 0.00005)
       --ratio         Simplifier ratio (default: 0)
       --error         Simplifier error threshold (default: 0.0001)
   --console, -c       Log JSX to console, won't produce a file
@@ -81,7 +80,7 @@ export function Model(props) {
   const { nodes, materials } = useGLTF('/model-transformed.glb')
   return (
     <group {...props} dispose={null}>
-      <PerspectiveCamera name="camera" fov={40} near={10} far={1000} position={[10, 0, 50]} />      
+      <PerspectiveCamera name="camera" fov={40} near={10} far={1000} position={[10, 0, 50]} />
       <pointLight intensity={10} position={[100, 50, 100]} rotation={[-Math.PI / 2, 0, 0]} />
       <group position={[10, -5, 0]}>
         <mesh geometry={nodes.robot.geometry} material={materials.metal} />
@@ -110,7 +109,7 @@ import { Model } from './Model'
 function App() {
   return (
     <Canvas>
-      <Model />      
+      <Model />
 ```
 
 You can re-use it, it will re-use geometries and materials out of the box:
@@ -208,7 +207,7 @@ useEffect(() => {
 
 #### ⚡️ Auto-instancing
 
-Use the `--instance` flag and it will look for similar geometry and create instances of them. Look into [drei/Merged](https://github.com/pmndrs/drei#instances) to understand how it works. It does not matter if you instanced the model previously in Blender, it creates instances for each mesh that has a specific geometry and/or material. 
+Use the `--instance` flag and it will look for similar geometry and create instances of them. Look into [drei/Merged](https://github.com/pmndrs/drei#instances) to understand how it works. It does not matter if you instanced the model previously in Blender, it creates instances for each mesh that has a specific geometry and/or material.
 
 `--instanceall` will create instances of all the geometry. This allows you to re-use the model with the smallest amount of drawcalls.
 
@@ -287,7 +286,7 @@ it('should have a scene with a blue mesh', async () => {
   const { scene } = await new Promise((res) => loader.parse(data, '', res))
   expect(() => scene.children.length).toEqual(1)
   expect(() => scene.children[0].type).toEqual('mesh')
-  expect(() => scene.children[0].material.color).toEqual('blue')  
+  expect(() => scene.children[0].material.color).toEqual('blue')
 })
 ```
 

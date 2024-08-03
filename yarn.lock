@@ -1094,29 +1094,14 @@
     "@babel/helper-validator-identifier" "^7.24.7"
     to-fast-properties "^2.0.0"
 
-"@gltf-transform/core@4.0.4":
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/@gltf-transform/core/-/core-4.0.4.tgz#71d9465fb12f656c97506fe85ef54e3ae96e927c"
-  integrity sha512-SsIL8vAMjXZBEJR3gI6OhGejK+ck4KKDSswYtShpXLylFAVke2EmITRA7CbzwmgZzbFc3a+appjhBhjRdb7v5A==
-  dependencies:
-    property-graph "^2.0.0"
-
-"@gltf-transform/core@^4.0.4", "@gltf-transform/core@^4.0.8":
+"@gltf-transform/core@4.0.8", "@gltf-transform/core@^4.0.8":
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/@gltf-transform/core/-/core-4.0.8.tgz#cf5699cb05e62a33bb68dbf9e1438186f992cac5"
   integrity sha512-8oSLSw+t+wxPvKC2qm0n3EOoR6Ql2DMuagimjWjGz8sC4MtCqbo6kS6dCeissYrkgP2fj/k8dzRWiWQZRatGMg==
   dependencies:
     property-graph "^2.0.0"
 
-"@gltf-transform/extensions@4.0.4":
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/@gltf-transform/extensions/-/extensions-4.0.4.tgz#f4cbd658969ca012f6a5c2e6565133f90d6bb0e4"
-  integrity sha512-hFdH9Rp7EeNKGjie+OSlw/OHGb10+AlN1e9VLWGzQjNc7Oco9+ZIja5pqEENxYw5WjOS6sX07E6eyOAZUcbF4A==
-  dependencies:
-    "@gltf-transform/core" "^4.0.4"
-    ktx-parse "^0.7.0"
-
-"@gltf-transform/extensions@^4.0.4":
+"@gltf-transform/extensions@4.0.8", "@gltf-transform/extensions@^4.0.8":
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/@gltf-transform/extensions/-/extensions-4.0.8.tgz#4f099841df3b2f28a7974e048c7a65f9abb03618"
   integrity sha512-ZbpSV+tHIIYZySwkt5/GLiTvfhvO/4ff7frSmdAG8nE3xRsLyxd2cuYcYHSqN7PP3Ch8NxLSBxvd9/MHNQmMYw==
@@ -1124,13 +1109,13 @@
     "@gltf-transform/core" "^4.0.8"
     ktx-parse "^0.7.0"
 
-"@gltf-transform/functions@4.0.4":
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/@gltf-transform/functions/-/functions-4.0.4.tgz#8e3b68a8b30a637fc1a0e4bc0e7038655e88d55c"
-  integrity sha512-9RLdwSqyBQGbY3dPq7JDXkGJfCo29X5MlXX8UJLjse8SBB53ketvJvcnKD2yEg6XiIso+ee126uB8MXdQuw4pg==
+"@gltf-transform/functions@4.0.8":
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/@gltf-transform/functions/-/functions-4.0.8.tgz#2b5d653e327d6c27c4011774561d4828b14f3956"
+  integrity sha512-v6yVtqh82iBoIz4PiEX9SWu9GEsrCyMclhzBMh6A6X2ezb823QBg1jOWdP+tB7KgetWZna4hALppwpsMQwS1ZQ==
   dependencies:
-    "@gltf-transform/core" "^4.0.4"
-    "@gltf-transform/extensions" "^4.0.4"
+    "@gltf-transform/core" "^4.0.8"
+    "@gltf-transform/extensions" "^4.0.8"
     ktx-parse "^0.7.0"
     ndarray "^1.0.19"
     ndarray-lanczos "^0.3.0"
