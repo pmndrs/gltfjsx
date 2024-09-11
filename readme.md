@@ -136,7 +136,7 @@ Make contents conditional:
 
 ```jsx
 {
-  condition ? <mesh geometry={nodes.robot.geometry} material={materials.metal} : null/>
+  condition ? <mesh geometry={nodes.robot.geometry} material={materials.metal} /> : null
 }
 ```
 
