@@ -162,7 +162,7 @@ useGLTF.preload('/model.gltf')
 
 ### ⚡️ Auto-transform (compression, resize)
 
-With the `--transform` flag it creates a binary-packed, draco-compressed, texture-resized (1024x1024), webp compressed, deduped, instanced and pruned \*.glb ready to be consumed on a web site. It uses [glTF-Transform](https://github.com/donmccurdy/glTF-Transform). This can reduce the size of an asset by 70%-90%.
+With the `--transform` flag it creates a binary-packed, draco-compressed, texture-resized (1024x1024), webp compressed, deduped, instanced and pruned `*.glb` ready to be consumed on a web site. It uses [glTF-Transform](https://github.com/donmccurdy/glTF-Transform). This can reduce the size of an asset by 70%-90%.
 
 It will not alter the original but create a copy and append `[modelname]-transformed.glb`.
 
