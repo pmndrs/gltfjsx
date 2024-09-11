@@ -21,7 +21,7 @@ A small command-line tool that turns GLTF assets into declarative and re-usable 
 - 🏎️ The graph gets pruned (empty groups, unnecessary transforms, ...) and will perform better.
 - ⚡️ It will optionally compress your model with up to 70%-90% size reduction.
 
-### Usage
+## Usage
 
 ```text
 Usage
