@@ -36,9 +36,9 @@
     "node": ">=16"
   },
   "dependencies": {
-    "@gltf-transform/core": "4.0.4",
-    "@gltf-transform/extensions": "4.0.4",
-    "@gltf-transform/functions": "4.0.4",
+    "@gltf-transform/core": "4.0.8",
+    "@gltf-transform/extensions": "4.0.8",
+    "@gltf-transform/functions": "4.0.8",
     "@node-loader/babel": "^2.0.1",
     "draco3dgltf": "^1.5.7",
     "is-var-name": "^2.0.0",
@@ -57,7 +57,10 @@
     "sharp": "<0.33.0"
   },
   "resolutions": {
-    "sharp": "<0.33.0"
+    "sharp": "<0.33.0",
+    "@gltf-transform/core": "4.0.8",
+    "@gltf-transform/extensions": "4.0.8",
+    "@gltf-transform/functions": "4.0.8"
   },
   "devDependencies": {
     "@babel/core": "7.23.6",
