@@ -361,6 +361,7 @@ function parse(gltf, { fileName = 'model', ...options } = {}) {
       if (obj.isInstancedMesh) {
         const geo = `${node}.geometry`
         const mat = obj.material.name ? `materials${sanitizeName(obj.material.name)}` : `${node}.material`
+        type = "instancedMesh"
         result = `<instancedMesh args={[${geo}, ${mat}, ${!obj.count ? `${node}.count` : obj.count}]} `
       } else {
         // Form the object in JSX syntax

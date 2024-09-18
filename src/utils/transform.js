@@ -45,7 +45,8 @@ async function transform(file, output, config = {}) {
   functions.push(
     reorder({ encoder: MeshoptEncoder }),
     dedup(),
-    instance({ min: 5 }),
+    // This seems problematic ...
+    // instance({ min: 5 }),
     flatten(),
     dequantize() // ...
   )
