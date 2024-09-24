@@ -47,6 +47,8 @@ Options
     --resolution, -R  Resolution for texture resizing (default: 1024)
     --keepmeshes, -j  Do not join compatible meshes
     --keepmaterials, -M Do not palette join materials
+    --pruneKeepAttributes, Whether to keep unused vertex attributes, such as UVs without an assigned texture
+    --pruneKeepLeaves, Whether to keep empty leaf nodes
     --format, -f      Texture format (default: "webp")
     --simplify, -S    Mesh simplification (default: false)
       --ratio         Simplifier ratio (default: 0)
