@@ -34,7 +34,6 @@ const cli = meow(
       --keepmeshes, -j  Do not join compatible meshes
       --keepmaterials, -M Do not palette join materials
       --keepattributes, Whether to keep unused vertex attributes, such as UVs without an assigned texture
-      --keepleaves,     Whether to keep empty leaf nodes
       --format, -f      Texture format (default: "webp")
       --simplify, -S    Mesh simplification (default: false)
         --ratio         Simplifier ratio (default: 0)
@@ -66,7 +65,6 @@ const cli = meow(
       keepmeshes: { type: 'boolean', shortFlag: 'j', default: false },
       keepmaterials: { type: 'boolean', shortFlag: 'M', default: false },
       keepattributes: { type: 'boolean', default: false },
-      keepleaves: { type: 'boolean', default: false },
       format: { type: 'string', shortFlag: 'f', default: 'webp' },
       exportdefault: { type: 'boolean', shortFlag: 'E' },
       ratio: { type: 'number', default: 0.75 },

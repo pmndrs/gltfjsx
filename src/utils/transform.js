@@ -71,7 +71,7 @@ async function transform(file, output, config = {}) {
 
   functions.push(
     resample({ ready: resampleReady, resample: resampleWASM }),
-    prune({ keepAttributes: config.keepattributes ?? false, keepLeaves: config.keepleaves ?? false }),
+    prune({ keepAttributes: config.keepattributes ?? false, keepLeaves: config.keepleaves }),
     sparse()
   )
 
