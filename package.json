@@ -36,15 +36,15 @@
     "node": ">=16"
   },
   "dependencies": {
-    "@gltf-transform/core": "4.0.8",
-    "@gltf-transform/extensions": "4.0.8",
-    "@gltf-transform/functions": "4.0.8",
+    "@gltf-transform/core": "4.1.0",
+    "@gltf-transform/extensions": "4.1.0",
+    "@gltf-transform/functions": "4.1.0",
     "@node-loader/babel": "^2.0.1",
     "draco3dgltf": "^1.5.7",
     "is-var-name": "^2.0.0",
     "keyframe-resample": "^0.1.0",
     "meow": "^12.1.1",
-    "meshoptimizer": "^0.21.0",
+    "meshoptimizer": "^0.22.0",
     "prettier": "3.1.1",
     "read-pkg-up": "^10.1.0",
     "three": "0.159.0",
@@ -54,7 +54,7 @@
     "jsdom": "^24.1.0",
     "jsdom-global": "^3.0.2",
     "libvips": "0.0.2",
-    "sharp": "<0.33.0"
+    "sharp": "^0.33.5"
   },
   "resolutions": {
     "sharp": "<0.33.0",

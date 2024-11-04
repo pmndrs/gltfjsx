@@ -4178,9 +4178,9 @@ __metadata:
     "@babel/preset-env": "npm:7.23.6"
     "@babel/preset-react": "npm:7.23.3"
     "@babel/preset-typescript": "npm:^7.23.3"
-    "@gltf-transform/core": "npm:4.0.8"
-    "@gltf-transform/extensions": "npm:4.0.8"
-    "@gltf-transform/functions": "npm:4.0.8"
+    "@gltf-transform/core": "npm:4.1.0"
+    "@gltf-transform/extensions": "npm:4.1.0"
+    "@gltf-transform/functions": "npm:4.1.0"
     "@node-loader/babel": "npm:^2.0.1"
     "@rollup/plugin-babel": "npm:^6.0.4"
     "@rollup/plugin-node-resolve": "npm:^15.2.3"
@@ -4195,13 +4195,13 @@ __metadata:
     libvips: "npm:0.0.2"
     lint-staged: "npm:^13.2.0"
     meow: "npm:^12.1.1"
-    meshoptimizer: "npm:^0.21.0"
+    meshoptimizer: "npm:^0.22.0"
     prettier: "npm:3.1.1"
     read-pkg-up: "npm:^10.1.0"
     rollup: "npm:^4.9.1"
     rollup-plugin-size-snapshot: "npm:^0.12.0"
     rollup-plugin-terser: "npm:^7.0.2"
-    sharp: "npm:<0.33.0"
+    sharp: "npm:^0.33.5"
     three: "npm:0.159.0"
     three-stdlib: "npm:^2.28.7"
   dependenciesMeta:
@@ -5234,10 +5234,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"meshoptimizer@npm:^0.21.0":
-  version: 0.21.0
-  resolution: "meshoptimizer@npm:0.21.0"
-  checksum: 10c0/3d55799c2f49c8b6dc0f73fb0a0e0c815b32cfe2e66d7433e1197c032aa172d379d37b45682fe713526dbfd1df68a3cddc283cd55bca620efc8eeccff58b0184
+"meshoptimizer@npm:^0.22.0":
+  version: 0.22.0
+  resolution: "meshoptimizer@npm:0.22.0"
+  checksum: 10c0/df5c10c897a9eea3085cd2ae077dd4b904df3d71855eb3cbaa624d05e62eb4e893b3e2492cae070122561addb90fbfe092c53b7e68fdd391d0009f267af3f348
   languageName: node
   linkType: hard
 
